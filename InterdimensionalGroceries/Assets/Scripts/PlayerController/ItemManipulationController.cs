@@ -1,0 +1,257 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using InterdimensionalGroceries.Core;
+
+namespace InterdimensionalGroceries.PlayerController
+{
+    public class ItemManipulationController : MonoBehaviour
+    {
+        [Header("Raycast Settings")]
+        [SerializeField] private float maxPickupDistance = 3f;
+        [SerializeField] private LayerMask interactableLayer;
+        [SerializeField] private Transform cameraTransform;
+
+        [Header("Held Object Settings")]
+        [SerializeField] private float defaultHoldDistance = 2f;
+        [SerializeField] private float minHoldDistance = 1f;
+        [SerializeField] private float maxHoldDistance = 4f;
+        [SerializeField] private float scrollSensitivity = 0.5f;
+
+        [Header("Rotation Settings")]
+        [SerializeField] private float rotationSensitivity = 5f;
+
+        [Header("Throw Settings")]
+        [SerializeField] private float throwChargeDelay = 0.3f;
+        [SerializeField] private float maxChargeTime = 1f;
+        [SerializeField] private float minThrowForce = 5f;
+        [SerializeField] private float maxThrowForce = 15f;
+
+        private InputSystem_Actions inputActions;
+        private GameObject heldObject;
+        private Rigidbody heldRigidbody;
+        private IPickable heldPickable;
+        private float currentHoldDistance;
+        private bool isCharging;
+        private float chargeStartTime;
+        private bool isRotating;
+        private bool justPickedUp;
+        private HUDController hudController;
+
+        public float ChargePercent { get; private set; }
+        public bool IsRotatingObject => isRotating && heldObject != null;
+
+        private void Awake()
+        {
+            inputActions = new InputSystem_Actions();
+            currentHoldDistance = defaultHoldDistance;
+
+            if (cameraTransform == null)
+            {
+                cameraTransform = Camera.main?.transform;
+            }
+
+            hudController = GetComponentInChildren<HUDController>();
+        }
+
+        private void Start()
+        {
+            if (hudController != null)
+            {
+                hudController.UpdateChargeBar(0f);
+            }
+        }
+
+        private void OnEnable()
+        {
+            inputActions.Player.Enable();
+            inputActions.Player.PickUpPlace.performed += OnPickUpPlacePerformed;
+            inputActions.Player.PickUpPlace.canceled += OnPickUpPlaceCanceled;
+            inputActions.Player.Rotate.performed += OnRotatePerformed;
+            inputActions.Player.Rotate.canceled += OnRotateCanceled;
+            inputActions.Player.AdjustDistance.performed += OnAdjustDistance;
+        }
+
+        private void OnDisable()
+        {
+            inputActions.Player.PickUpPlace.performed -= OnPickUpPlacePerformed;
+            inputActions.Player.PickUpPlace.canceled -= OnPickUpPlaceCanceled;
+            inputActions.Player.Rotate.performed -= OnRotatePerformed;
+            inputActions.Player.Rotate.canceled -= OnRotateCanceled;
+            inputActions.Player.AdjustDistance.performed -= OnAdjustDistance;
+            inputActions.Player.Disable();
+        }
+
+        private void OnPickUpPlacePerformed(InputAction.CallbackContext context)
+        {
+            if (heldObject == null)
+            {
+                TryPickupObject();
+            }
+            else if (!justPickedUp)
+            {
+                isCharging = true;
+                chargeStartTime = Time.time;
+            }
+        }
+
+        private void OnPickUpPlaceCanceled(InputAction.CallbackContext context)
+        {
+            if (justPickedUp)
+            {
+                justPickedUp = false;
+                return;
+            }
+
+            if (heldObject != null)
+            {
+                float holdTime = Time.time - chargeStartTime;
+                
+                if (holdTime < throwChargeDelay)
+                {
+                    PlaceObject();
+                }
+                else if (isCharging)
+                {
+                    ThrowObject();
+                }
+                else
+                {
+                    PlaceObject();
+                }
+                
+                isCharging = false;
+                ChargePercent = 0f;
+                hudController?.UpdateChargeBar(0f);
+            }
+        }
+
+        private void OnRotatePerformed(InputAction.CallbackContext context)
+        {
+            isRotating = true;
+        }
+
+        private void OnRotateCanceled(InputAction.CallbackContext context)
+        {
+            isRotating = false;
+        }
+
+        private void OnAdjustDistance(InputAction.CallbackContext context)
+        {
+            if (heldObject != null)
+            {
+                float scrollValue = context.ReadValue<Vector2>().y;
+                currentHoldDistance += scrollValue * scrollSensitivity * 0.1f;
+                currentHoldDistance = Mathf.Clamp(currentHoldDistance, minHoldDistance, maxHoldDistance);
+            }
+        }
+
+        private void Update()
+        {
+            if (heldObject != null)
+            {
+                UpdateHeldObjectPosition();
+
+                if (isRotating)
+                {
+                    RotateHeldObject();
+                }
+
+                if (inputActions.Player.PickUpPlace.IsPressed() && !justPickedUp)
+                {
+                    float holdTime = Time.time - chargeStartTime;
+                    
+                    if (holdTime >= throwChargeDelay)
+                    {
+                        if (!isCharging)
+                        {
+                            isCharging = true;
+                        }
+                        UpdateChargeBar();
+                    }
+                }
+                else if (!inputActions.Player.PickUpPlace.IsPressed())
+                {
+                    if (hudController != null && ChargePercent > 0)
+                    {
+                        ChargePercent = 0f;
+                        hudController.UpdateChargeBar(0f);
+                    }
+                }
+            }
+        }
+
+        private void TryPickupObject()
+        {
+            Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, maxPickupDistance, interactableLayer))
+            {
+                GameObject hitObject = hit.collider.gameObject;
+                IPickable pickable = hitObject.GetComponent<IPickable>();
+                Rigidbody rb = hitObject.GetComponent<Rigidbody>();
+
+                if (pickable != null && rb != null)
+                {
+                    heldObject = hitObject;
+                    heldRigidbody = rb;
+                    heldPickable = pickable;
+                    currentHoldDistance = defaultHoldDistance;
+                    justPickedUp = true;
+
+                    heldPickable.OnPickedUp();
+                    heldObject.transform.parent = cameraTransform;
+                }
+            }
+        }
+
+        private void UpdateHeldObjectPosition()
+        {
+            if (heldObject != null)
+            {
+                Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * currentHoldDistance;
+                heldObject.transform.position = targetPosition;
+            }
+        }
+
+        private void RotateHeldObject()
+        {
+            if (heldObject != null)
+            {
+                Vector2 lookDelta = inputActions.Player.Look.ReadValue<Vector2>();
+                heldObject.transform.Rotate(cameraTransform.up, lookDelta.x * rotationSensitivity, Space.World);
+                heldObject.transform.Rotate(cameraTransform.right, -lookDelta.y * rotationSensitivity, Space.World);
+            }
+        }
+
+        private void UpdateChargeBar()
+        {
+            float chargeTime = Time.time - chargeStartTime - throwChargeDelay;
+            ChargePercent = Mathf.Clamp01(chargeTime / maxChargeTime);
+            hudController?.UpdateChargeBar(ChargePercent);
+        }
+
+        private void PlaceObject()
+        {
+            if (heldObject != null && heldPickable != null)
+            {
+                heldPickable.OnDropped();
+                heldObject = null;
+                heldRigidbody = null;
+                heldPickable = null;
+            }
+        }
+
+        private void ThrowObject()
+        {
+            if (heldObject != null && heldPickable != null)
+            {
+                float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, ChargePercent);
+                heldPickable.OnThrown(throwForce);
+                heldObject = null;
+                heldRigidbody = null;
+                heldPickable = null;
+            }
+        }
+    }
+}
