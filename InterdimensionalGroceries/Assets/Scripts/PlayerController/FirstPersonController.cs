@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using InterdimensionalGroceries.BuildSystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -9,6 +10,8 @@ namespace InterdimensionalGroceries.PlayerController
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float sprintSpeed = 10f;
+        [SerializeField] private float jumpForce = 5f;
+        [SerializeField] private float gravity = 20f;
 
         [Header("Look Settings")]
         [SerializeField] private float lookSensitivity = 2f;
@@ -21,6 +24,7 @@ namespace InterdimensionalGroceries.PlayerController
         private Vector2 lookInput;
         private bool isSprinting;
         private float verticalRotation = 0f;
+        private float verticalVelocity = 0f;
 
         private void Awake()
         {
@@ -43,6 +47,7 @@ namespace InterdimensionalGroceries.PlayerController
             inputActions.Player.Look.canceled += OnLook;
             inputActions.Player.Sprint.performed += OnSprint;
             inputActions.Player.Sprint.canceled += OnSprint;
+            inputActions.Player.Jump.performed += OnJump;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -56,6 +61,7 @@ namespace InterdimensionalGroceries.PlayerController
             inputActions.Player.Look.canceled -= OnLook;
             inputActions.Player.Sprint.performed -= OnSprint;
             inputActions.Player.Sprint.canceled -= OnSprint;
+            inputActions.Player.Jump.performed -= OnJump;
             inputActions.Player.Disable();
             
             Cursor.lockState = CursorLockMode.None;
@@ -77,8 +83,21 @@ namespace InterdimensionalGroceries.PlayerController
             isSprinting = context.ReadValueAsButton();
         }
 
+        private void OnJump(InputAction.CallbackContext context)
+        {
+            if (characterController.isGrounded)
+            {
+                verticalVelocity = jumpForce;
+            }
+        }
+
         private void Update()
         {
+            if (BuildModeController.Instance != null && BuildModeController.Instance.IsBrowsing)
+            {
+                return;
+            }
+            
             HandleMovement();
             HandleLook();
         }
@@ -89,10 +108,16 @@ namespace InterdimensionalGroceries.PlayerController
             Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
             characterController.Move(move * currentSpeed * Time.deltaTime);
             
-            if (!characterController.isGrounded)
+            if (characterController.isGrounded)
             {
-                characterController.Move(Vector3.down * 9.81f * Time.deltaTime);
+                if (verticalVelocity < 0f)
+                {
+                    verticalVelocity = -2f;
+                }
             }
+            
+            verticalVelocity -= gravity * Time.deltaTime;
+            characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
         }
 
         private void HandleLook()

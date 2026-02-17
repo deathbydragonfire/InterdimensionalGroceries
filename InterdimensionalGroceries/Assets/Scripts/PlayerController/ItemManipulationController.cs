@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using InterdimensionalGroceries.Core;
+using InterdimensionalGroceries.BuildSystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -147,6 +148,11 @@ namespace InterdimensionalGroceries.PlayerController
 
         private void Update()
         {
+            if (BuildModeController.Instance != null && BuildModeController.Instance.IsBrowsing)
+            {
+                return;
+            }
+            
             if (heldObject != null)
             {
                 UpdateHeldObjectPosition();
