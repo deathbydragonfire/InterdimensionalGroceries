@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using InterdimensionalGroceries.AudioSystem;
 
 namespace InterdimensionalGroceries.BuildSystem
 {
@@ -319,7 +320,13 @@ namespace InterdimensionalGroceries.BuildSystem
         {
             if (selectedObject == null || selectedObject.Prefab == null) return;
             
-            GameObject placedObject = Instantiate(selectedObject.Prefab, currentGhost.transform.position, currentGhost.transform.rotation);
+            Vector3 placementPosition = currentGhost.transform.position;
+            GameObject placedObject = Instantiate(selectedObject.Prefab, placementPosition, currentGhost.transform.rotation);
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(AudioEventType.BuildModePlace, placementPosition);
+            }
             
             if (continueMultiPlacement)
             {
