@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using InterdimensionalGroceries.AudioSystem;
 
 public class ScanProgressBar : MonoBehaviour
 {
@@ -11,15 +12,20 @@ public class ScanProgressBar : MonoBehaviour
     [SerializeField] private float maxEmissionIntensity = 15f;
     [SerializeField] private int pulseCount = 3;
     
+    [Header("Audio Settings")]
+    [SerializeField] private bool playScanSoundPerPulse = true;
+    
     private Material[] scanMaterials;
     private Material[][] originalMaterials;
     private Coroutine scanCoroutine;
+    private Vector3 targetPosition;
 
     public void SetTarget(GameObject target)
     {
         if (target != null)
         {
             targetRenderers = target.GetComponentsInChildren<Renderer>();
+            targetPosition = target.transform.position;
         }
     }
 
@@ -84,6 +90,11 @@ public class ScanProgressBar : MonoBehaviour
         
         for (int pulse = 0; pulse < pulseCount; pulse++)
         {
+            if (playScanSoundPerPulse && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(AudioEventType.Scan, targetPosition);
+            }
+            
             float elapsed = 0f;
             
             while (elapsed < pulseDuration)

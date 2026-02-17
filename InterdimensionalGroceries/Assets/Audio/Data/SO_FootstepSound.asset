@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56e3820fec479f428e7ceccdbadf3e7, type: 3}
+  m_Name: SO_FootstepSound
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
+  clips:
+  - {fileID: 8300000, guid: b022ac1a517ab174ba2105a32f83b273, type: 3}
+  - {fileID: 8300000, guid: c911d36bd73139e429600f2f5e0db477, type: 3}
+  - {fileID: 8300000, guid: 525e469db8b0fe646acd1a172a89a29f, type: 3}
+  minVolume: 0.1
+  maxVolume: 0.3
+  minPitch: 0.95
+  maxPitch: 1.05
+  spatialBlend: 0.3
+  maxDistance: 8
+  mixerGroup: {fileID: 0}

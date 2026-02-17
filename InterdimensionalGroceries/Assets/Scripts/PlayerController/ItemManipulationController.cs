@@ -4,6 +4,7 @@ using InterdimensionalGroceries.Core;
 using InterdimensionalGroceries.BuildSystem;
 using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.ScannerSystem;
+using InterdimensionalGroceries.AudioSystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -287,6 +288,11 @@ namespace InterdimensionalGroceries.PlayerController
                         pickupUIController.ShowInfoPanel(itemData);
                         pickupUIController.ShowControlHints(heldObject.transform.position, currentHoldDistance, minHoldDistance, maxHoldDistance);
                     }
+
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlaySound(AudioEventType.Pickup, heldObject.transform.position);
+                    }
                 }
             }
         }
@@ -321,6 +327,8 @@ namespace InterdimensionalGroceries.PlayerController
         {
             if (heldObject != null && heldPickable != null)
             {
+                Vector3 placePosition = heldObject.transform.position;
+                
                 heldPickable.OnDropped();
                 heldObject = null;
                 heldRigidbody = null;
@@ -332,6 +340,11 @@ namespace InterdimensionalGroceries.PlayerController
                     pickupUIController.HideInfoPanel();
                     pickupUIController.HideScannerHint();
                 }
+
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(AudioEventType.Place, placePosition);
+                }
             }
         }
 
@@ -339,6 +352,8 @@ namespace InterdimensionalGroceries.PlayerController
         {
             if (heldObject != null && heldPickable != null)
             {
+                Vector3 throwPosition = heldObject.transform.position;
+                
                 float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, ChargePercent);
                 heldPickable.OnThrown(throwForce);
                 heldObject = null;
@@ -350,6 +365,11 @@ namespace InterdimensionalGroceries.PlayerController
                     pickupUIController.HideControlHints();
                     pickupUIController.HideInfoPanel();
                     pickupUIController.HideScannerHint();
+                }
+
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(AudioEventType.Throw, throwPosition);
                 }
             }
         }

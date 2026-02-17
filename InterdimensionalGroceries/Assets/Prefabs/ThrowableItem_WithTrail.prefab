@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4361358146639047314}
   - component: {fileID: 4211969283054602565}
   - component: {fileID: 4499847892309853319}
+  - component: {fileID: 4579709966744713621}
   m_Layer: 6
   m_Name: ThrowableItem_WithTrail
   m_TagString: Untagged
@@ -161,6 +162,7 @@ MonoBehaviour:
     tagline: A mysterious object
     price: 0
     itemType: 5
+    itemAudioData: {fileID: 0}
 --- !u!96 &4361358146639047314
 TrailRenderer:
   serializedVersion: 4
@@ -308,7 +310,10 @@ MonoBehaviour:
   acceptedGlowMaterial: {fileID: 2100000, guid: ec7fa8ff7b5ea004b82664079a66bf5e, type: 2}
   rejectedFlashMaterial: {fileID: 2100000, guid: 8b70f9d76c2facc4a988dfce4a11892e, type: 2}
   flashDuration: 0.5
+  rejectionFlashCount: 3
   scaleDownDuration: 0.3
+  greenGlowDuration: 0.2
+  spinSpeed: 720
   elasticCurve:
     serializedVersion: 2
     m_Curve:
@@ -333,3 +338,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4579709966744713621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4917969698961637323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20

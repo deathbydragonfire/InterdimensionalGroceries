@@ -1,4 +1,5 @@
 using UnityEngine;
+using InterdimensionalGroceries.AudioSystem;
 
 namespace InterdimensionalGroceries.ItemSystem
 {
@@ -25,10 +26,14 @@ namespace InterdimensionalGroceries.ItemSystem
         [Header("Item Type")]
         [SerializeField] private ItemType itemType = ItemType.Unknown;
 
+        [Header("Audio")]
+        [SerializeField] private ItemAudioData itemAudioData;
+
         public string ItemName => itemName;
         public string Tagline => tagline;
         public float Price => price;
         public ItemType ItemType => itemType;
+        public ItemAudioData ItemAudioData => itemAudioData;
     }
 }
 

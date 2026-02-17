@@ -21,6 +21,8 @@ namespace InterdimensionalGroceries.ItemSystem
         private Material[][] originalMaterials;
         private Vector3 originalScale;
         private Coroutine currentEffect;
+        private Material acceptedGlowInstance;
+        private Material rejectedFlashInstance;
 
         private void Awake()
         {
@@ -31,6 +33,18 @@ namespace InterdimensionalGroceries.ItemSystem
             for (int i = 0; i < itemRenderers.Length; i++)
             {
                 originalMaterials[i] = itemRenderers[i].materials;
+            }
+            
+            if (acceptedGlowMaterial != null)
+            {
+                acceptedGlowInstance = new Material(acceptedGlowMaterial);
+                acceptedGlowInstance.EnableKeyword("_EMISSION");
+            }
+            
+            if (rejectedFlashMaterial != null)
+            {
+                rejectedFlashInstance = new Material(rejectedFlashMaterial);
+                rejectedFlashInstance.EnableKeyword("_EMISSION");
             }
         }
 
@@ -54,7 +68,7 @@ namespace InterdimensionalGroceries.ItemSystem
 
         private IEnumerator AcceptedEffectCoroutine(System.Action onComplete)
         {
-            if (acceptedGlowMaterial != null)
+            if (acceptedGlowInstance != null)
             {
                 foreach (Renderer rend in itemRenderers)
                 {
@@ -63,7 +77,7 @@ namespace InterdimensionalGroceries.ItemSystem
                     {
                         newMats[i] = rend.materials[i];
                     }
-                    newMats[newMats.Length - 1] = acceptedGlowMaterial;
+                    newMats[newMats.Length - 1] = acceptedGlowInstance;
                     rend.materials = newMats;
                 }
             }
@@ -100,14 +114,14 @@ namespace InterdimensionalGroceries.ItemSystem
             
             for (int i = 0; i < rejectionFlashCount; i++)
             {
-                if (rejectedFlashMaterial != null)
+                if (rejectedFlashInstance != null)
                 {
                     foreach (Renderer rend in itemRenderers)
                     {
                         Material[] newMats = new Material[rend.materials.Length];
                         for (int j = 0; j < newMats.Length; j++)
                         {
-                            newMats[j] = rejectedFlashMaterial;
+                            newMats[j] = rejectedFlashInstance;
                         }
                         rend.materials = newMats;
                     }
@@ -132,6 +146,16 @@ namespace InterdimensionalGroceries.ItemSystem
             if (currentEffect != null)
             {
                 StopCoroutine(currentEffect);
+            }
+            
+            if (acceptedGlowInstance != null)
+            {
+                Destroy(acceptedGlowInstance);
+            }
+            
+            if (rejectedFlashInstance != null)
+            {
+                Destroy(rejectedFlashInstance);
             }
         }
     }

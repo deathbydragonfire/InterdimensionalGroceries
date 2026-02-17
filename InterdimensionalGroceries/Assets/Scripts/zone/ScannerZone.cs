@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.PlayerController;
+using InterdimensionalGroceries.AudioSystem;
 
 namespace InterdimensionalGroceries.ScannerSystem
 {
@@ -114,6 +115,11 @@ namespace InterdimensionalGroceries.ScannerSystem
             {
                 scannerUI.ShowCorrect();
 
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(AudioEventType.Acceptance, snapPoint.position);
+                }
+
                 MoneyManager.Instance.AddMoney(data.Price);
 
                 if (moneyNotificationPool != null)
@@ -144,6 +150,11 @@ namespace InterdimensionalGroceries.ScannerSystem
             else
             {
                 scannerUI.ShowWrong();
+
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(AudioEventType.Rejection, snapPoint.position);
+                }
 
                 ItemVisualFeedback feedback = item.GetComponent<ItemVisualFeedback>();
                 if (feedback != null)

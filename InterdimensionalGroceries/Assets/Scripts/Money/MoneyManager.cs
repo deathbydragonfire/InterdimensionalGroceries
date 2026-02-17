@@ -1,5 +1,6 @@
 using UnityEngine;
-using TMPro; // Assuming you use TextMeshPro for UI
+using TMPro;
+using InterdimensionalGroceries.AudioSystem;
 
 public class MoneyManager : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class MoneyManager : MonoBehaviour
         if (moneyUIController != null)
         {
             moneyUIController.PlayMoneyAddedAnimation();
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            AudioManager.Instance.PlaySound(AudioEventType.MoneyGained, soundPosition);
         }
     }
 

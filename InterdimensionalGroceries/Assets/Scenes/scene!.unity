@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 87243390}
   - component: {fileID: 87243389}
   - component: {fileID: 87243397}
+  - component: {fileID: 87243398}
   m_Layer: 6
   m_Name: Cube5
   m_TagString: Untagged
@@ -443,6 +444,7 @@ MonoBehaviour:
     tagline: A vegans worst nightmare
     price: 10
     itemType: 3
+    itemAudioData: {fileID: 0}
 --- !u!54 &87243392
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -606,6 +608,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &87243398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87243388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20
+  enableDebugLogging: 0
 --- !u!1 &127443772
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,6 +749,85 @@ MonoBehaviour:
   scanProgressBarPrefab: {fileID: 2214639756500523256, guid: ababcc69929c8db4ba9c56e5cab9ffa2, type: 3}
   moneyNotificationPool: {fileID: 986941068}
   acceptedDestroyDelay: 0.5
+--- !u!1 &557663803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 557663805}
+  - component: {fileID: 557663804}
+  - component: {fileID: 557663806}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &557663804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557663803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a03b803ac421494ebfe98e74dbe4959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioManager
+  poolSize: 15
+  prewarmPool: 1
+  pickupSound: {fileID: 11400000, guid: 73ff2c4dab574df4bb791432a88314a1, type: 2}
+  throwSound: {fileID: 11400000, guid: a0efa350dd4db094aaba721f5b09ce4e, type: 2}
+  placeSound: {fileID: 11400000, guid: 10cf72f3505740a4daf08c632995a854, type: 2}
+  scanSound: {fileID: 11400000, guid: 749e79671fb749847853c9c074357d87, type: 2}
+  acceptanceSound: {fileID: 11400000, guid: 93411815a7eb44540a8ba055a8a4648a, type: 2}
+  rejectionSound: {fileID: 11400000, guid: 10363d31ce1429740ba1100b5c43ef2d, type: 2}
+  moneyGainedSound: {fileID: 11400000, guid: 682fc60c629e58b498ada4c85b68f3ea, type: 2}
+  buildModePlaceSound: {fileID: 11400000, guid: 7dec96777080853429e0f5a85ed5e06b, type: 2}
+  footstepSound: {fileID: 11400000, guid: 88cf5c151cf4be449acd3754412d5071, type: 2}
+  surfaceAudioData: {fileID: 11400000, guid: affacb37a04079f4cab1bf1962c0584b, type: 2}
+  sfxMixerGroup: {fileID: 0}
+  uiMixerGroup: {fileID: 0}
+  ambientMixerGroup: {fileID: 0}
+  masterVolume: 1
+  enableDebugLogging: 1
+--- !u!4 &557663805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557663803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &557663806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557663803}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de503e5a5733c0449cb252fb98df8c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioDebugger
+  enableTestKeys: 0
+  testSoundOffset: {x: 0, y: 1, z: 2}
+  showAudioSourceGizmos: 0
+  activeSourceColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSphereSize: 0.3
 --- !u!1 &568292775
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +1012,7 @@ GameObject:
   - component: {fileID: 598950610}
   - component: {fileID: 598950609}
   - component: {fileID: 598950614}
+  - component: {fileID: 598950615}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1046,6 +1146,30 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &598950615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598950608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95cda1ead8190964e82e0cb68e47cd48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.FootstepController
+  walkStepInterval: 0.3
+  sprintStepInterval: 0.25
+  volumeMultiplier: 0.8
+  minimumVelocity: 0.1
+  requireGrounded: 1
+  useSurfaceDetection: 0
+  raycastDistance: 1.5
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  sprintVelocityThreshold: 6
+  enableDebugLogging: 0
 --- !u!1 &639286407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,6 +1428,7 @@ GameObject:
   - component: {fileID: 703737702}
   - component: {fileID: 703737701}
   - component: {fileID: 703737709}
+  - component: {fileID: 703737710}
   m_Layer: 6
   m_Name: Cube3
   m_TagString: Untagged
@@ -1460,6 +1585,7 @@ MonoBehaviour:
     tagline: A rat was found dead in this
     price: 7
     itemType: 4
+    itemAudioData: {fileID: 0}
 --- !u!54 &703737704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1623,6 +1749,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &703737710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703737700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20
+  enableDebugLogging: 0
 --- !u!1 &867374326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,6 +1784,7 @@ GameObject:
   - component: {fileID: 867374328}
   - component: {fileID: 867374327}
   - component: {fileID: 867374335}
+  - component: {fileID: 867374336}
   m_Layer: 6
   m_Name: Cube4
   m_TagString: Untagged
@@ -1796,6 +1941,7 @@ MonoBehaviour:
     tagline: I think there is still worms in here
     price: 2
     itemType: 2
+    itemAudioData: {fileID: 0}
 --- !u!54 &867374330
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1959,6 +2105,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &867374336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867374326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20
+  enableDebugLogging: 0
 --- !u!1 &970924070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,6 +2134,7 @@ GameObject:
   - component: {fileID: 970924071}
   - component: {fileID: 970924073}
   - component: {fileID: 970924072}
+  - component: {fileID: 970924074}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -2087,6 +2252,14 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!81 &970924074
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970924070}
+  m_Enabled: 1
 --- !u!1 &986941066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,6 +2460,7 @@ GameObject:
   - component: {fileID: 1112804489}
   - component: {fileID: 1112804488}
   - component: {fileID: 1112804496}
+  - component: {fileID: 1112804497}
   m_Layer: 6
   m_Name: Cube2
   m_TagString: Untagged
@@ -2443,6 +2617,7 @@ MonoBehaviour:
     tagline: No wheat was harmed
     price: 3
     itemType: 1
+    itemAudioData: {fileID: 0}
 --- !u!54 &1112804491
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2606,6 +2781,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1112804497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112804487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20
+  enableDebugLogging: 0
 --- !u!1 &1163106140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2776,6 +2969,7 @@ GameObject:
   - component: {fileID: 1478103486}
   - component: {fileID: 1478103485}
   - component: {fileID: 1478103484}
+  - component: {fileID: 1478103488}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -2876,6 +3070,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1478103488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478103483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c83f144335f9e94290bda7885cc1e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.SurfaceIdentifier
+  surfaceType: 1
 --- !u!1 &1579691492
 GameObject:
   m_ObjectHideFlags: 0
@@ -2893,6 +3100,7 @@ GameObject:
   - component: {fileID: 1579691494}
   - component: {fileID: 1579691493}
   - component: {fileID: 1579691501}
+  - component: {fileID: 1579691502}
   m_Layer: 6
   m_Name: Cube1
   m_TagString: Untagged
@@ -3046,9 +3254,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
     itemName: Milk
-    tagline: Hope youre tolerant
+    tagline: Hope you are tolerant
     price: 2
     itemType: 0
+    itemAudioData: {fileID: 0}
 --- !u!54 &1579691496
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3212,6 +3421,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1579691502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579691492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb782a1fcec8a4f905b7d39e4f6b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.ItemImpactAudio
+  minimumVelocityThreshold: 2
+  impactCooldown: 0.2
+  volumeMultiplier: 1
+  minImpactForce: 1
+  maxImpactForce: 20
+  enableDebugLogging: 0
 --- !u!1 &1768750207
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,6 +3530,7 @@ GameObject:
   - component: {fileID: 1793289921}
   - component: {fileID: 1793289920}
   - component: {fileID: 1793289919}
+  - component: {fileID: 1793289923}
   m_Layer: 7
   m_Name: Floor
   m_TagString: Untagged
@@ -3404,6 +3632,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1793289923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793289917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c83f144335f9e94290bda7885cc1e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.SurfaceIdentifier
+  surfaceType: 0
 --- !u!1 &1856541752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3816,3 +4057,4 @@ SceneRoots:
   - {fileID: 1478103487}
   - {fileID: 401294933}
   - {fileID: 1009294339}
+  - {fileID: 557663805}

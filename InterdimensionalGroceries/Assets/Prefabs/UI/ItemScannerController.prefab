@@ -48,3 +48,4 @@ MonoBehaviour:
   scanColor: {r: 0, g: 1, b: 1, a: 1}
   maxEmissionIntensity: 15
   pulseCount: 3
+  playScanSoundPerPulse: 1
