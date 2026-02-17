@@ -11,6 +11,10 @@ namespace InterdimensionalGroceries.AudioSystem
         MoneyGained,
         BuildModePlace,
         Impact,
-        Footstep
+        Footstep,
+        UIButtonClick,
+        UIPurchase,
+        UICloseStore,
+        UIOpenStore
     }
 }

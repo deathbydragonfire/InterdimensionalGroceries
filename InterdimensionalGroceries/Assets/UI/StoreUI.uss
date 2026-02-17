@@ -1,0 +1,200 @@
+.store-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.store-window {
+    width: 85%;
+    max-width: 1000px;
+    height: 85%;
+    max-height: 800px;
+    background-color: rgb(140, 160, 180);
+    border-width: 4px;
+    border-color: rgb(80, 90, 100);
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.store-title {
+    font-size: 40px;
+    -unity-font-style: bold;
+    color: rgb(40, 50, 60);
+    -unity-text-align: upper-center;
+    margin-bottom: 5px;
+}
+
+.header {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.current-money {
+    font-size: 24px;
+    -unity-font-style: bold;
+    color: rgb(50, 120, 50);
+    -unity-text-align: middle-center;
+    margin-top: 5px;
+}
+
+.item-scroll {
+    flex-grow: 1;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.item-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    padding: 10px;
+}
+
+.item-container {
+    background-color: rgb(180, 190, 200);
+    border-width: 3px;
+    border-color: rgb(100, 110, 120);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 8px;
+    width: 180px;
+    min-height: 160px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-container:hover {
+    background-color: rgb(200, 210, 220);
+    border-color: rgb(120, 130, 140);
+}
+
+.item-name {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: rgb(30, 40, 50);
+    -unity-text-align: middle-center;
+    margin-bottom: 8px;
+    white-space: normal;
+    height: 45px;
+}
+
+.item-price {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(50, 120, 50);
+    -unity-text-align: middle-center;
+    margin-bottom: 10px;
+}
+
+.quantity-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.quantity-button {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    background-color: rgb(100, 110, 120);
+    border-width: 2px;
+    border-color: rgb(70, 80, 90);
+    border-radius: 6px;
+    color: rgb(255, 255, 255);
+}
+
+.quantity-button:hover {
+    background-color: rgb(120, 130, 140);
+    border-color: rgb(90, 100, 110);
+}
+
+.quantity-button:active {
+    background-color: rgb(80, 90, 100);
+}
+
+.quantity-label {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(30, 40, 50);
+    margin-left: 12px;
+    margin-right: 12px;
+    min-width: 40px;
+    -unity-text-align: middle-center;
+}
+
+.footer {
+    border-top-width: 3px;
+    border-color: rgb(100, 110, 120);
+    padding-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.total-cost {
+    font-size: 32px;
+    -unity-font-style: bold;
+    color: rgb(30, 40, 50);
+    -unity-text-align: middle-center;
+    margin-bottom: 15px;
+}
+
+.button-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.purchase-button {
+    width: 180px;
+    height: 55px;
+    font-size: 22px;
+    -unity-font-style: bold;
+    background-color: rgb(60, 140, 60);
+    border-width: 3px;
+    border-color: rgb(40, 100, 40);
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    margin-right: 15px;
+}
+
+.purchase-button:hover {
+    background-color: rgb(80, 160, 80);
+    border-color: rgb(50, 120, 50);
+}
+
+.purchase-button:active {
+    background-color: rgb(40, 120, 40);
+}
+
+.close-button {
+    width: 180px;
+    height: 55px;
+    font-size: 22px;
+    -unity-font-style: bold;
+    background-color: rgb(140, 60, 60);
+    border-width: 3px;
+    border-color: rgb(100, 40, 40);
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    margin-left: 15px;
+}
+
+.close-button:hover {
+    background-color: rgb(160, 80, 80);
+    border-color: rgb(120, 50, 50);
+}
+
+.close-button:active {
+    background-color: rgb(120, 40, 40);
+}

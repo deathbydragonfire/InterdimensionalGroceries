@@ -8,5 +8,6 @@
                 <ui:VisualElement name="ChargeBarFill" picking-mode="Ignore" style="width: 0%; height: 100%; background-color: rgb(50, 255, 50); border-radius: 4px;" />
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Label name="InteractionTooltip" text="[F] to Interact" picking-mode="Ignore" style="position: absolute; left: 50%; top: 50%; translate: -50% calc(-50% + 50px); display: none; color: rgb(255, 255, 255); font-size: 16px; -unity-text-align: middle-center; background-color: rgba(0, 0, 0, 0.7); padding: 5px 10px; border-radius: 5px;" />
     </ui:VisualElement>
 </ui:UXML>

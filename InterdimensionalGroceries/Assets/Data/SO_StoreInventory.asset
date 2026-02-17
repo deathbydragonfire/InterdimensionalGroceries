@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb256ab7940a3f744829935965cd09fd, type: 3}
+  m_Name: SO_StoreInventory
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.StoreInventory
+  availableItems:
+  - {fileID: 11400000, guid: 2e79197be1f2f3f4cbadb1c56bc6dab4, type: 2}
+  - {fileID: 11400000, guid: 081efb3d597be8c4ea431ca6a56ffb7b, type: 2}
+  - {fileID: 11400000, guid: 7986e5f27eaf87a4c93f69d03c88bbf2, type: 2}
+  - {fileID: 11400000, guid: 6440d79b3bea2ae419d4d8c3e69cd69b, type: 2}
+  - {fileID: 11400000, guid: 28a66f762dfbb1141a2fe6ac1548d0cd, type: 2}
+  - {fileID: 11400000, guid: 5e9838e8d3fde8947bfbee61503fba4a, type: 2}
+  - {fileID: 11400000, guid: 5bef6bba9c3427c4b82d64e6f3c160b2, type: 2}
+  - {fileID: 11400000, guid: 55d7c1b8d65df2244a0abe70ce2f9dd5, type: 2}

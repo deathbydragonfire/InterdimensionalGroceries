@@ -10,6 +10,7 @@ namespace InterdimensionalGroceries.PlayerController
         private VisualElement crosshair;
         private VisualElement chargeBarContainer;
         private VisualElement chargeBarFill;
+        private Label interactionTooltip;
 
         private void Awake()
         {
@@ -23,8 +24,10 @@ namespace InterdimensionalGroceries.PlayerController
             crosshair = root.Q<VisualElement>("Crosshair");
             chargeBarContainer = root.Q<VisualElement>("ChargeBarContainer");
             chargeBarFill = root.Q<VisualElement>("ChargeBarFill");
+            interactionTooltip = root.Q<Label>("InteractionTooltip");
             
             UpdateChargeBar(0f);
+            HideInteractionTooltip();
         }
 
         public void SetCrosshairVisible(bool visible)
@@ -48,6 +51,28 @@ namespace InterdimensionalGroceries.PlayerController
                     chargeBarContainer.style.display = DisplayStyle.Flex;
                     chargeBarFill.style.width = Length.Percent(chargePercent * 100f);
                 }
+            }
+        }
+
+        public void ShowInteractionTooltip(string text = "[F] to Interact")
+        {
+            if (interactionTooltip != null)
+            {
+                interactionTooltip.text = text;
+                interactionTooltip.style.display = DisplayStyle.Flex;
+                Debug.Log("Interaction tooltip shown");
+            }
+            else
+            {
+                Debug.LogWarning("InteractionTooltip element not found in UI!");
+            }
+        }
+
+        public void HideInteractionTooltip()
+        {
+            if (interactionTooltip != null)
+            {
+                interactionTooltip.style.display = DisplayStyle.None;
             }
         }
     }

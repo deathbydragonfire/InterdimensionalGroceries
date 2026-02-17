@@ -40,6 +40,24 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
+    public bool SpendMoney(float amount)
+    {
+        if (amount < 0f)
+        {
+            Debug.LogWarning("Cannot spend negative money amount.");
+            return false;
+        }
+        
+        if (currentMoney >= amount)
+        {
+            currentMoney -= amount;
+            UpdateUI();
+            return true;
+        }
+        
+        return false;
+    }
+
     private void UpdateUI()
     {
         if (moneyText != null)

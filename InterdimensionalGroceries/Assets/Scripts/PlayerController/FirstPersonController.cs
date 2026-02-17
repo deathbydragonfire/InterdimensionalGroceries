@@ -25,6 +25,7 @@ namespace InterdimensionalGroceries.PlayerController
         private bool isSprinting;
         private float verticalRotation = 0f;
         private float verticalVelocity = 0f;
+        private bool controlsEnabled = true;
 
         private void Awake()
         {
@@ -93,13 +94,18 @@ namespace InterdimensionalGroceries.PlayerController
 
         private void Update()
         {
-            if (BuildModeController.Instance != null && BuildModeController.Instance.IsBrowsing)
+            if (!controlsEnabled || (BuildModeController.Instance != null && BuildModeController.Instance.IsBrowsing))
             {
                 return;
             }
             
             HandleMovement();
             HandleLook();
+        }
+
+        public void SetControlsEnabled(bool enabled)
+        {
+            controlsEnabled = enabled;
         }
 
         private void HandleMovement()

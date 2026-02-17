@@ -23,6 +23,12 @@ namespace InterdimensionalGroceries.AudioSystem
         [SerializeField] private AudioClipData moneyGainedSound;
         [SerializeField] private AudioClipData buildModePlaceSound;
         [SerializeField] private AudioClipData footstepSound;
+        
+        [Header("UI Sounds")]
+        [SerializeField] private AudioClipData uiButtonClickSound;
+        [SerializeField] private AudioClipData uiPurchaseSound;
+        [SerializeField] private AudioClipData uiOpenStoreSound;
+        [SerializeField] private AudioClipData uiCloseStoreSound;
 
         [Header("Surface Sounds")]
         [SerializeField] private SurfaceAudioData surfaceAudioData;
@@ -198,6 +204,10 @@ namespace InterdimensionalGroceries.AudioSystem
                 AudioEventType.MoneyGained => moneyGainedSound,
                 AudioEventType.BuildModePlace => buildModePlaceSound,
                 AudioEventType.Footstep => footstepSound,
+                AudioEventType.UIButtonClick => uiButtonClickSound,
+                AudioEventType.UIPurchase => uiPurchaseSound,
+                AudioEventType.UIOpenStore => uiOpenStoreSound,
+                AudioEventType.UICloseStore => uiCloseStoreSound,
                 _ => null
             };
         }

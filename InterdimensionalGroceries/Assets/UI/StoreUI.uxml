@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<Style src="StoreUI.uss" />
+
+    <Style src="project://database/Assets/UI/StoreUI.uss?fileID=7433441132597879392&amp;guid=a7334cc1dc1f8e14aa292041a36d835c&amp;type=3#StoreUI"/>
+    <ui:VisualElement name="StoreContainer" class="store-overlay">
+        <ui:VisualElement class="store-window">
+            <ui:VisualElement class="header">
+                <ui:Label text="Supply Store" class="store-title" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+                <ui:Label name="CurrentMoney" text="Balance: $0.00" class="current-money" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+            </ui:VisualElement>
+            
+            <ui:ScrollView name="ItemScrollView" class="item-scroll" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);">
+                <ui:VisualElement name="ItemGrid" class="item-grid"/>
+            </ui:ScrollView>
+            <ui:VisualElement class="footer">
+                <ui:Label name="TotalCost" text="Total: $0.00" class="total-cost" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+                <ui:VisualElement class="button-row">
+                    <ui:Button name="PurchaseButton" text="Purchase" class="purchase-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+                    <ui:Button name="CloseButton" text="Close" class="close-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
