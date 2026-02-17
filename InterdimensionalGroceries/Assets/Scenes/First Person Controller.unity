@@ -179,6 +179,7 @@ Transform:
   m_Children:
   - {fileID: 262160656}
   - {fileID: 414008221}
+  - {fileID: 320860037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1913389
@@ -450,6 +451,89 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &320860036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 320860037}
+  - component: {fileID: 320860039}
+  - component: {fileID: 320860038}
+  - component: {fileID: 320860040}
+  m_Layer: 0
+  m_Name: Pickup UI Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &320860037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320860036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1913388}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &320860038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320860036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b03ddb342dddc04fb3e7670ab29d74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.PlayerController.PickupUIController
+  mainCamera: {fileID: 262160657}
+--- !u!114 &320860039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320860036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: aa16e75dd5199334da90ce42bb44ff8d, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: fe269ee0122b8e2479f53fded40f573b, type: 3}
+  m_SortingOrder: 1
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &320860040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320860036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 361ec2734c6c6084a9a098b3d537dae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.PlayerController.UIFontApplier
+  customFont: {fileID: 12800000, guid: 69d0bc5982ea6a9409e5dfa94f590d91, type: 3}
 --- !u!1 &414008220
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +545,7 @@ GameObject:
   - component: {fileID: 414008221}
   - component: {fileID: 414008222}
   - component: {fileID: 414008223}
+  - component: {fileID: 414008224}
   m_Layer: 0
   m_Name: HUD Canvas
   m_TagString: Untagged
@@ -518,6 +603,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d30cf83d3d1a9d4ca43b091d412f6db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.PlayerController.HUDController
+--- !u!114 &414008224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414008220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 361ec2734c6c6084a9a098b3d537dae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.PlayerController.UIFontApplier
+  customFont: {fileID: 12800000, guid: 69d0bc5982ea6a9409e5dfa94f590d91, type: 3}
 --- !u!1 &494177878
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,6 +771,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9636946d72b934497ed938f5b74f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
+  itemData:
+    itemName: Unknown Item
+    tagline: A mysterious object
+    price: 0
 --- !u!114 &494177885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,6 +1319,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9636946d72b934497ed938f5b74f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
+  itemData:
+    itemName: Unknown Item
+    tagline: A mysterious object
+    price: 0
 --- !u!114 &979712668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1666,6 +1772,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9636946d72b934497ed938f5b74f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
+  itemData:
+    itemName: Milk
+    tagline: Hope youre tolerant
+    price: 2
 --- !u!114 &1107295319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2013,6 +2123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9636946d72b934497ed938f5b74f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
+  itemData:
+    itemName: Unknown Item
+    tagline: A mysterious object
+    price: 0
 --- !u!114 &1390269715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,6 +2414,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9636946d72b934497ed938f5b74f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
+  itemData:
+    itemName: Unknown Item
+    tagline: A mysterious object
+    price: 0
 --- !u!114 &1602489840
 MonoBehaviour:
   m_ObjectHideFlags: 0

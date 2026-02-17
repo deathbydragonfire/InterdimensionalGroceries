@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/PickupUI.uss?fileID=7433441132597879392&amp;guid=8d319d5fa347974438843dc0fc376f95&amp;type=3#PickupUI"/>
+    <ui:VisualElement name="PickupUIRoot" style="flex-grow: 1; width: 100%; height: 100%; position: absolute;">
+        <ui:VisualElement name="ControlHintsContainer" picking-mode="Ignore" class="control-hints-container">
+            <ui:Label text="Right Click and Drag to Rotate&#10;Scroll to Move" name="ControlHintLeft" picking-mode="Position" class="control-hint-text" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+            <ui:Label text="Left Click to Drop&#10;Hold to Throw" name="ControlHintRight" picking-mode="Position" class="control-hint-text" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+        </ui:VisualElement>
+        <ui:Label text="[LMB] Pickup" name="PickupHint" picking-mode="Ignore" class="pickup-hint" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+        <ui:VisualElement name="InfoPanelContainer" picking-mode="Ignore" class="info-panel-container">
+            <ui:VisualElement name="NameField" class="info-field">
+                <ui:Label text="Unknown Item" name="NameValue" class="info-value info-value-name" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="TaglineField" class="info-field">
+                <ui:Label text="A mysterious object" name="TaglineValue" class="info-value info-value-tagline" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="PriceField" class="info-field">
+                <ui:Label text="$0.00" name="PriceValue" class="info-value info-value-price" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

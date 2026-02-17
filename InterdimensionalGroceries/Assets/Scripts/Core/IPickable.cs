@@ -1,3 +1,5 @@
+using InterdimensionalGroceries.ItemSystem;
+
 namespace InterdimensionalGroceries.Core
 {
     public interface IPickable
@@ -5,5 +7,6 @@ namespace InterdimensionalGroceries.Core
         void OnPickedUp();
         void OnDropped();
         void OnThrown(float force);
+        ItemData GetItemData();
     }
 }

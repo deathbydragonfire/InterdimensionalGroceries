@@ -6,6 +6,8 @@ namespace InterdimensionalGroceries.ItemSystem
     [RequireComponent(typeof(Rigidbody))]
     public class PickableItem : MonoBehaviour, IPickable
     {
+        [SerializeField] private ItemData itemData = new ItemData();
+        
         private Rigidbody rb;
         private Transform originalParent;
         private int originalLayer;
@@ -13,6 +15,11 @@ namespace InterdimensionalGroceries.ItemSystem
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+        }
+
+        public ItemData GetItemData()
+        {
+            return itemData;
         }
 
         public void OnPickedUp()

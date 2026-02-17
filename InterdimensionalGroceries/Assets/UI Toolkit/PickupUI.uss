@@ -1,0 +1,96 @@
+.control-hints-container {
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    display: none;
+}
+
+.control-hint-text {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    padding: 6px 10px;
+    -unity-font-style: bold;
+    white-space: normal;
+    max-width: 200px;
+}
+
+#ControlHintLeft {
+    margin-right: 250px;
+}
+
+#ControlHintRight {
+    margin-left: 250px;
+}
+
+.pickup-hint {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% calc(-50% + 40px);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 6px 12px;
+    border-radius: 4px;
+    -unity-font-style: bold;
+    display: none;
+}
+
+.info-panel-container {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.3);
+    padding: 12px;
+    opacity: 0;
+    translate: -280px 0;
+    transition-property: opacity, translate;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.info-panel-container.visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.info-field {
+    margin-bottom: 8px;
+}
+
+.info-value {
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    white-space: normal;
+}
+
+.info-value-name {
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.info-value-tagline {
+    font-size: 13px;
+    -unity-font-style: italic;
+    color: rgba(220, 220, 220, 0.9);
+    margin-bottom: 8px;
+}
+
+.info-value-price {
+    color: rgb(100, 255, 100);
+    font-size: 20px;
+    -unity-font-style: bold;
+}
+
+/* Updated font */
+
+Label {
+    -unity-font: url('project://database/Assets/Art/UI/Fonts/bytebounce/ByteBounce.ttf');
+}

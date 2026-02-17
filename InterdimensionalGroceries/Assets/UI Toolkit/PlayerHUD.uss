@@ -39,3 +39,7 @@
     transition-property: width;
     transition-duration: 0.1s;
 }
+
+Label {
+    -unity-font: url('project://database/Assets/Art/UI/Fonts/bytebounce/ByteBounce.ttf');
+}

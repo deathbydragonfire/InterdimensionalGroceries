@@ -37,6 +37,7 @@ namespace InterdimensionalGroceries.PlayerController
         private bool isRotating;
         private bool justPickedUp;
         private HUDController hudController;
+        private PickupUIController pickupUIController;
 
         public float ChargePercent { get; private set; }
         public bool IsRotatingObject => isRotating && heldObject != null;
@@ -52,6 +53,7 @@ namespace InterdimensionalGroceries.PlayerController
             }
 
             hudController = GetComponentInChildren<HUDController>();
+            pickupUIController = GetComponentInChildren<PickupUIController>();
         }
 
         private void Start()
@@ -150,12 +152,23 @@ namespace InterdimensionalGroceries.PlayerController
         {
             if (BuildModeController.Instance != null && BuildModeController.Instance.IsBrowsing)
             {
+                if (pickupUIController != null)
+                {
+                    pickupUIController.HidePickupHint();
+                }
                 return;
             }
             
             if (heldObject != null)
             {
                 UpdateHeldObjectPosition();
+                
+                if (pickupUIController != null)
+                {
+                    Vector3 hintPosition = heldObject.transform.position;
+                    pickupUIController.ShowControlHints(hintPosition, currentHoldDistance, minHoldDistance, maxHoldDistance);
+                    pickupUIController.HidePickupHint();
+                }
 
                 if (isRotating)
                 {
@@ -184,6 +197,36 @@ namespace InterdimensionalGroceries.PlayerController
                     }
                 }
             }
+            else
+            {
+                CheckForPickupTarget();
+            }
+        }
+
+        private void CheckForPickupTarget()
+        {
+            Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, maxPickupDistance, interactableLayer))
+            {
+                IPickable pickable = hit.collider.GetComponent<IPickable>();
+                Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
+
+                if (pickable != null && rb != null)
+                {
+                    if (pickupUIController != null)
+                    {
+                        pickupUIController.ShowPickupHint();
+                    }
+                    return;
+                }
+            }
+            
+            if (pickupUIController != null)
+            {
+                pickupUIController.HidePickupHint();
+            }
         }
 
         private void TryPickupObject()
@@ -207,6 +250,13 @@ namespace InterdimensionalGroceries.PlayerController
 
                     heldPickable.OnPickedUp();
                     heldObject.transform.parent = cameraTransform;
+                    
+                    if (pickupUIController != null)
+                    {
+                        var itemData = heldPickable.GetItemData();
+                        pickupUIController.ShowInfoPanel(itemData);
+                        pickupUIController.ShowControlHints(heldObject.transform.position, currentHoldDistance, minHoldDistance, maxHoldDistance);
+                    }
                 }
             }
         }
@@ -245,6 +295,12 @@ namespace InterdimensionalGroceries.PlayerController
                 heldObject = null;
                 heldRigidbody = null;
                 heldPickable = null;
+                
+                if (pickupUIController != null)
+                {
+                    pickupUIController.HideControlHints();
+                    pickupUIController.HideInfoPanel();
+                }
             }
         }
 
@@ -257,6 +313,12 @@ namespace InterdimensionalGroceries.PlayerController
                 heldObject = null;
                 heldRigidbody = null;
                 heldPickable = null;
+                
+                if (pickupUIController != null)
+                {
+                    pickupUIController.HideControlHints();
+                    pickupUIController.HideInfoPanel();
+                }
             }
         }
     }
