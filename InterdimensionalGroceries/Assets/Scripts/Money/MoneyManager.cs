@@ -7,6 +7,7 @@ public class MoneyManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TMP_Text moneyText;
+    [SerializeField] private MoneyUIController moneyUIController;
 
     private float currentMoney = 0f;
 
@@ -25,6 +26,11 @@ public class MoneyManager : MonoBehaviour
     {
         currentMoney += amount;
         UpdateUI();
+        
+        if (moneyUIController != null)
+        {
+            moneyUIController.PlayMoneyAddedAnimation();
+        }
     }
 
     private void UpdateUI()

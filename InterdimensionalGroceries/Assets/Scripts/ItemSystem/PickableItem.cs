@@ -12,6 +12,9 @@ namespace InterdimensionalGroceries.ItemSystem
         private Transform originalParent;
         private int originalLayer;
 
+        public bool IsBeingScanned { get; set; }
+        public bool WasThrown { get; private set; }
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -29,6 +32,8 @@ namespace InterdimensionalGroceries.ItemSystem
 
             rb.isKinematic = true;
             rb.useGravity = false;
+            
+            WasThrown = false;
         }
 
         public void OnDropped()
@@ -48,6 +53,7 @@ namespace InterdimensionalGroceries.ItemSystem
             rb.isKinematic = false;
             rb.useGravity = true;
 
+            WasThrown = true;
             rb.AddForce(Camera.main.transform.forward * force, ForceMode.Impulse);
         }
     }

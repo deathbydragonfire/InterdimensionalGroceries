@@ -12,14 +12,39 @@ namespace InterdimensionalGroceries.ScannerSystem
         [SerializeField] private float scanTime = 2f;
         [SerializeField] private float ejectForce = 8f;
 
+        [Header("Zone Colliders")]
+        [SerializeField] private Collider throwZoneCollider;
+
         [Header("References")]
         [SerializeField] private ScannerUI scannerUI;
+        [SerializeField] private ScanProgressBar scanProgressBarPrefab;
+        [SerializeField] private MoneyNotificationPool moneyNotificationPool;
+        
+        [Header("Visual Feedback Settings")]
+        [SerializeField] private float acceptedDestroyDelay = 0.5f;
 
         private ItemType requestedItem;
         private bool isBusy;
+        private Collider placementZoneCollider;
+        private ScanProgressBar currentProgressBar;
+
+        public bool IsObjectInRange(GameObject obj)
+        {
+            if (obj == null) return false;
+            
+            PickableItem item = obj.GetComponent<PickableItem>();
+            if (item == null) return false;
+            
+            Collider zoneToCheck = item.WasThrown ? throwZoneCollider : placementZoneCollider;
+            
+            if (zoneToCheck == null || !zoneToCheck.isTrigger) return false;
+            
+            return zoneToCheck.bounds.Contains(obj.transform.position);
+        }
 
         private void Start()
         {
+            placementZoneCollider = GetComponent<Collider>();
             GenerateNewRequest();
         }
 
@@ -36,17 +61,23 @@ namespace InterdimensionalGroceries.ScannerSystem
             // Only scan if item is NOT being held
             if (rb.isKinematic == false)
             {
-                StartCoroutine(ScanItem(item));
+                // Check if item is in the correct zone based on whether it was thrown
+                Collider zoneToCheck = item.WasThrown ? throwZoneCollider : placementZoneCollider;
+                
+                if (zoneToCheck != null && zoneToCheck.bounds.Contains(item.transform.position))
+                {
+                    StartCoroutine(ScanItem(item));
+                }
             }
         }
 
         private IEnumerator ScanItem(PickableItem item)
         {
             isBusy = true;
+            item.IsBeingScanned = true;
 
             Rigidbody rb = item.GetComponent<Rigidbody>();
 
-            // Lock in place
             rb.isKinematic = true;
             rb.useGravity = false;
 
@@ -54,10 +85,23 @@ namespace InterdimensionalGroceries.ScannerSystem
             item.transform.rotation = snapPoint.rotation;
             item.transform.parent = snapPoint;
 
-            // Show scanning
             scannerUI.ShowScanning();
 
+            if (scanProgressBarPrefab != null)
+            {
+                currentProgressBar = Instantiate(scanProgressBarPrefab);
+                currentProgressBar.SetTarget(item.gameObject);
+                currentProgressBar.StartScanning(scanTime);
+            }
+
             yield return new WaitForSeconds(scanTime);
+
+            if (currentProgressBar != null)
+            {
+                currentProgressBar.StopScanning();
+                Destroy(currentProgressBar.gameObject);
+                currentProgressBar = null;
+            }
 
             CheckItem(item);
         }
@@ -70,22 +114,56 @@ namespace InterdimensionalGroceries.ScannerSystem
             {
                 scannerUI.ShowCorrect();
 
-                // Add money for this item
                 MoneyManager.Instance.AddMoney(data.Price);
 
-                Destroy(item.gameObject);
+                if (moneyNotificationPool != null)
+                {
+                    moneyNotificationPool.SpawnNotification(data.Price);
+                }
 
-                StartCoroutine(NextRequest());
+                ItemVisualFeedback feedback = item.GetComponent<ItemVisualFeedback>();
+                if (feedback != null)
+                {
+                    feedback.PlayAcceptedEffect(() => 
+                    {
+                        if (item != null && item.gameObject != null)
+                        {
+                            Destroy(item.gameObject);
+                        }
+                    });
+                    
+                    StartCoroutine(DelayedNextRequest(acceptedDestroyDelay));
+                }
+                else
+                {
+                    Destroy(item.gameObject);
+                    StartCoroutine(NextRequest());
+                }
             }
 
             else
             {
                 scannerUI.ShowWrong();
 
-                EjectItem(item);
+                ItemVisualFeedback feedback = item.GetComponent<ItemVisualFeedback>();
+                if (feedback != null)
+                {
+                    feedback.PlayRejectedEffect(() => EjectItem(item));
+                }
+                else
+                {
+                    EjectItem(item);
+                }
 
                 StartCoroutine(NextRequest());
             }
+        }
+
+        private IEnumerator DelayedNextRequest(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            GenerateNewRequest();
+            isBusy = false;
         }
 
         private void EjectItem(PickableItem item)
@@ -93,6 +171,7 @@ namespace InterdimensionalGroceries.ScannerSystem
             Rigidbody rb = item.GetComponent<Rigidbody>();
 
             item.transform.parent = null;
+            item.IsBeingScanned = false;
 
             rb.isKinematic = false;
             rb.useGravity = true;

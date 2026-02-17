@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using InterdimensionalGroceries.Core;
 using InterdimensionalGroceries.BuildSystem;
+using InterdimensionalGroceries.ItemSystem;
+using InterdimensionalGroceries.ScannerSystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -162,11 +164,22 @@ namespace InterdimensionalGroceries.PlayerController
             if (heldObject != null)
             {
                 UpdateHeldObjectPosition();
+
+                bool inScannerRange = IsInScannerRange();
                 
                 if (pickupUIController != null)
                 {
-                    Vector3 hintPosition = heldObject.transform.position;
-                    pickupUIController.ShowControlHints(hintPosition, currentHoldDistance, minHoldDistance, maxHoldDistance);
+                    if (inScannerRange)
+                    {
+                        pickupUIController.HideControlHints();
+                        pickupUIController.ShowScannerHint();
+                    }
+                    else
+                    {
+                        Vector3 hintPosition = heldObject.transform.position;
+                        pickupUIController.ShowControlHints(hintPosition, currentHoldDistance, minHoldDistance, maxHoldDistance);
+                        pickupUIController.HideScannerHint();
+                    }
                     pickupUIController.HidePickupHint();
                 }
 
@@ -203,6 +216,21 @@ namespace InterdimensionalGroceries.PlayerController
             }
         }
 
+        private bool IsInScannerRange()
+        {
+            if (heldObject == null) return false;
+            
+            ScannerZone[] scanners = FindObjectsByType<ScannerZone>(FindObjectsSortMode.None);
+            foreach (var scanner in scanners)
+            {
+                if (scanner.IsObjectInRange(heldObject))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void CheckForPickupTarget()
         {
             Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
@@ -212,8 +240,9 @@ namespace InterdimensionalGroceries.PlayerController
             {
                 IPickable pickable = hit.collider.GetComponent<IPickable>();
                 Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
+                PickableItem pickableItem = hit.collider.GetComponent<PickableItem>();
 
-                if (pickable != null && rb != null)
+                if (pickable != null && rb != null && pickableItem != null && !pickableItem.IsBeingScanned)
                 {
                     if (pickupUIController != null)
                     {
@@ -239,8 +268,9 @@ namespace InterdimensionalGroceries.PlayerController
                 GameObject hitObject = hit.collider.gameObject;
                 IPickable pickable = hitObject.GetComponent<IPickable>();
                 Rigidbody rb = hitObject.GetComponent<Rigidbody>();
+                PickableItem pickableItem = hitObject.GetComponent<PickableItem>();
 
-                if (pickable != null && rb != null)
+                if (pickable != null && rb != null && pickableItem != null && !pickableItem.IsBeingScanned)
                 {
                     heldObject = hitObject;
                     heldRigidbody = rb;
@@ -300,6 +330,7 @@ namespace InterdimensionalGroceries.PlayerController
                 {
                     pickupUIController.HideControlHints();
                     pickupUIController.HideInfoPanel();
+                    pickupUIController.HideScannerHint();
                 }
             }
         }
@@ -318,6 +349,7 @@ namespace InterdimensionalGroceries.PlayerController
                 {
                     pickupUIController.HideControlHints();
                     pickupUIController.HideInfoPanel();
+                    pickupUIController.HideScannerHint();
                 }
             }
         }

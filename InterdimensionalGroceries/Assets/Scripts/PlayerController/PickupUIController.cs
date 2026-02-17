@@ -18,6 +18,7 @@ namespace InterdimensionalGroceries.PlayerController
         private Label taglineValue;
         private Label priceValue;
         private Label pickupHintLabel;
+        private Label scannerHintLabel;
 
         private void Awake()
         {
@@ -43,10 +44,12 @@ namespace InterdimensionalGroceries.PlayerController
             priceValue = root.Q<Label>("PriceValue");
             
             pickupHintLabel = root.Q<Label>("PickupHint");
+            scannerHintLabel = root.Q<Label>("ScannerHint");
             
             HideControlHints();
             HideInfoPanel();
             HidePickupHint();
+            HideScannerHint();
         }
 
         public void ShowControlHints(Vector3 worldPosition, float holdDistance, float minDistance, float maxDistance)
@@ -103,6 +106,22 @@ namespace InterdimensionalGroceries.PlayerController
             if (infoPanelContainer != null)
             {
                 infoPanelContainer.RemoveFromClassList("visible");
+            }
+        }
+
+        public void ShowScannerHint()
+        {
+            if (scannerHintLabel != null)
+            {
+                scannerHintLabel.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        public void HideScannerHint()
+        {
+            if (scannerHintLabel != null)
+            {
+                scannerHintLabel.style.display = DisplayStyle.None;
             }
         }
     }
