@@ -6,8 +6,8 @@ namespace InterdimensionalGroceries.ItemSystem
     [RequireComponent(typeof(Rigidbody))]
     public class PickableItem : MonoBehaviour, IPickable
     {
-        [SerializeField] private ItemData itemData = new ItemData();
-        
+        [SerializeField] private ItemData itemData;
+
         private Rigidbody rb;
         private Transform originalParent;
         private int originalLayer;
@@ -26,7 +26,7 @@ namespace InterdimensionalGroceries.ItemSystem
         {
             originalParent = transform.parent;
             originalLayer = gameObject.layer;
-            
+
             rb.isKinematic = true;
             rb.useGravity = false;
         }
@@ -35,7 +35,7 @@ namespace InterdimensionalGroceries.ItemSystem
         {
             transform.parent = originalParent;
             gameObject.layer = originalLayer;
-            
+
             rb.isKinematic = false;
             rb.useGravity = true;
         }
@@ -44,9 +44,10 @@ namespace InterdimensionalGroceries.ItemSystem
         {
             transform.parent = originalParent;
             gameObject.layer = originalLayer;
-            
+
             rb.isKinematic = false;
             rb.useGravity = true;
+
             rb.AddForce(Camera.main.transform.forward * force, ForceMode.Impulse);
         }
     }
