@@ -22,11 +22,11 @@ namespace InterdimensionalGroceries.UI
         private Label totalCostLabel;
         private Label currentMoneyLabel;
         private Button purchaseButton;
-        private Button closeButton;
+        private Button backButton;
         private VisualElement itemGrid;
         
         private Dictionary<SupplyItemData, int> selectedItems = new Dictionary<SupplyItemData, int>();
-        private Action onCloseCallback;
+        private Action onBackCallback;
         private bool isOpen;
         private bool isAnimating;
         
@@ -61,7 +61,7 @@ namespace InterdimensionalGroceries.UI
             totalCostLabel = root.Q<Label>("TotalCost");
             currentMoneyLabel = root.Q<Label>("CurrentMoney");
             purchaseButton = root.Q<Button>("PurchaseButton");
-            closeButton = root.Q<Button>("CloseButton");
+            backButton = root.Q<Button>("BackButton");
             itemGrid = root.Q<VisualElement>("ItemGrid");
             
             if (purchaseButton != null)
@@ -69,9 +69,9 @@ namespace InterdimensionalGroceries.UI
                 purchaseButton.clicked += OnPurchaseClicked;
             }
             
-            if (closeButton != null)
+            if (backButton != null)
             {
-                closeButton.clicked += OnCloseClicked;
+                backButton.clicked += OnBackClicked;
             }
             
             if (storeContainer != null)
@@ -82,31 +82,11 @@ namespace InterdimensionalGroceries.UI
             Debug.Log($"StoreUIController initialized. isOpen: {isOpen}, storeContainer exists: {storeContainer != null}");
         }
         
-        private void Update()
-        {
-            // Only check for close input when store is actually open and visible
-            if (isOpen && storeContainer != null && storeContainer.style.display == DisplayStyle.Flex)
-            {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    Debug.Log("ESC pressed, closing store");
-                    PlayCloseStoreSound();
-                    CloseStore();
-                }
-                else if (Input.GetKeyDown(KeyCode.F))
-                {
-                    Debug.Log("F pressed, closing store");
-                    PlayCloseStoreSound();
-                    CloseStore();
-                }
-            }
-        }
-        
-        public void OpenStore(Action onClose)
+        public void OpenSuppliesMenu(Action onBack)
         {
             if (isAnimating) return;
             
-            onCloseCallback = onClose;
+            onBackCallback = onBack;
             selectedItems.Clear();
             
             PopulateStoreItems();
@@ -121,25 +101,7 @@ namespace InterdimensionalGroceries.UI
             
             isOpen = true;
             
-            // Play open store sound
-            if (AudioManager.Instance != null)
-            {
-                Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                AudioManager.Instance.PlaySound(AudioEventType.UIOpenStore, soundPosition);
-            }
-            
-            // Unlock cursor for UI interaction
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
-            
-            // Disable player movement but keep camera stationary
-            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
-            if (firstPersonController != null)
-            {
-                firstPersonController.SetControlsEnabled(false);
-            }
-            
-            Debug.Log("Store opened successfully");
+            Debug.Log("Supplies menu opened successfully");
         }
         
         private void UpdateMoneyDisplay()
@@ -298,7 +260,7 @@ namespace InterdimensionalGroceries.UI
                     CrateSpawner.Instance.SpawnCratesWithItems(itemsToPurchase);
                 }
                 
-                CloseStore();
+                GoBack();
             }
             else
             {
@@ -312,27 +274,17 @@ namespace InterdimensionalGroceries.UI
             }
         }
         
-        private void OnCloseClicked()
+        private void OnBackClicked()
         {
-            // Play close store sound instead of button click
-            if (AudioManager.Instance != null)
-            {
-                Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                AudioManager.Instance.PlaySound(AudioEventType.UICloseStore, soundPosition);
-            }
-            CloseStore();
+            PlayButtonClickSound();
+            GoBack();
         }
         
-        private void CloseStore()
+        private void GoBack()
         {
             if (isAnimating) return;
             
             StartCoroutine(AnimateSlideOut());
-        }
-        
-        public void ForceClose()
-        {
-            CloseStore();
         }
         
         private IEnumerator AnimateSlideIn()
@@ -411,18 +363,8 @@ namespace InterdimensionalGroceries.UI
             isOpen = false;
             isAnimating = false;
             
-            // Re-enable player movement
-            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
-            if (firstPersonController != null)
-            {
-                firstPersonController.SetControlsEnabled(true);
-            }
-            
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-            UnityEngine.Cursor.visible = false;
-            
-            Debug.Log("Store closed, invoking callback");
-            onCloseCallback?.Invoke();
+            Debug.Log("Supplies menu closed, invoking callback");
+            onBackCallback?.Invoke();
         }
         
         private float EaseOutBack(float t)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using InterdimensionalGroceries.BuildSystem;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -27,6 +28,9 @@ namespace InterdimensionalGroceries.PlayerController
         private float verticalVelocity = 0f;
         private bool controlsEnabled = true;
 
+        private float baseMoveSpeed;
+        private float baseSprintSpeed;
+
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -36,6 +40,46 @@ namespace InterdimensionalGroceries.PlayerController
             if (cameraTransform == null)
             {
                 cameraTransform = Camera.main?.transform;
+            }
+
+            baseMoveSpeed = moveSpeed;
+            baseSprintSpeed = sprintSpeed;
+        }
+
+        private void Start()
+        {
+            ApplyMovementSpeedUpgrade();
+
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased += OnUpgradePurchased;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased -= OnUpgradePurchased;
+            }
+        }
+
+        private void OnUpgradePurchased(AbilityUpgradeData upgrade, int newLevel)
+        {
+            if (upgrade.UpgradeType == UpgradeType.MovementSpeed)
+            {
+                ApplyMovementSpeedUpgrade();
+            }
+        }
+
+        private void ApplyMovementSpeedUpgrade()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                float multiplier = AbilityUpgradeManager.Instance.GetUpgradeMultiplier(UpgradeType.MovementSpeed);
+                moveSpeed = baseMoveSpeed * multiplier;
+                sprintSpeed = baseSprintSpeed * multiplier;
+                Debug.Log($"Movement speed updated: Move={moveSpeed:F2}, Sprint={sprintSpeed:F2} (multiplier={multiplier:F2})");
             }
         }
 

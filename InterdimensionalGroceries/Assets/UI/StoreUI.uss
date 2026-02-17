@@ -198,3 +198,50 @@
 .close-button:active {
     background-color: rgb(120, 40, 40);
 }
+
+.footer .button-row {
+    justify-content: center;
+}
+
+.footer .button-row .close-button {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.footer .button-row .purchase-button {
+    margin-left: 0;
+}
+
+
+.menu-grid {
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 40px;
+}
+
+.menu-button {
+    width: 200px;
+    height: 200px;
+    font-size: 26px;
+    -unity-font-style: bold;
+    background-color: rgb(100, 120, 140);
+    border-width: 4px;
+    border-color: rgb(70, 80, 90);
+    border-radius: 12px;
+    color: rgb(255, 255, 255);
+    margin: 15px;
+}
+
+.menu-button:hover {
+    background-color: rgb(120, 140, 160);
+    border-color: rgb(90, 100, 110);
+}
+
+.menu-button:active {
+    background-color: rgb(80, 100, 120);
+}
+

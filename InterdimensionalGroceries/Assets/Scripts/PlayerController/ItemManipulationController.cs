@@ -5,6 +5,7 @@ using InterdimensionalGroceries.BuildSystem;
 using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.ScannerSystem;
 using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace InterdimensionalGroceries.PlayerController
 {
@@ -29,6 +30,9 @@ namespace InterdimensionalGroceries.PlayerController
         [SerializeField] private float maxChargeTime = 1f;
         [SerializeField] private float minThrowForce = 5f;
         [SerializeField] private float maxThrowForce = 15f;
+
+        private float baseMinThrowForce;
+        private float baseMaxThrowForce;
 
         private InputSystem_Actions inputActions;
         private GameObject heldObject;
@@ -57,6 +61,9 @@ namespace InterdimensionalGroceries.PlayerController
 
             hudController = GetComponentInChildren<HUDController>();
             pickupUIController = GetComponentInChildren<PickupUIController>();
+
+            baseMinThrowForce = minThrowForce;
+            baseMaxThrowForce = maxThrowForce;
         }
 
         private void Start()
@@ -64,6 +71,40 @@ namespace InterdimensionalGroceries.PlayerController
             if (hudController != null)
             {
                 hudController.UpdateChargeBar(0f);
+            }
+
+            ApplyThrowingStrengthUpgrade();
+
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased += OnUpgradePurchased;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased -= OnUpgradePurchased;
+            }
+        }
+
+        private void OnUpgradePurchased(AbilityUpgradeData upgrade, int newLevel)
+        {
+            if (upgrade.UpgradeType == UpgradeType.ThrowingStrength)
+            {
+                ApplyThrowingStrengthUpgrade();
+            }
+        }
+
+        private void ApplyThrowingStrengthUpgrade()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                float multiplier = AbilityUpgradeManager.Instance.GetUpgradeMultiplier(UpgradeType.ThrowingStrength);
+                minThrowForce = baseMinThrowForce * multiplier;
+                maxThrowForce = baseMaxThrowForce * multiplier;
+                Debug.Log($"Throwing strength updated: Min={minThrowForce:F2}, Max={maxThrowForce:F2} (multiplier={multiplier:F2})");
             }
         }
 

@@ -60,7 +60,6 @@ namespace InterdimensionalGroceries.PlayerController
             {
                 interactionTooltip.text = text;
                 interactionTooltip.style.display = DisplayStyle.Flex;
-                Debug.Log("Interaction tooltip shown");
             }
             else
             {

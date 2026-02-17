@@ -10,7 +10,7 @@ namespace InterdimensionalGroceries.InteractionSystem
         [SerializeField] private float maxInteractionDistance = 4f;
         
         [Header("References")]
-        [SerializeField] private StoreUIController storeUIController;
+        [SerializeField] private StoreMenuController storeMenuController;
         
         private bool isPlayerInRange;
         private bool isStoreOpen;
@@ -50,14 +50,14 @@ namespace InterdimensionalGroceries.InteractionSystem
         {
             Debug.Log("OpenStore() called");
             
-            if (storeUIController != null)
+            if (storeMenuController != null)
             {
-                storeUIController.OpenStore(OnStoreClosed);
+                storeMenuController.OpenMainMenu(OnStoreClosed);
                 isStoreOpen = true;
             }
             else
             {
-                Debug.LogWarning("StoreUIController not assigned to ComputerInteraction.");
+                Debug.LogWarning("StoreMenuController not assigned to ComputerInteraction.");
             }
         }
         
@@ -76,9 +76,10 @@ namespace InterdimensionalGroceries.InteractionSystem
         {
             Debug.Log("CloseInteraction() called");
             
-            if (storeUIController != null)
+            if (storeMenuController != null)
             {
-                storeUIController.ForceClose();
+                storeMenuController.CloseStore();
+                OnStoreClosed();
             }
         }
     }

@@ -30,7 +30,7 @@ namespace InterdimensionalGroceries.InteractionSystem
         
         private void Start()
         {
-            Debug.Log("InteractionController started. Interact action exists: " + (inputActions.Player.Interact != null));
+            Debug.Log($"InteractionController started. Interact action exists: {(inputActions.Player.Interact != null)}, isInteracting initial value: {isInteracting}");
         }
         
         private void OnEnable()
@@ -92,6 +92,7 @@ namespace InterdimensionalGroceries.InteractionSystem
             
             if (isInteracting)
             {
+                Debug.Log("Branch: Closing interaction (isInteracting was true)");
                 // Close the interaction
                 if (currentInteractable != null)
                 {
@@ -101,6 +102,7 @@ namespace InterdimensionalGroceries.InteractionSystem
             }
             else if (currentInteractable != null)
             {
+                Debug.Log("Branch: Starting interaction (isInteracting was false, interactable found)");
                 // Start the interaction
                 currentInteractable.Interact();
                 isInteracting = true;
