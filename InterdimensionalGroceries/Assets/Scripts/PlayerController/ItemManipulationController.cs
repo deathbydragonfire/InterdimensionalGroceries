@@ -6,11 +6,14 @@ using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.ScannerSystem;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.EconomySystem;
+using System;
 
 namespace InterdimensionalGroceries.PlayerController
 {
     public class ItemManipulationController : MonoBehaviour
     {
+        public event Action OnItemPickedUp;
+
         [Header("Raycast Settings")]
         [SerializeField] private float maxPickupDistance = 3f;
         [SerializeField] private LayerMask interactableLayer;
@@ -322,6 +325,8 @@ namespace InterdimensionalGroceries.PlayerController
 
                     heldPickable.OnPickedUp();
                     heldObject.transform.parent = cameraTransform;
+                    
+                    OnItemPickedUp?.Invoke();
                     
                     if (pickupUIController != null)
                     {

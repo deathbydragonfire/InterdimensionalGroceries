@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using InterdimensionalGroceries.PlayerController;
+using InterdimensionalGroceries.BuildSystem;
 
 namespace InterdimensionalGroceries.InteractionSystem
 {
@@ -53,6 +54,18 @@ namespace InterdimensionalGroceries.InteractionSystem
         
         private void CheckForInteractable()
         {
+            // Don't check for interactables if build mode is active
+            if (BuildModeController.Instance != null && BuildModeController.Instance.IsActive)
+            {
+                currentInteractable = null;
+                
+                if (hudController != null)
+                {
+                    hudController.HideInteractionTooltip();
+                }
+                return;
+            }
+            
             if (cameraTransform == null)
             {
                 Debug.LogWarning("InteractionController: Camera transform is null!");
@@ -88,6 +101,13 @@ namespace InterdimensionalGroceries.InteractionSystem
         
         private void OnInteract(InputAction.CallbackContext context)
         {
+            // Don't allow interaction if build mode is active
+            if (BuildModeController.Instance != null && BuildModeController.Instance.IsActive)
+            {
+                Debug.Log("Cannot interact - build mode is active");
+                return;
+            }
+            
             Debug.Log($"Interact input received! Current interactable: {(currentInteractable != null ? currentInteractable.name : "null")}, isInteracting: {isInteracting}");
             
             if (isInteracting)

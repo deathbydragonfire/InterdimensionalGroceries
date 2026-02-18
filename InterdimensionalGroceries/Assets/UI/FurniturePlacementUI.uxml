@@ -1,0 +1,58 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="FurniturePlacementContainer" style="position: absolute; left: 20px; top: 20px; width: 300px; background-color: rgba(0, 0, 0, 0.8); padding-left: 15px; padding-right: 15px; padding-top: 15px; padding-bottom: 15px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+        <ui:Label text="Available Furniture" style="font-size: 20px; color: white; margin-bottom: 10px; -unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); -unity-text-align: upper-center;"/>
+        
+        <ui:ScrollView name="FurnitureScrollView" style="max-height: 400px; margin-bottom: 10px;">
+            <ui:VisualElement name="FurnitureGrid" style="flex-direction: column;"/>
+        </ui:ScrollView>
+        
+        <ui:Label name="NoFurnitureLabel" text="No furniture owned. Purchase furniture from the store first." style="color: rgb(200, 200, 200); font-size: 14px; -unity-text-align: middle-center; display: none; -unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); white-space: normal;"/>
+        
+        <ui:Label text="Left Click: Place | R: Rotate | ESC: Exit" style="color: rgb(150, 150, 150); font-size: 12px; -unity-text-align: middle-center; margin-top: 10px; -unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;);"/>
+    </ui:VisualElement>
+    
+    <Style>
+        .furniture-item-button {
+            background-color: rgba(50, 50, 50, 0.9);
+            border-color: rgb(100, 100, 100);
+            border-width: 2px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 8px;
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .furniture-item-button:hover {
+            background-color: rgba(80, 80, 80, 0.9);
+            border-color: rgb(150, 150, 150);
+        }
+        
+        .furniture-item-container {
+            flex-direction: row;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .furniture-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background-color: rgba(100, 100, 100, 0.5);
+        }
+        
+        .furniture-name {
+            color: white;
+            font-size: 16px;
+            flex-grow: 1;
+        }
+        
+        .furniture-count {
+            color: rgb(100, 200, 100);
+            font-size: 18px;
+            margin-left: 10px;
+            min-width: 40px;
+            -unity-text-align: middle-right;
+        }
+    </Style>
+</ui:UXML>

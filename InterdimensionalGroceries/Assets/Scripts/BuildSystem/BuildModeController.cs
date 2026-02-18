@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace InterdimensionalGroceries.BuildSystem
 {
@@ -9,7 +10,8 @@ namespace InterdimensionalGroceries.BuildSystem
     {
         Inactive,
         Browsing,
-        Placing
+        Placing,
+        FurniturePlacement
     }
     
     public class BuildModeController : MonoBehaviour
@@ -21,6 +23,10 @@ namespace InterdimensionalGroceries.BuildSystem
         [SerializeField] private BuildModeUI buildModeUI;
         [SerializeField] private GridVisualizer gridVisualizer;
         [SerializeField] private List<BuildableObject> availableObjects = new List<BuildableObject>();
+        [SerializeField] private BuildModeCameraController cameraController;
+        [SerializeField] private FurnitureInventory furnitureInventory;
+        [SerializeField] private FurniturePlacementUI furniturePlacementUI;
+        [SerializeField] private BuildModeExitUI buildModeExitUI;
         
         [Header("Placement Settings")]
         [SerializeField] private LayerMask groundLayerMask;
@@ -47,6 +53,7 @@ namespace InterdimensionalGroceries.BuildSystem
         private InputSystem_Actions inputActions;
         private Vector3 lastValidPosition;
         private bool hasValidPosition;
+        private System.Action onExitFurnitureModeCallback;
         
         public bool IsActive => currentState != BuildModeState.Inactive;
         public bool IsBrowsing => currentState == BuildModeState.Browsing;
@@ -98,7 +105,7 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void Update()
         {
-            if (currentState == BuildModeState.Placing)
+            if (currentState == BuildModeState.Placing || currentState == BuildModeState.FurniturePlacement)
             {
                 UpdateGhostPosition();
             }
@@ -118,7 +125,7 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void OnRotateObject(InputAction.CallbackContext context)
         {
-            if (currentState == BuildModeState.Placing && ghostController != null)
+            if ((currentState == BuildModeState.Placing || currentState == BuildModeState.FurniturePlacement) && ghostController != null)
             {
                 ghostController.Rotate90Degrees();
                 ghostController.CheckValidPlacement();
@@ -127,7 +134,7 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void OnPlace(InputAction.CallbackContext context)
         {
-            if (currentState == BuildModeState.Placing && hasValidPosition)
+            if ((currentState == BuildModeState.Placing || currentState == BuildModeState.FurniturePlacement) && hasValidPosition)
             {
                 if (ghostController != null && ghostController.CheckValidPlacement())
                 {
@@ -139,7 +146,7 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void OnCancel(InputAction.CallbackContext context)
         {
-            if (currentState == BuildModeState.Placing)
+            if (currentState == BuildModeState.Placing || currentState == BuildModeState.FurniturePlacement)
             {
                 CancelPlacement();
             }
@@ -153,6 +160,40 @@ namespace InterdimensionalGroceries.BuildSystem
         {
             selectedObject = buildableObject;
             EnterPlacingState();
+        }
+
+        public void EnterFurniturePlacementMode(System.Action onExitCallback = null)
+        {
+            if (currentState == BuildModeState.FurniturePlacement) return;
+            
+            currentState = BuildModeState.FurniturePlacement;
+            onExitFurnitureModeCallback = onExitCallback;
+            
+            if (cameraController != null)
+            {
+                cameraController.EnterBuildModeView();
+            }
+            
+            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
+            if (firstPersonController != null)
+            {
+                firstPersonController.SetControlsEnabled(false);
+            }
+            
+            if (furniturePlacementUI != null)
+            {
+                furniturePlacementUI.Show();
+            }
+            
+            if (buildModeExitUI != null)
+            {
+                buildModeExitUI.Show();
+            }
+            
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
+            Debug.Log("Entered furniture placement mode");
         }
         
         private void EnterBuildMode()
@@ -168,7 +209,7 @@ namespace InterdimensionalGroceries.BuildSystem
             }
         }
         
-        private void ExitBuildMode()
+        public void ExitBuildMode()
         {
             if (currentGhost != null)
             {
@@ -182,8 +223,33 @@ namespace InterdimensionalGroceries.BuildSystem
                 gridVisualizer.Hide();
             }
             
+            bool wasFurniturePlacement = currentState == BuildModeState.FurniturePlacement;
+            System.Action callbackToInvoke = onExitFurnitureModeCallback;
+            
+            if (cameraController != null && wasFurniturePlacement)
+            {
+                cameraController.ExitBuildModeView();
+            }
+            
+            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
+            if (firstPersonController != null && wasFurniturePlacement)
+            {
+                firstPersonController.SetControlsEnabled(true);
+            }
+            
+            if (furniturePlacementUI != null && wasFurniturePlacement)
+            {
+                furniturePlacementUI.Hide();
+            }
+            
+            if (buildModeExitUI != null && wasFurniturePlacement)
+            {
+                buildModeExitUI.Hide();
+            }
+            
             currentState = BuildModeState.Inactive;
             selectedObject = null;
+            onExitFurnitureModeCallback = null;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -191,6 +257,12 @@ namespace InterdimensionalGroceries.BuildSystem
             if (buildModeUI != null)
             {
                 buildModeUI.Hide();
+            }
+            
+            // Invoke callback after cleanup (to reopen furniture store menu)
+            if (wasFurniturePlacement && callbackToInvoke != null)
+            {
+                callbackToInvoke.Invoke();
             }
         }
         
@@ -202,7 +274,14 @@ namespace InterdimensionalGroceries.BuildSystem
                 return;
             }
             
-            currentState = BuildModeState.Placing;
+            if (currentState == BuildModeState.FurniturePlacement)
+            {
+                currentState = BuildModeState.FurniturePlacement;
+            }
+            else
+            {
+                currentState = BuildModeState.Placing;
+            }
             
             if (buildModeUI != null)
             {
@@ -231,12 +310,21 @@ namespace InterdimensionalGroceries.BuildSystem
                 gridVisualizer.Hide();
             }
             
-            currentState = BuildModeState.Browsing;
-            selectedObject = null;
+            bool wasFurniturePlacement = currentState == BuildModeState.FurniturePlacement;
             
-            if (buildModeUI != null)
+            if (wasFurniturePlacement)
             {
-                buildModeUI.Show();
+                ExitBuildMode();
+            }
+            else
+            {
+                currentState = BuildModeState.Browsing;
+                selectedObject = null;
+                
+                if (buildModeUI != null)
+                {
+                    buildModeUI.Show();
+                }
             }
         }
         
@@ -280,9 +368,22 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void UpdateGhostPosition()
         {
-            if (ghostController == null || playerCamera == null) return;
+            if (ghostController == null) return;
             
-            Ray ray = playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Camera activeCamera = playerCamera;
+            if (currentState == BuildModeState.FurniturePlacement && cameraController != null && cameraController.IsInBuildMode)
+            {
+                activeCamera = cameraController.BuildModeCamera;
+            }
+            
+            if (activeCamera == null)
+            {
+                Debug.LogWarning("No active camera found for ghost positioning");
+                return;
+            }
+            
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Ray ray = activeCamera.ScreenPointToRay(mousePos);
             RaycastHit hit;
             
             if (Physics.Raycast(ray, out hit, raycastMaxDistance, groundLayerMask))
@@ -320,6 +421,17 @@ namespace InterdimensionalGroceries.BuildSystem
         {
             if (selectedObject == null || selectedObject.Prefab == null) return;
             
+            bool isFromFurnitureInventory = currentState == BuildModeState.FurniturePlacement;
+            
+            if (isFromFurnitureInventory && furnitureInventory != null)
+            {
+                if (furnitureInventory.GetFurnitureCount(selectedObject) <= 0)
+                {
+                    Debug.Log("No furniture available in inventory to place.");
+                    return;
+                }
+            }
+            
             Vector3 placementPosition = currentGhost.transform.position;
             GameObject placedObject = Instantiate(selectedObject.Prefab, placementPosition, currentGhost.transform.rotation);
             
@@ -328,7 +440,20 @@ namespace InterdimensionalGroceries.BuildSystem
                 AudioManager.Instance.PlaySound(AudioEventType.BuildModePlace, placementPosition);
             }
             
-            if (continueMultiPlacement)
+            if (isFromFurnitureInventory && furnitureInventory != null)
+            {
+                furnitureInventory.RemoveFurniture(selectedObject, 1);
+                Debug.Log($"Placed furniture: {selectedObject.ObjectName}. Remaining: {furnitureInventory.GetFurnitureCount(selectedObject)}");
+                
+                if (furniturePlacementUI != null)
+                {
+                    furniturePlacementUI.RefreshCounts();
+                }
+            }
+            
+            // In furniture placement mode, always continue placement (don't exit)
+            // In regular build mode, respect the continueMultiPlacement flag (Shift key)
+            if (isFromFurnitureInventory || continueMultiPlacement)
             {
                 CreateGhost();
             }
@@ -352,8 +477,31 @@ namespace InterdimensionalGroceries.BuildSystem
                 gridVisualizer.Hide();
             }
             
+            bool wasFurniturePlacement = currentState == BuildModeState.FurniturePlacement;
+            
             currentState = BuildModeState.Inactive;
             selectedObject = null;
+            
+            if (wasFurniturePlacement && cameraController != null)
+            {
+                cameraController.ExitBuildModeView();
+            }
+            
+            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
+            if (firstPersonController != null && wasFurniturePlacement)
+            {
+                firstPersonController.SetControlsEnabled(true);
+            }
+            
+            if (furniturePlacementUI != null && wasFurniturePlacement)
+            {
+                furniturePlacementUI.Hide();
+            }
+            
+            if (buildModeExitUI != null && wasFurniturePlacement)
+            {
+                buildModeExitUI.Hide();
+            }
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -366,7 +514,7 @@ namespace InterdimensionalGroceries.BuildSystem
         
         private void OnDrawGizmos()
         {
-            if (!showGridGizmos || !useGridSnapping || currentState != BuildModeState.Placing) return;
+            if (!showGridGizmos || !useGridSnapping || (currentState != BuildModeState.Placing && currentState != BuildModeState.FurniturePlacement)) return;
             
             Gizmos.color = gridGizmoColor;
             

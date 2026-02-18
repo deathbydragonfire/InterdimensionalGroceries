@@ -53,6 +53,23 @@ public class MoneyNotificationPool : MonoBehaviour
         notification.Show(amount, () => ReturnToPool(notification));
     }
 
+    public void SpawnCustomNotification(string message)
+    {
+        MoneyNotification notification;
+        
+        if (availableNotifications.Count > 0)
+        {
+            notification = availableNotifications.Dequeue();
+        }
+        else
+        {
+            notification = CreateNewNotification();
+            availableNotifications.Dequeue();
+        }
+        
+        notification.ShowCustomMessage(message, () => ReturnToPool(notification));
+    }
+
     private void ReturnToPool(MoneyNotification notification)
     {
         if (notification != null && !availableNotifications.Contains(notification))

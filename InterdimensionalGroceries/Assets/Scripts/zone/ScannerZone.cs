@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.PlayerController;
 using InterdimensionalGroceries.AudioSystem;
@@ -8,6 +9,7 @@ namespace InterdimensionalGroceries.ScannerSystem
 {
     public class ScannerZone : MonoBehaviour
     {
+        public event Action<ItemType> OnItemScanned;
         [Header("Scanner Settings")]
         [SerializeField] private Transform snapPoint;
         [SerializeField] private float scanTime = 2f;
@@ -28,6 +30,7 @@ namespace InterdimensionalGroceries.ScannerSystem
         private bool isBusy;
         private Collider placementZoneCollider;
         private ScanProgressBar currentProgressBar;
+        private TutorialSystem.TutorialScannerController tutorialController;
 
         public bool IsObjectInRange(GameObject obj)
         {
@@ -46,7 +49,12 @@ namespace InterdimensionalGroceries.ScannerSystem
         private void Start()
         {
             placementZoneCollider = GetComponent<Collider>();
-            GenerateNewRequest();
+            tutorialController = GetComponent<TutorialSystem.TutorialScannerController>();
+            
+            if (tutorialController == null || !tutorialController.IsTutorialActive())
+            {
+                GenerateNewRequest();
+            }
         }
 
         private void OnTriggerStay(Collider other)
@@ -111,8 +119,24 @@ namespace InterdimensionalGroceries.ScannerSystem
         {
             ItemData data = item.GetItemData();
 
-            if (data.ItemType == requestedItem)
+            bool isCorrect = false;
+            
+            // Tutorial mode: accept "Tutorial Cube"
+            if (tutorialController != null && tutorialController.IsTutorialActive())
             {
+                isCorrect = item.gameObject.name == "Tutorial Cube";
+            }
+            else
+            {
+                isCorrect = data.ItemType == requestedItem;
+            }
+
+            if (isCorrect)
+            {
+                // Fire OnItemScanned only when item is accepted
+                Debug.Log($"[ScannerZone] Item ACCEPTED! Invoking OnItemScanned for {data.ItemType}");
+                OnItemScanned?.Invoke(data.ItemType);
+                
                 scannerUI.ShowCorrect();
 
                 if (AudioManager.Instance != null)
@@ -124,7 +148,15 @@ namespace InterdimensionalGroceries.ScannerSystem
 
                 if (moneyNotificationPool != null)
                 {
-                    moneyNotificationPool.SpawnNotification(data.Price);
+                    // Tutorial mode: show custom message
+                    if (tutorialController != null && tutorialController.IsTutorialActive())
+                    {
+                        moneyNotificationPool.SpawnCustomNotification("Package Delivered!");
+                    }
+                    else
+                    {
+                        moneyNotificationPool.SpawnNotification(data.Price);
+                    }
                 }
 
                 ItemVisualFeedback feedback = item.GetComponent<ItemVisualFeedback>();
@@ -202,11 +234,18 @@ namespace InterdimensionalGroceries.ScannerSystem
 
         private void GenerateNewRequest()
         {
+            // Skip request generation in tutorial mode
+            if (tutorialController != null && tutorialController.IsTutorialActive())
+            {
+                tutorialController.ShowTutorialRequest();
+                return;
+            }
+
             ItemType[] values =
                 (ItemType[])System.Enum.GetValues(typeof(ItemType));
 
             requestedItem =
-                values[Random.Range(0, values.Length)];
+                values[UnityEngine.Random.Range(0, values.Length)];
 
             if (requestedItem == ItemType.Unknown)
             {

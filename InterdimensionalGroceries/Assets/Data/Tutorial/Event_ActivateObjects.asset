@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a60705d743763408f2cc5be5678ffc, type: 3}
+  m_Name: Event_ActivateObjects
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialEvent
+  audioClip: {fileID: 8300000, guid: 0dd99264ba1d3174a893ec95ddd97f74, type: 3}
+  triggerType: 1
+  delayBeforeTrigger: 0.5
+  showLocomotionUI: 0
+  hideLocomotionUI: 0
+  gameObjectNamesToActivate:
+  - Table
+  - Computer
+  - Computer Desk
+  - Tutorial Cube

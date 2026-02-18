@@ -150,10 +150,21 @@ namespace InterdimensionalGroceries.PlayerController
         public void SetControlsEnabled(bool enabled)
         {
             controlsEnabled = enabled;
+            
+            if (!enabled)
+            {
+                inputActions.Player.Disable();
+            }
+            else
+            {
+                inputActions.Player.Enable();
+            }
         }
 
         private void HandleMovement()
         {
+            if (!controlsEnabled) return;
+            
             float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
             Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
             characterController.Move(move * currentSpeed * Time.deltaTime);
@@ -172,6 +183,8 @@ namespace InterdimensionalGroceries.PlayerController
 
         private void HandleLook()
         {
+            if (!controlsEnabled) return;
+            
             if (itemManipulation != null && itemManipulation.IsRotatingObject)
             {
                 return;
@@ -188,6 +201,55 @@ namespace InterdimensionalGroceries.PlayerController
             if (cameraTransform != null)
             {
                 cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+            }
+        }
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            Rigidbody body = hit.collider.attachedRigidbody;
+            
+            if (body == null || body.isKinematic)
+            {
+                return;
+            }
+
+            if (hit.moveDirection.y < -0.3f)
+            {
+                return;
+            }
+
+            HingeJoint hinge = body.GetComponent<HingeJoint>();
+            if (hinge != null)
+            {
+                float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
+                float pushIntensity = moveInput.magnitude * currentSpeed;
+                
+                if (pushIntensity < 0.1f)
+                {
+                    return;
+                }
+                
+                Vector3 hingeWorldPos = body.transform.TransformPoint(hinge.anchor);
+                Vector3 fromHinge = hit.point - hingeWorldPos;
+                fromHinge.y = 0;
+                
+                Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z).normalized;
+                
+                Vector3 torqueAxis = Vector3.Cross(fromHinge, pushDirection);
+                float torqueMagnitude = torqueAxis.magnitude * 100f * pushIntensity;
+                
+                Debug.Log($"[Door Push] HingePos: {hingeWorldPos}, HitPoint: {hit.point}, FromHinge: {fromHinge.magnitude:F2}, PushDir: {pushDirection}, TorqueAxis: {torqueAxis}, Torque: {torqueMagnitude:F2}");
+                
+                body.AddTorque(Vector3.up * Mathf.Sign(torqueAxis.y) * torqueMagnitude, ForceMode.Force);
+                
+                Vector3 force = pushDirection * 100f * pushIntensity;
+                body.AddForceAtPosition(force, hit.point, ForceMode.Force);
+            }
+            else
+            {
+                Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+                float pushPower = 10f;
+                body.linearVelocity = pushDir * pushPower * characterController.velocity.magnitude;
             }
         }
     }

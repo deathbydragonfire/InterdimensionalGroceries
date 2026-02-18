@@ -51,6 +51,19 @@ public class MoneyNotification : MonoBehaviour
         animationCoroutine = StartCoroutine(AnimationCoroutine(onComplete));
     }
 
+    public void ShowCustomMessage(string message, System.Action onComplete = null)
+    {
+        gameObject.SetActive(true);
+        
+        if (animationCoroutine != null)
+        {
+            StopCoroutine(animationCoroutine);
+        }
+        
+        notificationText.text = message;
+        animationCoroutine = StartCoroutine(AnimationCoroutine(onComplete));
+    }
+
     private IEnumerator AnimationCoroutine(System.Action onComplete)
     {
         targetPosition = rectTransform.anchoredPosition;

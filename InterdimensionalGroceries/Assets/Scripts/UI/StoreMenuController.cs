@@ -11,14 +11,17 @@ namespace InterdimensionalGroceries.UI
         [SerializeField] private UIDocument mainMenuDocument;
         [SerializeField] private UIDocument suppliesMenuDocument;
         [SerializeField] private UIDocument abilitiesMenuDocument;
+        [SerializeField] private UIDocument furnitureMenuDocument;
 
         [Header("Controllers")]
         [SerializeField] private StoreUIController suppliesController;
         [SerializeField] private AbilitiesMenuController abilitiesController;
+        [SerializeField] private FurnitureStoreUIController furnitureController;
 
         private VisualElement mainMenuContainer;
         private VisualElement suppliesContainer;
         private VisualElement abilitiesContainer;
+        private VisualElement furnitureContainer;
         private Label mainMenuMoneyLabel;
         private System.Action onCloseCallback;
 
@@ -33,6 +36,8 @@ namespace InterdimensionalGroceries.UI
         }
 
         private MenuState currentState = MenuState.Closed;
+
+        public bool IsStoreOpen => currentState != MenuState.Closed;
 
         private void Start()
         {
@@ -74,7 +79,7 @@ namespace InterdimensionalGroceries.UI
 
                 if (furnitureButton != null)
                 {
-                    furnitureButton.clicked += () => { Debug.Log("Furniture button clicked!"); PlayButtonClickSound(); ShowComingSoon("Furniture"); };
+                    furnitureButton.clicked += () => { Debug.Log("Furniture button clicked!"); PlayButtonClickSound(); NavigateToFurniture(); };
                 }
 
                 if (closeButton != null)
@@ -115,6 +120,19 @@ namespace InterdimensionalGroceries.UI
                 
                 Debug.Log("StoreMenuController: Abilities menu initialized");
             }
+
+            if (furnitureMenuDocument != null)
+            {
+                var furnitureRoot = furnitureMenuDocument.rootVisualElement;
+                furnitureContainer = furnitureRoot.Q<VisualElement>("StoreContainer");
+
+                if (furnitureContainer != null)
+                {
+                    furnitureContainer.style.display = DisplayStyle.None;
+                }
+                
+                Debug.Log("StoreMenuController: Furniture menu initialized");
+            }
         }
 
         public void OpenMainMenu(System.Action onClose = null)
@@ -146,6 +164,33 @@ namespace InterdimensionalGroceries.UI
                 Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
                 AudioManager.Instance.PlaySound(AudioEventType.UIOpenStore, soundPosition);
             }
+        }
+
+        public void OpenToFurnitureTab()
+        {
+            Debug.Log("StoreMenuController: OpenToFurnitureTab called");
+            
+            // Open the main menu first (sets up cursor, disables controls, etc.)
+            currentState = MenuState.MainMenu;
+            
+            if (mainMenuContainer != null)
+            {
+                mainMenuContainer.style.display = DisplayStyle.None; // Hide main menu
+            }
+
+            HideAllSubmenus();
+
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+
+            var firstPersonController = FindFirstObjectByType<InterdimensionalGroceries.PlayerController.FirstPersonController>();
+            if (firstPersonController != null)
+            {
+                firstPersonController.SetControlsEnabled(false);
+            }
+
+            // Navigate directly to furniture tab
+            NavigateToFurniture();
         }
 
         public void NavigateToMainMenu()
@@ -212,6 +257,32 @@ namespace InterdimensionalGroceries.UI
             currentState = MenuState.Abilities;
         }
 
+        private void NavigateToFurniture()
+        {
+            Debug.Log("StoreMenuController: NavigateToFurniture called");
+            
+            if (mainMenuContainer != null)
+            {
+                mainMenuContainer.style.display = DisplayStyle.None;
+            }
+            
+            HideAllSubmenus();
+
+            if (furnitureContainer != null)
+            {
+                furnitureContainer.style.display = DisplayStyle.Flex;
+                Debug.Log("StoreMenuController: Furniture container shown");
+            }
+
+            if (furnitureController != null)
+            {
+                furnitureController.OpenFurnitureMenu(() => NavigateToMainMenu());
+                Debug.Log("StoreMenuController: FurnitureController.OpenFurnitureMenu called");
+            }
+
+            currentState = MenuState.Furniture;
+        }
+
         private void ShowComingSoon(string featureName)
         {
             Debug.Log($"{featureName} feature coming soon!");
@@ -227,6 +298,11 @@ namespace InterdimensionalGroceries.UI
             if (abilitiesContainer != null)
             {
                 abilitiesContainer.style.display = DisplayStyle.None;
+            }
+
+            if (furnitureContainer != null)
+            {
+                furnitureContainer.style.display = DisplayStyle.None;
             }
         }
 

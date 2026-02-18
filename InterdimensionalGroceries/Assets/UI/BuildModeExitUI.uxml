@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ExitButtonContainer" style="position: absolute; top: 20px; right: 20px; flex-direction: row; align-items: center;">
+        <ui:Button name="ExitBuildModeButton" text="Exit Build Mode (ESC)" style="background-color: rgb(200, 50, 50); color: white; font-size: 16px; padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; -unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;"/>
+    </ui:VisualElement>
+</ui:UXML>

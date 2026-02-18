@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 9.22
+    m_Value: 0.4
   tintColor:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -66,7 +66,7 @@ MonoBehaviour:
     m_Value: 4
   chromaticAbberationIntensity:
     m_OverrideState: 0
-    m_Value: 0.5
+    m_Value: 0.417
 --- !u!114 &-6980237593008848893
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -82,7 +82,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.101
+    m_Value: 0.094
 --- !u!114 &-4111213068514284831
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -133,6 +133,34 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-1692377354116495991
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
+  m_Name: LensDistortion
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LensDistortion
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.362
+  xMultiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  yMultiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  scale:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +179,8 @@ MonoBehaviour:
   - {fileID: -7352622838357715996}
   - {fileID: -4111213068514284831}
   - {fileID: -6980237593008848893}
+  - {fileID: -1692377354116495991}
+  - {fileID: 7130157157876610831}
 --- !u!114 &2006919905057981969
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -176,6 +206,34 @@ MonoBehaviour:
   clamp:
     m_OverrideState: 1
     m_Value: 0.0176
+--- !u!114 &7130157157876610831
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Vignette
+  active: 1
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.01
+  rounded:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &8078505698535266939
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -197,7 +255,7 @@ MonoBehaviour:
     m_Value: 1.52
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 30
+    m_Value: 50.2
   gaussianMaxRadius:
     m_OverrideState: 1
     m_Value: 1
