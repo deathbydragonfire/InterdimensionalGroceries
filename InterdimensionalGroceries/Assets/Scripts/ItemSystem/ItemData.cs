@@ -5,11 +5,18 @@ namespace InterdimensionalGroceries.ItemSystem
 {
     public enum ItemType
     {
-        Milk,
-        Bread,
-        Apple,
+        Eggs,
+        Apples,
         Meat,
+        Beans,
+        Pebbles,
+        Estos,
+        Scarabs,
+        LongPig,
         Soda,
+        Eye,
+        Grub,
+        Rat,
         Unknown
     }
 

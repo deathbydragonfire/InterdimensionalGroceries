@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd91fc32b84c0c3428ba5f57ec90c203, type: 3}
   m_Name: SO_Apples
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.SupplyItemData
-  itemName: Apples
+  itemName: Mystery Fruit
   basePrice: 3.49
   icon: {fileID: 0}
-  itemPrefab: {fileID: 8586509746141268280, guid: dbb9fc6ba1d4b5648804fe21148001f8, type: 3}
+  itemPrefab: {fileID: 5843054802114016729, guid: 05f27c21449a99d4b8c9bd430885c61f, type: 3}

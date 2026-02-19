@@ -5,6 +5,7 @@ using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.PlayerController;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.PhaseManagement;
+using InterdimensionalGroceries.CustomerSystem;
 
 namespace InterdimensionalGroceries.ScannerSystem
 {
@@ -370,7 +371,17 @@ namespace InterdimensionalGroceries.ScannerSystem
                 return;
             }
 
-            scannerUI.ShowRequest(requestedItem.ToString());
+            string displayText;
+            if (CustomerCommentManager.Instance != null)
+            {
+                displayText = CustomerCommentManager.Instance.GetRandomComment(requestedItem);
+            }
+            else
+            {
+                displayText = requestedItem.ToString();
+            }
+
+            scannerUI.ShowRequest(displayText);
         }
     }
 }

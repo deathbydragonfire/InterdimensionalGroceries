@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd91fc32b84c0c3428ba5f57ec90c203, type: 3}
   m_Name: SO_Eggs
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.SupplyItemData
-  itemName: Eggs
-  basePrice: 4.99
+  itemName: Egg
+  basePrice: 4
   icon: {fileID: 0}
-  itemPrefab: {fileID: 8586509746141268280, guid: cce36247146519944a58d05af00a67b3, type: 3}
+  itemPrefab: {fileID: 4946066455627537274, guid: ef0fdc5b836e948448977cea97bb216b, type: 3}

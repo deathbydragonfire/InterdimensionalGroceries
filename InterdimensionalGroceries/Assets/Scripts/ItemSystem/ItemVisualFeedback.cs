@@ -12,7 +12,7 @@ namespace InterdimensionalGroceries.ItemSystem
         [Header("Animation Settings")]
         [SerializeField] private float flashDuration = 0.5f;
         [SerializeField] private int rejectionFlashCount = 3;
-        [SerializeField] private float scaleDownDuration = 0.3f;
+        [SerializeField] private float scaleDownDuration = 1.0f;
         [SerializeField] private float greenGlowDuration = 0.2f;
         [SerializeField] private float spinSpeed = 720f;
         [SerializeField] private AnimationCurve elasticCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -20,6 +20,7 @@ namespace InterdimensionalGroceries.ItemSystem
         private Renderer[] itemRenderers;
         private Material[][] originalMaterials;
         private Vector3 originalScale;
+        private Transform itemRootTransform;
         private Coroutine currentEffect;
         private Material acceptedGlowInstance;
         private Material rejectedFlashInstance;
@@ -27,7 +28,30 @@ namespace InterdimensionalGroceries.ItemSystem
         private void Awake()
         {
             itemRenderers = GetComponentsInChildren<Renderer>();
-            originalScale = transform.localScale;
+            
+            PickableItem pickableItem = GetComponentInParent<PickableItem>();
+            if (pickableItem != null)
+            {
+                itemRootTransform = pickableItem.transform;
+                
+                while (itemRootTransform.parent != null)
+                {
+                    PickableItem parentPickable = itemRootTransform.parent.GetComponentInParent<PickableItem>();
+                    if (parentPickable != null && parentPickable != pickableItem)
+                    {
+                        itemRootTransform = parentPickable.transform;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                itemRootTransform = transform;
+            }
             
             originalMaterials = new Material[itemRenderers.Length][];
             for (int i = 0; i < itemRenderers.Length; i++)
@@ -45,6 +69,14 @@ namespace InterdimensionalGroceries.ItemSystem
             {
                 rejectedFlashInstance = new Material(rejectedFlashMaterial);
                 rejectedFlashInstance.EnableKeyword("_EMISSION");
+            }
+        }
+        
+        private void Start()
+        {
+            if (itemRootTransform != null)
+            {
+                originalScale = itemRootTransform.localScale;
             }
         }
 
@@ -85,7 +117,7 @@ namespace InterdimensionalGroceries.ItemSystem
             yield return new WaitForSeconds(greenGlowDuration);
 
             float elapsed = 0f;
-            Quaternion startRotation = transform.rotation;
+            Quaternion startRotation = itemRootTransform.rotation;
             
             while (elapsed < scaleDownDuration)
             {
@@ -94,15 +126,15 @@ namespace InterdimensionalGroceries.ItemSystem
                 float curveValue = elasticCurve.Evaluate(progress);
                 
                 float scale = Mathf.Lerp(1f, 0f, curveValue);
-                transform.localScale = originalScale * scale;
+                itemRootTransform.localScale = originalScale * scale;
                 
                 float spinAmount = spinSpeed * elapsed;
-                transform.rotation = startRotation * Quaternion.Euler(0f, spinAmount, 0f);
+                itemRootTransform.rotation = startRotation * Quaternion.Euler(0f, spinAmount, 0f);
                 
                 yield return null;
             }
             
-            transform.localScale = Vector3.zero;
+            itemRootTransform.localScale = Vector3.zero;
             
             onComplete?.Invoke();
             currentEffect = null;

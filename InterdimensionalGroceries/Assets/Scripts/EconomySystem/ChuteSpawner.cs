@@ -119,9 +119,13 @@ namespace InterdimensionalGroceries.EconomySystem
         {
             GameObject itemInstance = Instantiate(itemData.ItemPrefab, spawnPoint.SpawnPosition, Quaternion.identity);
             
-            Rigidbody rb = itemInstance.GetComponent<Rigidbody>();
+            Rigidbody rb = itemInstance.GetComponentInChildren<Rigidbody>();
             if (rb != null)
             {
+                Collider[] colliders = rb.GetComponents<Collider>();
+                
+                StartCoroutine(DisableCollidersTemporarily(colliders, 0.3f));
+                
                 Vector3 ejectionForce = spawnPoint.GetRandomEjectionForce();
                 rb.AddForce(ejectionForce, ForceMode.VelocityChange);
                 
@@ -143,8 +147,27 @@ namespace InterdimensionalGroceries.EconomySystem
             {
                 AudioManager.Instance.PlaySound(AudioEventType.ItemSpawn, spawnPoint.SpawnPosition);
             }
+        }
+        
+        private IEnumerator DisableCollidersTemporarily(Collider[] colliders, float duration)
+        {
+            foreach (Collider col in colliders)
+            {
+                if (col != null)
+                {
+                    col.enabled = false;
+                }
+            }
             
-            Debug.Log($"Spawned {itemData.ItemName} from chute at {spawnPoint.SpawnPosition}");
+            yield return new WaitForSeconds(duration);
+            
+            foreach (Collider col in colliders)
+            {
+                if (col != null)
+                {
+                    col.enabled = true;
+                }
+            }
         }
     }
 }

@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d057c0e0614fd248808168fb1358b8c, type: 3}
+  m_Name: SO_CustomerComments
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.CustomerSystem.CustomerCommentData
+  commentEntries:
+  - itemType: 0
+    comments:
+    - I need something fragile and oval
+    - Bring me the breakfast essential
+    - I want something that cracks under pressure
+    - The shell game requires these
+    - Scramble me up some of those ovoids
+  - itemType: 1
+    comments:
+    - I want something that is sweet to the core
+    - Bring me the doctor's enemy
+    - Something that falls far from the tree
+    - The forbidden fruit, but make it legal
+    - One a day keeps... well, you know
+  - itemType: 2
+    comments:
+    - I need something with protein
+    - Bring me flesh
+    - I want the hunter's prize
+    - The carnivore's delight
+    - Something that once had a heartbeat
+  - itemType: 3
+    comments:
+    - I need the musical fruit
+    - Bring me legumes
+    - Something that makes me toot
+    - The more you eat, the more you... you know
+    - Magic beans, but less magical
+  - itemType: 4
+    comments:
+    - I need small stones
+    - Bring me tiny rocks
+    - Something to skip across water
+    - Little geological specimens
+    - Earth's confetti
+  - itemType: 5
+    comments:
+    - I need an Estos
+    - Bring me the mysterious item
+    - Something from another dimension
+    - The thing we don't talk about
+    - You know... THOSE things
+  - itemType: 6
+    comments:
+    - I need the sacred beetle
+    - Bring me the ancient bug
+    - Something Egyptian
+    - The pharaoh's favorite insect
+    - Cleopatra's little friend
+  - itemType: 7
+    comments:
+    - I need the forbidden meat
+    - Bring me what we don't talk about
+    - The other white meat
+    - Something... unmentionable
+    - You know exactly what I mean
+  - itemType: 8
+    comments:
+    - I need something fizzy
+    - Bring me the bubbles
+    - Something that goes pop
+    - Carbonated satisfaction
+    - The fizzy lifting drink
+  - itemType: 9
+    comments:
+    - I need to see
+    - Bring me the window to the soul
+    - Something that stares back
+    - The orb of vision
+    - I see what you did there... literally
+  - itemType: 10
+    comments:
+    - I need a wriggly snack
+    - Bring me larvae
+    - Something that squirms
+    - The early bird's breakfast
+    - Protein that moves
+  - itemType: 11
+    comments:
+    - I need the sewer dweller
+    - Bring me the plague carrier
+    - Something with a tail
+    - The urban explorer
+    - New York's unofficial mascot

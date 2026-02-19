@@ -355,3 +355,4 @@ MonoBehaviour:
   volumeMultiplier: 1
   minImpactForce: 1
   maxImpactForce: 20
+  enableDebugLogging: 0
