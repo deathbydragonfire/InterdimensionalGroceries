@@ -21,6 +21,7 @@ namespace InterdimensionalGroceries.UI
             if (deliveryTimer != null)
             {
                 deliveryTimer.OnTimerUpdated += UpdateTimerDisplay;
+                deliveryTimer.OnTimerExpired += ShowTimesUp;
             }
         }
 
@@ -28,8 +29,8 @@ namespace InterdimensionalGroceries.UI
         {
             if (GamePhaseManager.Instance != null)
             {
-                GamePhaseManager.Instance.OnDeliveryPhaseStarted += ShowTimer;
-                GamePhaseManager.Instance.OnInventoryPhaseStarted += HideTimer;
+                GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
+                GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
             }
             
             Invoke(nameof(UpdateVisibility), 0.1f);
@@ -37,20 +38,21 @@ namespace InterdimensionalGroceries.UI
 
         private void UpdateVisibility()
         {
+            if (timerContainer != null)
+            {
+                timerContainer.SetActive(true);
+            }
+
             if (GamePhaseManager.Instance != null)
             {
                 if (GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
                 {
-                    HideTimer();
+                    OnInventoryPhaseStarted();
                 }
                 else
                 {
-                    ShowTimer();
+                    OnDeliveryPhaseStarted();
                 }
-            }
-            else
-            {
-                ShowTimer();
             }
         }
 
@@ -59,36 +61,54 @@ namespace InterdimensionalGroceries.UI
             if (deliveryTimer != null)
             {
                 deliveryTimer.OnTimerUpdated -= UpdateTimerDisplay;
+                deliveryTimer.OnTimerExpired -= ShowTimesUp;
             }
 
             if (GamePhaseManager.Instance != null)
             {
-                GamePhaseManager.Instance.OnDeliveryPhaseStarted -= ShowTimer;
-                GamePhaseManager.Instance.OnInventoryPhaseStarted -= HideTimer;
+                GamePhaseManager.Instance.OnDeliveryPhaseStarted -= OnDeliveryPhaseStarted;
+                GamePhaseManager.Instance.OnInventoryPhaseStarted -= OnInventoryPhaseStarted;
             }
         }
 
         private void UpdateTimerDisplay(float remainingTime)
         {
-            int minutes = Mathf.FloorToInt(remainingTime / 60f);
-            int seconds = Mathf.FloorToInt(remainingTime % 60f);
-
             if (timerText != null)
             {
-                timerText.text = $"{minutes:00}:{seconds:00}";
-
-                if (remainingTime <= lowTimeThreshold)
+                if (remainingTime <= 0f)
                 {
+                    timerText.text = "TIME'S UP!";
                     timerText.color = lowTimeColor;
                 }
                 else
                 {
-                    timerText.color = normalColor;
+                    int minutes = Mathf.FloorToInt(remainingTime / 60f);
+                    int seconds = Mathf.FloorToInt(remainingTime % 60f);
+
+                    timerText.text = $"{minutes:00}:{seconds:00}";
+
+                    if (remainingTime <= lowTimeThreshold)
+                    {
+                        timerText.color = lowTimeColor;
+                    }
+                    else
+                    {
+                        timerText.color = normalColor;
+                    }
                 }
             }
         }
 
-        private void ShowTimer()
+        private void ShowTimesUp()
+        {
+            if (timerText != null)
+            {
+                timerText.text = "TIME'S UP!";
+                timerText.color = lowTimeColor;
+            }
+        }
+
+        private void OnDeliveryPhaseStarted()
         {
             if (timerContainer != null)
             {
@@ -96,12 +116,14 @@ namespace InterdimensionalGroceries.UI
             }
         }
 
-        private void HideTimer()
+        private void OnInventoryPhaseStarted()
         {
             if (timerContainer != null)
             {
-                timerContainer.SetActive(false);
+                timerContainer.SetActive(true);
             }
+            
+            ShowTimesUp();
         }
     }
 }

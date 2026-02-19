@@ -19,6 +19,7 @@ namespace InterdimensionalGroceries.PlayerController
         private Label priceValue;
         private Label pickupHintLabel;
         private Label scannerHintLabel;
+        private Label buttonHintLabel;
 
         private void Awake()
         {
@@ -45,11 +46,13 @@ namespace InterdimensionalGroceries.PlayerController
             
             pickupHintLabel = root.Q<Label>("PickupHint");
             scannerHintLabel = root.Q<Label>("ScannerHint");
+            buttonHintLabel = root.Q<Label>("ButtonHint");
             
             HideControlHints();
             HideInfoPanel();
             HidePickupHint();
             HideScannerHint();
+            HideButtonHint();
         }
 
         public void ShowControlHints(Vector3 worldPosition, float holdDistance, float minDistance, float maxDistance)
@@ -122,6 +125,22 @@ namespace InterdimensionalGroceries.PlayerController
             if (scannerHintLabel != null)
             {
                 scannerHintLabel.style.display = DisplayStyle.None;
+            }
+        }
+
+        public void ShowButtonHint()
+        {
+            if (buttonHintLabel != null)
+            {
+                buttonHintLabel.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        public void HideButtonHint()
+        {
+            if (buttonHintLabel != null)
+            {
+                buttonHintLabel.style.display = DisplayStyle.None;
             }
         }
     }

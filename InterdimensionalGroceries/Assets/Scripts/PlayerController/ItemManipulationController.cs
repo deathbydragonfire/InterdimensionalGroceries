@@ -6,6 +6,7 @@ using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.ScannerSystem;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.EconomySystem;
+using InterdimensionalGroceries.InteractionSystem;
 using System;
 
 namespace InterdimensionalGroceries.PlayerController
@@ -51,6 +52,7 @@ namespace InterdimensionalGroceries.PlayerController
 
         public float ChargePercent { get; private set; }
         public bool IsRotatingObject => isRotating && heldObject != null;
+        public bool IsHoldingItem => heldObject != null;
 
         private void Awake()
         {
@@ -283,6 +285,17 @@ namespace InterdimensionalGroceries.PlayerController
 
             if (Physics.Raycast(ray, out hit, maxPickupDistance, interactableLayer))
             {
+                IClickable clickable = hit.collider.GetComponent<IClickable>();
+                if (clickable != null)
+                {
+                    if (pickupUIController != null)
+                    {
+                        pickupUIController.ShowButtonHint();
+                        pickupUIController.HidePickupHint();
+                    }
+                    return;
+                }
+
                 IPickable pickable = hit.collider.GetComponent<IPickable>();
                 Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
                 PickableItem pickableItem = hit.collider.GetComponent<PickableItem>();
@@ -292,6 +305,7 @@ namespace InterdimensionalGroceries.PlayerController
                     if (pickupUIController != null)
                     {
                         pickupUIController.ShowPickupHint();
+                        pickupUIController.HideButtonHint();
                     }
                     return;
                 }
@@ -300,6 +314,7 @@ namespace InterdimensionalGroceries.PlayerController
             if (pickupUIController != null)
             {
                 pickupUIController.HidePickupHint();
+                pickupUIController.HideButtonHint();
             }
         }
 
@@ -310,6 +325,19 @@ namespace InterdimensionalGroceries.PlayerController
 
             if (Physics.Raycast(ray, out hit, maxPickupDistance, interactableLayer))
             {
+                ComputerInteraction computerInteraction = hit.collider.GetComponent<ComputerInteraction>();
+                if (computerInteraction != null && computerInteraction.IsPlayerInRange(cameraTransform.position))
+                {
+                    return;
+                }
+
+                IClickable clickable = hit.collider.GetComponent<IClickable>();
+                if (clickable != null)
+                {
+                    clickable.OnClick();
+                    return;
+                }
+
                 GameObject hitObject = hit.collider.gameObject;
                 IPickable pickable = hitObject.GetComponent<IPickable>();
                 Rigidbody rb = hitObject.GetComponent<Rigidbody>();

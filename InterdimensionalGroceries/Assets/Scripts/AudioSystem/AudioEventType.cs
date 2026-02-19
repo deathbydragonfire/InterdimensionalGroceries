@@ -18,6 +18,7 @@ namespace InterdimensionalGroceries.AudioSystem
         UIOpenStore,
         DeliveryPhaseStart,
         InventoryPhaseStart,
-        ItemSpawn
+        ItemSpawn,
+        CountdownTick
     }
 }

@@ -30,7 +30,6 @@ namespace InterdimensionalGroceries.UI
             if (GamePhaseManager.Instance != null)
             {
                 GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
-                GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
             }
             
             if (orderText == null)
@@ -46,21 +45,12 @@ namespace InterdimensionalGroceries.UI
             if (GamePhaseManager.Instance != null)
             {
                 GamePhaseManager.Instance.OnInventoryPhaseStarted -= OnInventoryPhaseStarted;
-                GamePhaseManager.Instance.OnDeliveryPhaseStarted -= OnDeliveryPhaseStarted;
             }
         }
         
         private void OnInventoryPhaseStarted()
         {
             ShowInventoryMessage();
-        }
-        
-        private void OnDeliveryPhaseStarted()
-        {
-            if (orderText != null)
-            {
-                orderText.text = "";
-            }
         }
         
         private void ShowFirstTimeMessage()

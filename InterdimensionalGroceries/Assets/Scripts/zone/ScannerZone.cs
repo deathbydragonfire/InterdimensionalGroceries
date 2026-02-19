@@ -86,8 +86,14 @@ namespace InterdimensionalGroceries.ScannerSystem
         {
             if (tutorialController == null || !tutorialController.IsTutorialActive())
             {
-                GenerateNewRequest();
+                StartCoroutine(GenerateRequestDelayed());
             }
+        }
+        
+        private IEnumerator GenerateRequestDelayed()
+        {
+            yield return new WaitForEndOfFrame();
+            GenerateNewRequest();
         }
 
         private void OnInventoryPhaseStarted()

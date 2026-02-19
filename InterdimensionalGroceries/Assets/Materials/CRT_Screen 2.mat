@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CRT_Overlay
-  m_Shader: {fileID: 4800000, guid: eb4795c79446d504082c361d624a4ffc, type: 3}
+  m_Name: CRT_Screen 2
+  m_Shader: {fileID: 4800000, guid: 6701b0df66b6f8c468cbe334ff987474, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,19 +22,24 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DistortionAmount: 0.181
+    - _DistortionAmount: 0.08
     - _DistortionSpeed: 1.5
-    - _FlickerIntensity: 0.02
-    - _GlitchIntensity: 14.117962
+    - _EmissionIntensity: 3.18
+    - _GlitchIntensity: 0.33142918
     - _GlitchSpeed: 2
+    - _PixelSize: 1.5
     - _ScanlineCount: 150
-    - _ScanlineDarkness: 0.3
-    - _ScanlineSpeed: 2
+    - _ScanlineIntensity: 0.943
     - _TimeSync: 38.528812
-    - _VignetteIntensity: 0.113
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 0.2, g: 0.25, b: 0.2, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CRT_Overlay
+  m_Name: CRT_Overlay 2
   m_Shader: {fileID: 4800000, guid: eb4795c79446d504082c361d624a4ffc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,16 +25,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _DistortionAmount: 0.181
+    - _DistortionAmount: 0.132
     - _DistortionSpeed: 1.5
     - _FlickerIntensity: 0.02
-    - _GlitchIntensity: 14.117962
+    - _GlitchIntensity: 0.33142918
     - _GlitchSpeed: 2
     - _ScanlineCount: 150
     - _ScanlineDarkness: 0.3
     - _ScanlineSpeed: 2
     - _TimeSync: 38.528812
-    - _VignetteIntensity: 0.113
+    - _VignetteIntensity: 0.619
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

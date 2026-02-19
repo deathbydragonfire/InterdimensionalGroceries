@@ -36,7 +36,7 @@ Shader "Custom/CRTOverlay"
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
         ZWrite Off
-        ZTest Always
+        ZTest LEqual
         Cull Off
 
         Pass

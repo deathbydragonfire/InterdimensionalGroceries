@@ -54,7 +54,7 @@ namespace InterdimensionalGroceries.PlayerController
             }
         }
 
-        public void ShowInteractionTooltip(string text = "[F] to Interact")
+        public void ShowInteractionTooltip(string text = "[Left Click] to Interact")
         {
             if (interactionTooltip != null)
             {

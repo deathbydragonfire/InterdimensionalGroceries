@@ -36,6 +36,9 @@ namespace InterdimensionalGroceries.AudioSystem
         
         [Header("Item Spawning Sounds")]
         [SerializeField] private AudioClipData itemSpawnSound;
+        
+        [Header("Countdown Sounds")]
+        [SerializeField] private AudioClipData countdownTickSound;
 
         [Header("Surface Sounds")]
         [SerializeField] private SurfaceAudioData surfaceAudioData;
@@ -218,6 +221,7 @@ namespace InterdimensionalGroceries.AudioSystem
                 AudioEventType.DeliveryPhaseStart => deliveryPhaseStartSound,
                 AudioEventType.InventoryPhaseStart => inventoryPhaseStartSound,
                 AudioEventType.ItemSpawn => itemSpawnSound,
+                AudioEventType.CountdownTick => countdownTickSound,
                 _ => null
             };
         }

@@ -16,6 +16,7 @@ namespace InterdimensionalGroceries.InteractionSystem
         private HUDController hudController;
         private ComputerInteraction currentInteractable;
         private bool isInteracting;
+        private ItemManipulationController itemManipulation;
         
         private void Awake()
         {
@@ -27,6 +28,7 @@ namespace InterdimensionalGroceries.InteractionSystem
             }
             
             hudController = GetComponentInChildren<HUDController>();
+            itemManipulation = FindFirstObjectByType<ItemManipulationController>();
         }
         
         private void Start()
@@ -37,13 +39,13 @@ namespace InterdimensionalGroceries.InteractionSystem
         private void OnEnable()
         {
             inputActions.Player.Enable();
-            inputActions.Player.Interact1.performed += OnInteract;
-            Debug.Log("InteractionController enabled. Subscribed to Interact1 action (F key).");
+            inputActions.Player.PickUpPlace.performed += OnInteract;
+            Debug.Log("InteractionController enabled. Subscribed to PickUpPlace action (Left Mouse Button).");
         }
         
         private void OnDisable()
         {
-            inputActions.Player.Interact1.performed -= OnInteract;
+            inputActions.Player.PickUpPlace.performed -= OnInteract;
             inputActions.Player.Disable();
         }
         
@@ -108,28 +110,21 @@ namespace InterdimensionalGroceries.InteractionSystem
                 return;
             }
             
+            // Don't interact with computer if player is holding an item
+            if (itemManipulation != null && itemManipulation.IsHoldingItem)
+            {
+                Debug.Log("Cannot interact with computer - player is holding an item");
+                return;
+            }
+            
             Debug.Log($"Interact input received! Current interactable: {(currentInteractable != null ? currentInteractable.name : "null")}, isInteracting: {isInteracting}");
             
-            if (isInteracting)
-            {
-                Debug.Log("Branch: Closing interaction (isInteracting was true)");
-                // Close the interaction
-                if (currentInteractable != null)
-                {
-                    currentInteractable.CloseInteraction();
-                    isInteracting = false;
-                }
-            }
-            else if (currentInteractable != null)
+            // Only interact with computer if one is in range
+            if (currentInteractable != null && !isInteracting)
             {
                 Debug.Log("Branch: Starting interaction (isInteracting was false, interactable found)");
-                // Start the interaction
                 currentInteractable.Interact();
                 isInteracting = true;
-            }
-            else
-            {
-                Debug.Log("No interactable object in range.");
             }
         }
         
