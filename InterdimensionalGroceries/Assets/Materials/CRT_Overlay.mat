@@ -28,12 +28,12 @@ Material:
     - _DistortionAmount: 0.181
     - _DistortionSpeed: 1.5
     - _FlickerIntensity: 0.02
-    - _GlitchIntensity: 0.5
+    - _GlitchIntensity: 1.4529442
     - _GlitchSpeed: 2
     - _ScanlineCount: 150
     - _ScanlineDarkness: 0.3
     - _ScanlineSpeed: 2
-    - _TimeSync: 148.08586
+    - _TimeSync: 185.58307
     - _VignetteIntensity: 0.113
     m_Colors: []
   m_BuildTextureStacks: []

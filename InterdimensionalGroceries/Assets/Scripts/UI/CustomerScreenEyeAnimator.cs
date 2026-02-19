@@ -1,10 +1,20 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using InterdimensionalGroceries.PhaseManagement;
 
 namespace InterdimensionalGroceries.UI
 {
+    [System.Serializable]
+    public class CustomerSprites
+    {
+        public string customerName;
+
+        public Sprite idleSprite;
+        public Sprite scanningSprite;
+        public Sprite correctSprite;
+        public Sprite wrongSprite;
+    }
+
     public class CustomerScreenEyeAnimator : MonoBehaviour
     {
         [Header("Eye References")]
@@ -13,26 +23,34 @@ namespace InterdimensionalGroceries.UI
         [SerializeField] private GameObject eye1GameObject;
         [SerializeField] private GameObject eye2GameObject;
 
-        [Header("Animation Settings")]
+        [Header("Eye Animation Settings")]
         [SerializeField] private float minAnimationInterval = 3f;
         [SerializeField] private float maxAnimationInterval = 5f;
 
-        private Sprite[] eyeSprites;
-        private Coroutine animationCoroutine;
-        private const string EYE_SPRITES_PATH = "Assets/Art/Eyes/Eye Movement";
+        [Header("Customer System")]
+        [SerializeField] private SpriteRenderer customerSpriteRenderer;
+        [SerializeField] private GameObject customerGameObject;
+        [SerializeField] private CustomerSprites[] customers;
+        [SerializeField] private float customerSwitchDelay = 1.5f;
+
+        private Coroutine eyeCoroutine;
+        private CustomerSprites currentCustomer;
 
         private void Start()
         {
-            LoadEyeSprites();
             SubscribeToPhaseEvents();
-            
-            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
+
+            if (GamePhaseManager.Instance != null &&
+                GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
             {
                 StartEyeAnimation();
+                SetEyeVisibility(true);
+                SetCustomerVisibility(false);
             }
             else
             {
                 SetEyeVisibility(false);
+                StartNewCustomer();
             }
         }
 
@@ -41,22 +59,7 @@ namespace InterdimensionalGroceries.UI
             UnsubscribeFromPhaseEvents();
         }
 
-        private void LoadEyeSprites()
-        {
-#if UNITY_EDITOR
-            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:Sprite", new[] { EYE_SPRITES_PATH });
-            eyeSprites = new Sprite[guids.Length];
-            
-            for (int i = 0; i < guids.Length; i++)
-            {
-                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[i]);
-                eyeSprites[i] = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            }
-#else
-            eyeSprites = new Sprite[0];
-            Debug.LogWarning("CustomerScreenEyeAnimator: Eye sprites can only be loaded in the editor. Consider using Resources folder or serialized sprite array for builds.");
-#endif
-        }
+        #region Phase Handling
 
         private void SubscribeToPhaseEvents()
         {
@@ -78,6 +81,10 @@ namespace InterdimensionalGroceries.UI
 
         private void OnInventoryPhaseStarted()
         {
+            StopAllCoroutines();
+
+            SetCustomerVisibility(false);
+
             SetEyeVisibility(true);
             StartEyeAnimation();
         }
@@ -86,23 +93,28 @@ namespace InterdimensionalGroceries.UI
         {
             StopEyeAnimation();
             SetEyeVisibility(false);
+
+            StartNewCustomer();
         }
+
+        #endregion
+
+        #region Eye Animation
 
         private void StartEyeAnimation()
         {
-            if (animationCoroutine != null)
-            {
-                StopCoroutine(animationCoroutine);
-            }
-            animationCoroutine = StartCoroutine(AnimateEyes());
+            if (eyeCoroutine != null)
+                StopCoroutine(eyeCoroutine);
+
+            eyeCoroutine = StartCoroutine(AnimateEyes());
         }
 
         private void StopEyeAnimation()
         {
-            if (animationCoroutine != null)
+            if (eyeCoroutine != null)
             {
-                StopCoroutine(animationCoroutine);
-                animationCoroutine = null;
+                StopCoroutine(eyeCoroutine);
+                eyeCoroutine = null;
             }
         }
 
@@ -110,37 +122,85 @@ namespace InterdimensionalGroceries.UI
         {
             while (true)
             {
-                float waitTime = Random.Range(minAnimationInterval, maxAnimationInterval);
-                yield return new WaitForSeconds(waitTime);
+                yield return new WaitForSeconds(Random.Range(minAnimationInterval, maxAnimationInterval));
 
-                if (eyeSprites != null && eyeSprites.Length > 0)
-                {
-                    Sprite randomSprite = eyeSprites[Random.Range(0, eyeSprites.Length)];
-                    
-                    if (eye1SpriteRenderer != null)
-                    {
-                        eye1SpriteRenderer.sprite = randomSprite;
-                    }
-                    
-                    if (eye2SpriteRenderer != null)
-                    {
-                        eye2SpriteRenderer.sprite = randomSprite;
-                    }
-                }
+                if (eye1SpriteRenderer != null)
+                    eye1SpriteRenderer.flipX = !eye1SpriteRenderer.flipX;
+
+                if (eye2SpriteRenderer != null)
+                    eye2SpriteRenderer.flipX = !eye2SpriteRenderer.flipX;
             }
         }
 
         private void SetEyeVisibility(bool visible)
         {
             if (eye1GameObject != null)
-            {
                 eye1GameObject.SetActive(visible);
-            }
-            
+
             if (eye2GameObject != null)
-            {
                 eye2GameObject.SetActive(visible);
-            }
         }
+
+        #endregion
+
+        #region Customer System
+
+        private void StartNewCustomer()
+        {
+            if (customers == null || customers.Length == 0)
+                return;
+
+            currentCustomer = customers[Random.Range(0, customers.Length)];
+
+            SetCustomerVisibility(true);
+            SetCustomerSprite(currentCustomer.idleSprite);
+        }
+
+        public void ShowCustomerScanning()
+        {
+            if (currentCustomer != null)
+                SetCustomerSprite(currentCustomer.scanningSprite);
+        }
+
+        public void ShowCustomerCorrect()
+        {
+            if (currentCustomer != null)
+                SetCustomerSprite(currentCustomer.correctSprite);
+
+            StartCoroutine(SwitchCustomer());
+        }
+
+        public void ShowCustomerWrong()
+        {
+            if (currentCustomer != null)
+                SetCustomerSprite(currentCustomer.wrongSprite);
+
+            StartCoroutine(SwitchCustomer());
+        }
+
+        private IEnumerator SwitchCustomer()
+        {
+            yield return new WaitForSeconds(customerSwitchDelay);
+
+            SetCustomerVisibility(false);
+
+            yield return new WaitForSeconds(0.5f);
+
+            StartNewCustomer();
+        }
+
+        private void SetCustomerSprite(Sprite sprite)
+        {
+            if (customerSpriteRenderer != null)
+                customerSpriteRenderer.sprite = sprite;
+        }
+
+        private void SetCustomerVisibility(bool visible)
+        {
+            if (customerGameObject != null)
+                customerGameObject.SetActive(visible);
+        }
+
+        #endregion
     }
 }
