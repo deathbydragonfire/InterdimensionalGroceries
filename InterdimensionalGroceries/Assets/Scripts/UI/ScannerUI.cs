@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using InterdimensionalGroceries.PhaseManagement;
+using InterdimensionalGroceries.UI;
 
 namespace InterdimensionalGroceries.ScannerSystem
 {
@@ -11,6 +12,9 @@ namespace InterdimensionalGroceries.ScannerSystem
         [SerializeField] private TextMeshPro orderDisplay3D;
         [SerializeField] private Button skipButton;
         [SerializeField] private GameObject scannerContainer;
+
+        [Header("Customer Integration")]
+        [SerializeField] private CustomerScreenEyeAnimator customerAnimator;
 
         private void Awake()
         {
@@ -27,7 +31,7 @@ namespace InterdimensionalGroceries.ScannerSystem
                 GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
                 GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
             }
-            
+
             Invoke(nameof(UpdateVisibility), 0.1f);
         }
 
@@ -52,7 +56,8 @@ namespace InterdimensionalGroceries.ScannerSystem
 
         private void UpdateVisibility()
         {
-            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
+            if (GamePhaseManager.Instance != null &&
+                GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
             {
                 HideScanner();
             }
@@ -88,18 +93,24 @@ namespace InterdimensionalGroceries.ScannerSystem
         {
             SetText("Scanning...", Color.yellow);
             ShowSkipButton(false);
+
+            customerAnimator?.ShowCustomerScanning();
         }
 
         public void ShowCorrect()
         {
             SetText("Accepted", Color.green);
             ShowSkipButton(false);
+
+            customerAnimator?.ShowCustomerCorrect();
         }
 
         public void ShowWrong()
         {
             SetText("Rejected", Color.red);
             ShowSkipButton(false);
+
+            customerAnimator?.ShowCustomerWrong();
         }
 
         public void ShowSkipButton(bool show)
@@ -110,6 +121,7 @@ namespace InterdimensionalGroceries.ScannerSystem
             }
         }
 
+        // 🔥 This was missing before — restored
         public void SetSkipButtonClickHandler(System.Action onSkipClicked)
         {
             if (skipButton != null)
