@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Bananas
   basePrice: 2.99
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8586509746141268280, guid: 94d15f716c610e246a93685b69853a8a, type: 3}

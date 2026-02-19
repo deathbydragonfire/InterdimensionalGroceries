@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Soda
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.SupplyItemData
   itemName: Soda
-  basePrice: 1.99
+  basePrice: 0.75
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 188497371575465677, guid: 9229526c8ed6d4a4ba411b680a04964e, type: 3}

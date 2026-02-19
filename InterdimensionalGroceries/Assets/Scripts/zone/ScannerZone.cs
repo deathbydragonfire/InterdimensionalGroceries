@@ -4,6 +4,7 @@ using System;
 using InterdimensionalGroceries.ItemSystem;
 using InterdimensionalGroceries.PlayerController;
 using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.PhaseManagement;
 
 namespace InterdimensionalGroceries.ScannerSystem
 {
@@ -31,6 +32,7 @@ namespace InterdimensionalGroceries.ScannerSystem
         private Collider placementZoneCollider;
         private ScanProgressBar currentProgressBar;
         private TutorialSystem.TutorialScannerController tutorialController;
+        private bool isSkipping;
 
         public bool IsObjectInRange(GameObject obj)
         {
@@ -51,10 +53,101 @@ namespace InterdimensionalGroceries.ScannerSystem
             placementZoneCollider = GetComponent<Collider>();
             tutorialController = GetComponent<TutorialSystem.TutorialScannerController>();
             
+            if (scannerUI != null)
+            {
+                scannerUI.SetSkipButtonClickHandler(SkipCurrentRequest);
+            }
+            
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
+                GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
+            }
+            
+            if (tutorialController == null || !tutorialController.IsTutorialActive())
+            {
+                if (GamePhaseManager.Instance == null || GamePhaseManager.Instance.CurrentPhase == GamePhase.DeliveryPhase)
+                {
+                    GenerateNewRequest();
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnDeliveryPhaseStarted -= OnDeliveryPhaseStarted;
+                GamePhaseManager.Instance.OnInventoryPhaseStarted -= OnInventoryPhaseStarted;
+            }
+        }
+
+        private void OnDeliveryPhaseStarted()
+        {
             if (tutorialController == null || !tutorialController.IsTutorialActive())
             {
                 GenerateNewRequest();
             }
+        }
+
+        private void OnInventoryPhaseStarted()
+        {
+            requestedItem = ItemType.Unknown;
+            scannerUI.ShowSkipButton(false);
+        }
+
+        public void SkipCurrentRequest()
+        {
+            if (isSkipping || isBusy) return;
+            if (requestedItem == ItemType.Unknown) return;
+            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase != GamePhase.DeliveryPhase) return;
+
+            StartCoroutine(SkipRequestCoroutine());
+        }
+
+        private IEnumerator SkipRequestCoroutine()
+        {
+            isSkipping = true;
+
+            float itemPrice = GetItemPrice(requestedItem);
+            float penaltyCost = itemPrice / 2f;
+
+            MoneyManager.Instance.DeductMoney(penaltyCost);
+
+            if (moneyNotificationPool != null)
+            {
+                moneyNotificationPool.SpawnNotification(-penaltyCost);
+            }
+
+            scannerUI.ShowRequest("Skipped - Generating New Request...");
+            scannerUI.ShowSkipButton(false);
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(AudioEventType.Rejection, snapPoint.position);
+            }
+
+            yield return new WaitForSeconds(1.5f);
+
+            GenerateNewRequest();
+
+            isSkipping = false;
+        }
+
+        private float GetItemPrice(ItemType itemType)
+        {
+            PickableItem[] allItems = FindObjectsByType<PickableItem>(FindObjectsSortMode.None);
+            
+            foreach (PickableItem item in allItems)
+            {
+                ItemData data = item.GetItemData();
+                if (data != null && data.ItemType == itemType)
+                {
+                    return data.Price;
+                }
+            }
+
+            return 10f;
         }
 
         private void OnTriggerStay(Collider other)
@@ -234,7 +327,11 @@ namespace InterdimensionalGroceries.ScannerSystem
 
         private void GenerateNewRequest()
         {
-            // Skip request generation in tutorial mode
+            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase == GamePhase.InventoryPhase)
+            {
+                return;
+            }
+
             if (tutorialController != null && tutorialController.IsTutorialActive())
             {
                 tutorialController.ShowTutorialRequest();

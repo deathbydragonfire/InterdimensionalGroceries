@@ -9,8 +9,10 @@ public class MoneyManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text moneyText;
     [SerializeField] private MoneyUIController moneyUIController;
+    [SerializeField] private Color positiveMoneyColor = Color.white;
+    [SerializeField] private Color negativeMoneyColor = Color.red;
 
-    private float currentMoney = 0f;
+    private float currentMoney = 20f;
 
     private void Awake()
     {
@@ -48,20 +50,32 @@ public class MoneyManager : MonoBehaviour
             return false;
         }
         
-        if (currentMoney >= amount)
-        {
-            currentMoney -= amount;
-            UpdateUI();
-            return true;
-        }
-        
-        return false;
+        currentMoney -= amount;
+        UpdateUI();
+        return true;
+    }
+
+    public void DeductMoney(float amount)
+    {
+        currentMoney -= amount;
+        UpdateUI();
     }
 
     private void UpdateUI()
     {
         if (moneyText != null)
+        {
             moneyText.text = $"$ {currentMoney:0.00}";
+            
+            if (currentMoney < 0)
+            {
+                moneyText.color = negativeMoneyColor;
+            }
+            else
+            {
+                moneyText.color = positiveMoneyColor;
+            }
+        }
     }
 
     public float GetCurrentMoney()

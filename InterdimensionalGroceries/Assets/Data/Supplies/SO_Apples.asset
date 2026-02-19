@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Apples
   basePrice: 3.49
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8586509746141268280, guid: dbb9fc6ba1d4b5648804fe21148001f8, type: 3}

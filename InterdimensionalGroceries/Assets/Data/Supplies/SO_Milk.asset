@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Milk
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.SupplyItemData
   itemName: Milk
-  basePrice: 3.99
+  basePrice: 3.5
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 2795711486993580691, guid: a1c27d76546bafc4bbffa45adeab7e1a, type: 3}

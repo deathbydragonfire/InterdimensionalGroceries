@@ -15,6 +15,9 @@ namespace InterdimensionalGroceries.AudioSystem
         UIButtonClick,
         UIPurchase,
         UICloseStore,
-        UIOpenStore
+        UIOpenStore,
+        DeliveryPhaseStart,
+        InventoryPhaseStart,
+        ItemSpawn
     }
 }

@@ -14,19 +14,23 @@ namespace TutorialSystem
 
         private ScannerZone scannerZone;
         private bool tutorialActive = true;
+        private GameObject scannerGameObject;
 
         private void Awake()
         {
             scannerZone = GetComponent<ScannerZone>();
+            
+            if (scannerUI != null)
+            {
+                scannerGameObject = scannerUI.gameObject;
+                scannerUI.enabled = false;
+                scannerGameObject.SetActive(false);
+                Debug.Log("[TutorialScannerController] Cached and deactivated ScannerText in Awake");
+            }
         }
 
         private void Start()
         {
-            if (scannerUI != null)
-            {
-                scannerUI.ShowRequest(tutorialItemName);
-            }
-
             if (tutorialManager != null)
             {
                 tutorialManager.OnTutorialComplete += HandleTutorialComplete;
@@ -53,9 +57,30 @@ namespace TutorialSystem
 
         public void ShowTutorialRequest()
         {
-            if (scannerUI != null && tutorialActive)
+            if (scannerUI != null && tutorialActive && scannerGameObject != null)
             {
+                if (!scannerGameObject.activeSelf)
+                {
+                    scannerGameObject.SetActive(true);
+                    Debug.Log("[TutorialScannerController] Activated ScannerText for tutorial request");
+                }
+                
+                scannerUI.enabled = true;
                 scannerUI.ShowRequest(tutorialItemName);
+                Debug.Log($"[TutorialScannerController] Showing tutorial request: {tutorialItemName}");
+            }
+        }
+        
+        public void HideTutorialScanner()
+        {
+            if (scannerGameObject != null && scannerGameObject.activeSelf)
+            {
+                if (scannerUI != null)
+                {
+                    scannerUI.enabled = false;
+                }
+                scannerGameObject.SetActive(false);
+                Debug.Log("[TutorialScannerController] Hidden ScannerText");
             }
         }
     }

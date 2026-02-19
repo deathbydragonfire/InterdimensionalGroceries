@@ -255,9 +255,9 @@ namespace InterdimensionalGroceries.UI
                     AudioManager.Instance.PlaySound(AudioEventType.UIPurchase, soundPosition);
                 }
                 
-                if (CrateSpawner.Instance != null)
+                if (ChuteSpawner.Instance != null)
                 {
-                    CrateSpawner.Instance.SpawnCratesWithItems(itemsToPurchase);
+                    ChuteSpawner.Instance.SpawnItemsFromChutes(itemsToPurchase);
                 }
                 
                 GoBack();

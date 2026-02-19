@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Bread
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.SupplyItemData
   itemName: Bread
-  basePrice: 2.49
+  basePrice: 2
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 4580570724167310561, guid: d32339175976c8143a5c49e7f171ba40, type: 3}

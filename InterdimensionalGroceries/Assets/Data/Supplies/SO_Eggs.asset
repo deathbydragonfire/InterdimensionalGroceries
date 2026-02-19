@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Eggs
   basePrice: 4.99
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8586509746141268280, guid: cce36247146519944a58d05af00a67b3, type: 3}

@@ -29,6 +29,13 @@ namespace InterdimensionalGroceries.AudioSystem
         [SerializeField] private AudioClipData uiPurchaseSound;
         [SerializeField] private AudioClipData uiOpenStoreSound;
         [SerializeField] private AudioClipData uiCloseStoreSound;
+        
+        [Header("Phase Transition Sounds")]
+        [SerializeField] private AudioClipData deliveryPhaseStartSound;
+        [SerializeField] private AudioClipData inventoryPhaseStartSound;
+        
+        [Header("Item Spawning Sounds")]
+        [SerializeField] private AudioClipData itemSpawnSound;
 
         [Header("Surface Sounds")]
         [SerializeField] private SurfaceAudioData surfaceAudioData;
@@ -208,6 +215,9 @@ namespace InterdimensionalGroceries.AudioSystem
                 AudioEventType.UIPurchase => uiPurchaseSound,
                 AudioEventType.UIOpenStore => uiOpenStoreSound,
                 AudioEventType.UICloseStore => uiCloseStoreSound,
+                AudioEventType.DeliveryPhaseStart => deliveryPhaseStartSound,
+                AudioEventType.InventoryPhaseStart => inventoryPhaseStartSound,
+                AudioEventType.ItemSpawn => itemSpawnSound,
                 _ => null
             };
         }

@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Cheese
   basePrice: 5.49
   icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8586509746141268280, guid: 60849260c4f045946bde6cee92872086, type: 3}
