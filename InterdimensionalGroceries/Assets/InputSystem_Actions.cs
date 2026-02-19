@@ -1202,17 +1202,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""62e94372-8813-4fe5-8e02-3eb5b08e81f7"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleBuildMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8f351e49-c216-4b74-8cff-ee36670d6add"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",

@@ -7,6 +7,7 @@ using InterdimensionalGroceries.ScannerSystem;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.EconomySystem;
 using InterdimensionalGroceries.InteractionSystem;
+using InterdimensionalGroceries.PhaseManagement;
 using System;
 
 namespace InterdimensionalGroceries.PlayerController
@@ -219,7 +220,15 @@ namespace InterdimensionalGroceries.PlayerController
                     if (inScannerRange)
                     {
                         pickupUIController.HideControlHints();
-                        pickupUIController.ShowScannerHint();
+                        
+                        if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase != GamePhase.DeliveryPhase)
+                        {
+                            pickupUIController.ShowScannerDisabled();
+                        }
+                        else
+                        {
+                            pickupUIController.ShowScannerHint();
+                        }
                     }
                     else
                     {

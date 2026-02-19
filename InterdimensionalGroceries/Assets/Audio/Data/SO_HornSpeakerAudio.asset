@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cd1a0de0ee28cc4a9dbb90b3eef305c, type: 3}
+  m_Name: SO_HornSpeakerAudio
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.PhaseAudioClipCollection
+  inventoryPhaseClips:
+  - {fileID: 8300000, guid: 4779f9a791b9e954ba3cdff400788543, type: 3}
+  - {fileID: 8300000, guid: d32946f6252413842849f571986be58b, type: 3}
+  - {fileID: 8300000, guid: 97d581eea81f06d4e8b08e72eb08f534, type: 3}
+  - {fileID: 8300000, guid: ff7c6078935d2044dae74a26a78f82e0, type: 3}
+  - {fileID: 8300000, guid: 744c013c44458a14895bf181982ea846, type: 3}
+  - {fileID: 8300000, guid: fbfdd8c9fd95c4b49b3f602d22dbc301, type: 3}
+  - {fileID: 8300000, guid: baa1bad34c49c0c4bb8d677532444c08, type: 3}
+  - {fileID: 8300000, guid: 48ed7e1faa2d866438463c90c0ed1158, type: 3}
+  - {fileID: 8300000, guid: 3a365e5395f34354b8e1a0893a2f1db7, type: 3}
+  - {fileID: 8300000, guid: 4271615faa35e7d4480e47a18df16165, type: 3}
+  - {fileID: 8300000, guid: 054730ef232b8814684c2640426ca55c, type: 3}
+  - {fileID: 8300000, guid: 82adcd617ed41a842a3353b9fe009d6e, type: 3}
+  - {fileID: 8300000, guid: c2a0ada6e5360ea4fba1e86668d43378, type: 3}
+  - {fileID: 8300000, guid: 757bcdbe6a73c9f4084e413bea9c0930, type: 3}
+  deliveryPhaseClips: []
+  idleClips:
+  - {fileID: 8300000, guid: 6dd1e8d889773c34ba505946c8eeb74b, type: 3}
+  - {fileID: 8300000, guid: 7e665c4d87c4a0243a376386862c9ca4, type: 3}
+  - {fileID: 8300000, guid: 4db7ae2cc2fd7144d87605d17c99a7b8, type: 3}
+  - {fileID: 8300000, guid: ed5acc04154838844b7fb0a178e63190, type: 3}
+  - {fileID: 8300000, guid: a20ea1300ab884a40a99a52e5133141e, type: 3}
+  volume: 0.8
+  minPitch: 0.95
+  maxPitch: 1.05
+  minDelay: 8
+  maxDelay: 20
+  spatialBlend: 1
+  minDistance: 1
+  maxDistance: 50
+  rolloffMode: 0
+  dopplerLevel: 1

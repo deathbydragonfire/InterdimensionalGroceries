@@ -160,6 +160,11 @@ namespace InterdimensionalGroceries.ScannerSystem
         {
             if (isBusy) return;
 
+            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.CurrentPhase != GamePhase.DeliveryPhase)
+            {
+                return;
+            }
+
             PickableItem item = other.GetComponent<PickableItem>();
 
             if (item == null) return;
@@ -297,7 +302,7 @@ namespace InterdimensionalGroceries.ScannerSystem
                     EjectItem(item);
                 }
 
-                StartCoroutine(NextRequest());
+                StartCoroutine(RejectionComplete());
             }
         }
 
@@ -327,6 +332,15 @@ namespace InterdimensionalGroceries.ScannerSystem
             yield return new WaitForSeconds(1.5f);
 
             GenerateNewRequest();
+
+            isBusy = false;
+        }
+
+        private IEnumerator RejectionComplete()
+        {
+            yield return new WaitForSeconds(1.5f);
+
+            scannerUI.ShowRequest(requestedItem.ToString());
 
             isBusy = false;
         }

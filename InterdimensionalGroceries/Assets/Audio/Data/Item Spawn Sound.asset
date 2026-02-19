@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
   clips:
   - {fileID: 8300000, guid: 237f7f95f0e0d444eb2f163040317a13, type: 3}
-  minVolume: 0.8
-  maxVolume: 2
+  minVolume: 2
+  maxVolume: 4
   minPitch: 0.95
   maxPitch: 1.05
   spatialBlend: 1
-  maxDistance: 20
+  maxDistance: 100
   mixerGroup: {fileID: 0}

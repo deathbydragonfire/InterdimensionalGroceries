@@ -35,6 +35,11 @@ namespace InterdimensionalGroceries.PhaseManagement
         {
             isCountingDown = true;
 
+            if (orderDisplay != null)
+            {
+                orderDisplay.SetCountdownMode(true);
+            }
+
             for (int i = countdownFrom; i >= 1; i--)
             {
                 if (orderDisplay != null)
@@ -53,6 +58,7 @@ namespace InterdimensionalGroceries.PhaseManagement
 
             if (orderDisplay != null)
             {
+                orderDisplay.SetCountdownMode(false);
                 orderDisplay.SetMessage(deliverText);
             }
 

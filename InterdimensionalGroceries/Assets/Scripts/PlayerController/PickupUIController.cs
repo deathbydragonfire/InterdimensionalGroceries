@@ -116,6 +116,18 @@ namespace InterdimensionalGroceries.PlayerController
         {
             if (scannerHintLabel != null)
             {
+                scannerHintLabel.text = "Left Click to Scan Item";
+                scannerHintLabel.style.color = Color.white;
+                scannerHintLabel.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        public void ShowScannerDisabled()
+        {
+            if (scannerHintLabel != null)
+            {
+                scannerHintLabel.text = "[Scanning is Disabled]";
+                scannerHintLabel.style.color = Color.red;
                 scannerHintLabel.style.display = DisplayStyle.Flex;
             }
         }

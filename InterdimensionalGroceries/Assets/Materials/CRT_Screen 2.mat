@@ -32,14 +32,14 @@ Material:
     - _DistortionAmount: 0.08
     - _DistortionSpeed: 1.5
     - _EmissionIntensity: 3.18
-    - _GlitchIntensity: 0.33142918
+    - _GlitchIntensity: 0
     - _GlitchSpeed: 2
     - _PixelSize: 1.5
     - _ScanlineCount: 150
     - _ScanlineIntensity: 0.943
-    - _TimeSync: 38.528812
+    - _TimeSync: 67.860176
     m_Colors:
-    - _Color: {r: 0.2, g: 0.25, b: 0.2, a: 1}
+    - _Color: {r: 0.19999996, g: 0.24999997, b: 0.19999996, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

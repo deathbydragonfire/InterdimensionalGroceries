@@ -11,16 +11,34 @@ namespace InterdimensionalGroceries.UI
         [Header("Effect Control")]
         [SerializeField] private float timeMultiplier = 1f;
         [SerializeField] private float glitchFrequency = 0.1f;
+        [SerializeField] private bool randomizeStartTime = true;
+        
+        [Header("Glitch Settings")]
+        [SerializeField] [Range(0f, 1f)] private float baseScreenGlitchIntensity = 0f;
+        [SerializeField] [Range(0f, 1f)] private float baseOverlayGlitchIntensity = 0.5f;
         
         [Header("Scanline Settings")]
         [SerializeField] [Range(0f, 1f)] private float scanlineDarkness = 0.3f;
         
         private float syncTime;
         private float nextGlitchTime;
+        private float timeOffset;
         
         private static readonly int TimeSyncProperty = Shader.PropertyToID("_TimeSync");
         private static readonly int GlitchIntensityProperty = Shader.PropertyToID("_GlitchIntensity");
         private static readonly int ScanlineDarknessProperty = Shader.PropertyToID("_ScanlineDarkness");
+        
+        private void Start()
+        {
+            if (randomizeStartTime)
+            {
+                timeOffset = Random.Range(0f, 1000f);
+                syncTime = timeOffset;
+                nextGlitchTime = Time.time + Random.Range(0f, 8f);
+            }
+            
+            SetBaseGlitchIntensities();
+        }
         
         private void Update()
         {
@@ -32,6 +50,15 @@ namespace InterdimensionalGroceries.UI
             UpdateScanlineDarkness();
             
             HandleRandomGlitches();
+        }
+        
+        private void SetBaseGlitchIntensities()
+        {
+            if (screenMaterial != null)
+                screenMaterial.SetFloat(GlitchIntensityProperty, baseScreenGlitchIntensity);
+                
+            if (overlayMaterial != null)
+                overlayMaterial.SetFloat(GlitchIntensityProperty, baseOverlayGlitchIntensity);
         }
         
         private void UpdateMaterialTime(Material mat)
@@ -61,14 +88,25 @@ namespace InterdimensionalGroceries.UI
         
         private System.Collections.IEnumerator TriggerGlitch()
         {
-            float originalIntensity = screenMaterial != null ? screenMaterial.GetFloat(GlitchIntensityProperty) : 0.08f;
-            float glitchIntensity = originalIntensity * Random.Range(2f, 5f);
+            float screenOriginal = baseScreenGlitchIntensity;
+            float overlayOriginal = baseOverlayGlitchIntensity;
             
-            SetGlitchIntensity(glitchIntensity);
+            float screenGlitch = screenOriginal + Random.Range(0.2f, 0.5f);
+            float overlayGlitch = overlayOriginal * Random.Range(2f, 3f);
+            
+            if (screenMaterial != null)
+                screenMaterial.SetFloat(GlitchIntensityProperty, screenGlitch);
+            
+            if (overlayMaterial != null)
+                overlayMaterial.SetFloat(GlitchIntensityProperty, overlayGlitch);
             
             yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
             
-            SetGlitchIntensity(originalIntensity);
+            if (screenMaterial != null)
+                screenMaterial.SetFloat(GlitchIntensityProperty, screenOriginal);
+            
+            if (overlayMaterial != null)
+                overlayMaterial.SetFloat(GlitchIntensityProperty, overlayOriginal);
         }
         
         public void SetGlitchIntensity(float intensity)

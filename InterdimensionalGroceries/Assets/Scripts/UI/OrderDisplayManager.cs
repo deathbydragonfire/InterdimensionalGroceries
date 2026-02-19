@@ -23,7 +23,13 @@ namespace InterdimensionalGroceries.UI
             "Stock Up For Sales"
         };
         
+        [Header("Countdown Settings")]
+        [SerializeField] private float countdownFontSize = 72f;
+        
         private bool isFirstTime = true;
+        private float originalFontSize;
+        private VerticalAlignmentOptions originalVerticalAlignment;
+        private bool originalAutoSizing;
         
         private void Start()
         {
@@ -35,6 +41,13 @@ namespace InterdimensionalGroceries.UI
             if (orderText == null)
             {
                 orderText = GetComponent<TextMeshPro>();
+            }
+            
+            if (orderText != null)
+            {
+                originalFontSize = orderText.fontSize;
+                originalVerticalAlignment = orderText.verticalAlignment;
+                originalAutoSizing = orderText.enableAutoSizing;
             }
             
             ShowFirstTimeMessage();
@@ -82,6 +95,24 @@ namespace InterdimensionalGroceries.UI
             if (orderText != null)
             {
                 orderText.text = message;
+            }
+        }
+        
+        public void SetCountdownMode(bool enabled)
+        {
+            if (orderText == null) return;
+            
+            if (enabled)
+            {
+                orderText.enableAutoSizing = false;
+                orderText.fontSize = countdownFontSize;
+                orderText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            }
+            else
+            {
+                orderText.enableAutoSizing = originalAutoSizing;
+                orderText.fontSize = originalFontSize;
+                orderText.verticalAlignment = originalVerticalAlignment;
             }
         }
     }
