@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: Box of Rats
+    tagline: Only the finest rats from france
+    price: 15
+    itemType: 3
     itemAudioData: {fileID: 0}
 --- !u!96 &6899242066586124968
 TrailRenderer:

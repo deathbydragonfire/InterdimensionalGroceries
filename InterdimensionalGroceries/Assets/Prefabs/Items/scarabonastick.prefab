@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: 'Scarab on a stick '
+    tagline: Anything on a stick is amazing
+    price: 20
+    itemType: 9
     itemAudioData: {fileID: 0}
 --- !u!96 &5979270611327566205
 TrailRenderer:

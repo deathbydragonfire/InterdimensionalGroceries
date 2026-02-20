@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: Can of grub
+    tagline: the wiggly feeling in your mouth is amazing
+    price: 5
+    itemType: 3
     itemAudioData: {fileID: 0}
 --- !u!96 &2128563767876749662
 TrailRenderer:

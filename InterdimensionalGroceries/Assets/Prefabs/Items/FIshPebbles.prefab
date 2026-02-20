@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: Fish Pebbles
+    tagline: 'Feeding your fish is important you know '
+    price: 4
+    itemType: 7
     itemAudioData: {fileID: 0}
 --- !u!96 &6729384871131386404
 TrailRenderer:

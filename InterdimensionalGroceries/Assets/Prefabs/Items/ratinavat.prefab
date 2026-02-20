@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: Rat in a vat of acid
+    tagline: Its almost as toxic as my ex girlfriend
+    price: 15
+    itemType: 11
     itemAudioData: {fileID: 0}
 --- !u!96 &3287884471185024176
 TrailRenderer:
