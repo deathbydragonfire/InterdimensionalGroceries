@@ -159,9 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
+    itemName: BEANS
+    tagline: its made of 100% beans what else would it be made of?
+    price: 6
     itemType: 5
     itemAudioData: {fileID: 0}
 --- !u!96 &2716803610603084188

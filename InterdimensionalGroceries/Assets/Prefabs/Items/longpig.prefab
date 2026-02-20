@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: LongPig
+    tagline: 3 little piggies were harmed in the making of this
+    price: 12
+    itemType: 10
     itemAudioData: {fileID: 0}
 --- !u!96 &8510791915754468024
 TrailRenderer:

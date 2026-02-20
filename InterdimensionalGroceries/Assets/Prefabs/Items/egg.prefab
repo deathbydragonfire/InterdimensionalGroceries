@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Unknown Item
-    tagline: A mysterious object
-    price: 0
-    itemType: 5
+    itemName: Egg
+    tagline: 'They say its a dinosaur egg '
+    price: 20
+    itemType: 0
     itemAudioData: {fileID: 0}
 --- !u!96 &6986154268973784490
 TrailRenderer:

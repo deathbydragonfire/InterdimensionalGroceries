@@ -191,10 +191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Mystery Fruit
+    itemName: spore
     tagline: It's definitely a fruit...I think
     price: 4
-    itemType: 2
+    itemType: 3
     itemAudioData: {fileID: 0}
 --- !u!96 &7568464772166475948
 TrailRenderer:
