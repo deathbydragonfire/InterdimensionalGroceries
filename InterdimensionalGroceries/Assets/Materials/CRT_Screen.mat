@@ -37,7 +37,7 @@ Material:
     - _PixelSize: 1.5
     - _ScanlineCount: 150
     - _ScanlineIntensity: 0.943
-    - _TimeSync: 148.08586
+    - _TimeSync: 784.29974
     m_Colors:
     - _Color: {r: 0.2, g: 0.25, b: 0.2, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
