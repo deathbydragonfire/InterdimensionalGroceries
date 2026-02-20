@@ -38,7 +38,11 @@ Material:
     - _ScanlineCount: 150
     - _ScanlineIntensity: 0.943
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     - _TimeSync: 276.9241
+=======
+    - _TimeSync: 198.6756
+>>>>>>> Stashed changes
 =======
     - _TimeSync: 198.6756
 >>>>>>> Stashed changes

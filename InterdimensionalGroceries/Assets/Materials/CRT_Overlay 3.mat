@@ -34,7 +34,11 @@ Material:
     - _ScanlineDarkness: 0.3
     - _ScanlineSpeed: 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     - _TimeSync: 343.74115
+=======
+    - _TimeSync: 821.62244
+>>>>>>> Stashed changes
 =======
     - _TimeSync: 821.62244
 >>>>>>> Stashed changes
