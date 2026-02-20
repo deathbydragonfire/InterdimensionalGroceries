@@ -20,22 +20,41 @@ namespace TutorialSystem
         public FadeController fadeController;
 
         [Header("Fade Settings")]
-        public float fadeFromBlackDuration = 2f;
+        public float fadeFromWhiteDuration = 2f;
 
         private AudioManager audioManager;
         private TutorialObjectManager objectManager;
         private int currentEventIndex = -1;
         private bool isProcessingEvent;
         private AudioSource currentAudioSource;
+        private bool hasStarted = false;
 
         private void Awake()
         {
+            Debug.Log("[TutorialManager] Awake() called");
+            Debug.Log($"[TutorialManager] Component enabled: {enabled}");
+            Debug.Log($"[TutorialManager] GameObject active: {gameObject.activeInHierarchy}");
             audioManager = FindFirstObjectByType<AudioManager>();
             objectManager = GetComponent<TutorialObjectManager>();
         }
 
+        private void OnEnable()
+        {
+            Debug.Log("[TutorialManager] OnEnable() called");
+            Debug.Log($"[TutorialManager] Component enabled: {enabled}");
+        }
+
         private void Start()
         {
+            Debug.Log("[TutorialManager] Start() called");
+            
+            if (hasStarted)
+            {
+                Debug.LogWarning("[TutorialManager] Start already called, skipping");
+                return;
+            }
+            hasStarted = true;
+            
             if (locomotionTracker != null)
             {
                 locomotionTracker.OnAllLocomotionUsed += HandleLocomotionComplete;
@@ -55,12 +74,20 @@ namespace TutorialSystem
 
             if (fadeController != null)
             {
-                fadeController.FadeFromBlack(fadeFromBlackDuration, () => StartCoroutine(ProcessNextEvent()));
+                Debug.Log($"[TutorialManager] FadeController found, starting fade from white ({fadeFromWhiteDuration}s)");
+                fadeController.FadeFromWhite(fadeFromWhiteDuration, OnFadeComplete);
             }
             else
             {
+                Debug.LogWarning("[TutorialManager] FadeController is null, starting tutorial immediately");
                 StartCoroutine(ProcessNextEvent());
             }
+        }
+
+        private void OnFadeComplete()
+        {
+            Debug.Log("[TutorialManager] OnFadeComplete called, starting ProcessNextEvent");
+            StartCoroutine(ProcessNextEvent());
         }
 
         private void OnDestroy()
@@ -116,6 +143,11 @@ namespace TutorialSystem
             {
                 Debug.Log($"[TutorialManager] Playing audio clip: {currentEvent.audioClip.name}");
                 PlayAudioClip(currentEvent.audioClip);
+                
+                if (currentEvent.timedAudioClips != null && currentEvent.timedAudioClips.Length > 0)
+                {
+                    StartCoroutine(PlayTimedAudioClips(currentEvent.timedAudioClips));
+                }
             }
 
             if (currentEvent.gameObjectNamesToActivate != null && currentEvent.gameObjectNamesToActivate.Length > 0)
@@ -239,6 +271,27 @@ namespace TutorialSystem
                 currentAudioSource.volume = 1f;
                 currentAudioSource.spatialBlend = 0f;
                 currentAudioSource.Play();
+            }
+        }
+
+        private IEnumerator PlayTimedAudioClips(TimedAudioClip[] timedClips)
+        {
+            foreach (TimedAudioClip timedClip in timedClips)
+            {
+                if (timedClip.clip != null)
+                {
+                    yield return new WaitForSeconds(timedClip.playAtTime);
+                    
+                    Debug.Log($"[TutorialManager] Playing timed audio clip: {timedClip.clip.name} at {timedClip.playAtTime}s");
+                    
+                    AudioSource timedSource = audioManager.gameObject.AddComponent<AudioSource>();
+                    timedSource.clip = timedClip.clip;
+                    timedSource.volume = 1f;
+                    timedSource.spatialBlend = 0f;
+                    timedSource.Play();
+                    
+                    Destroy(timedSource, timedClip.clip.length);
+                }
             }
         }
 

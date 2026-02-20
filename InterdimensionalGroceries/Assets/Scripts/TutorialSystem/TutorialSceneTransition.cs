@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using InterdimensionalGroceries.PlayerController;
+using InterdimensionalGroceries.BuildSystem;
 
 namespace TutorialSystem
 {
@@ -15,12 +16,23 @@ namespace TutorialSystem
         [Header("Settings")]
         public string targetSceneName = "scene!";
         public float fadeToBlackDuration = 2f;
+        public float proceedButtonFadeDuration = 0.5f;
 
         private TutorialManager tutorialManager;
+        private CanvasGroup proceedButtonCanvasGroup;
 
         private void Awake()
         {
             tutorialManager = GetComponent<TutorialManager>();
+            
+            if (proceedButtonCanvas != null)
+            {
+                proceedButtonCanvasGroup = proceedButtonCanvas.GetComponent<CanvasGroup>();
+                if (proceedButtonCanvasGroup == null)
+                {
+                    proceedButtonCanvasGroup = proceedButtonCanvas.AddComponent<CanvasGroup>();
+                }
+            }
         }
 
         private void OnEnable()
@@ -47,6 +59,13 @@ namespace TutorialSystem
 
         private IEnumerator TransitionSequence()
         {
+            // Exit build mode if active
+            if (BuildModeController.Instance != null && BuildModeController.Instance.IsActive)
+            {
+                Debug.Log("[TutorialSceneTransition] Exiting build mode");
+                BuildModeController.Instance.ExitBuildMode();
+            }
+
             // Start fade to black
             if (fadeController != null)
             {
@@ -82,14 +101,51 @@ namespace TutorialSystem
             if (proceedButtonCanvas != null)
             {
                 proceedButtonCanvas.SetActive(true);
+                if (proceedButtonCanvasGroup != null)
+                {
+                    proceedButtonCanvasGroup.alpha = 0f;
+                    StartCoroutine(FadeInProceedButton());
+                }
             }
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
+        private IEnumerator FadeInProceedButton()
+        {
+            float elapsed = 0f;
+            while (elapsed < proceedButtonFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / proceedButtonFadeDuration;
+                proceedButtonCanvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+                yield return null;
+            }
+            proceedButtonCanvasGroup.alpha = 1f;
+        }
+
         public void OnProceedButtonClicked()
         {
+            Debug.Log($"[TutorialSceneTransition] Proceed button clicked, starting fade out");
+            StartCoroutine(FadeOutAndLoadScene());
+        }
+
+        private IEnumerator FadeOutAndLoadScene()
+        {
+            if (proceedButtonCanvasGroup != null)
+            {
+                float elapsed = 0f;
+                while (elapsed < proceedButtonFadeDuration)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = elapsed / proceedButtonFadeDuration;
+                    proceedButtonCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+                    yield return null;
+                }
+                proceedButtonCanvasGroup.alpha = 0f;
+            }
+
             Debug.Log($"[TutorialSceneTransition] Loading scene: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
         }

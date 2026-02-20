@@ -9,6 +9,8 @@ namespace InterdimensionalGroceries.AudioSystem
         public static MusicManager Instance { get; private set; }
         
         [Header("Music Tracks")]
+        [SerializeField] private AudioClipData menuIntroMusic;
+        [SerializeField] private AudioClipData tutorialMusic;
         [SerializeField] private AudioClipData deliveryPhaseMusic;
         [SerializeField] private AudioClipData inventoryPhaseMusic;
         
@@ -23,6 +25,7 @@ namespace InterdimensionalGroceries.AudioSystem
         private AudioSource currentSource;
         private AudioSource fadeOutSource;
         private Coroutine crossfadeCoroutine;
+        private bool isPlayingMenuMusic = false;
         
         private void Awake()
         {
@@ -67,7 +70,10 @@ namespace InterdimensionalGroceries.AudioSystem
                 GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
                 GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
                 
-                PlayMusicForPhase(GamePhaseManager.Instance.CurrentPhase, false);
+                if (!isPlayingMenuMusic)
+                {
+                    PlayMusicForPhase(GamePhaseManager.Instance.CurrentPhase, false);
+                }
             }
         }
         
@@ -221,15 +227,26 @@ namespace InterdimensionalGroceries.AudioSystem
             }
         }
         
+        public void FadeOutMusic(float duration = -1f)
+        {
+            float fadeDuration = duration > 0f ? duration : crossfadeDuration;
+            StartCoroutine(FadeOutAndStopWithDuration(fadeDuration));
+        }
+        
         private IEnumerator FadeOutAndStop()
+        {
+            yield return FadeOutAndStopWithDuration(crossfadeDuration);
+        }
+        
+        private IEnumerator FadeOutAndStopWithDuration(float duration)
         {
             float elapsed = 0f;
             float startVolume = currentSource.volume;
             
-            while (elapsed < crossfadeDuration)
+            while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
-                float t = elapsed / crossfadeDuration;
+                float t = elapsed / duration;
                 
                 currentSource.volume = Mathf.Lerp(startVolume, 0f, t);
                 
@@ -238,6 +255,71 @@ namespace InterdimensionalGroceries.AudioSystem
             
             currentSource.Stop();
             currentSource.volume = 0f;
+            isPlayingMenuMusic = false;
+        }
+        
+        public void PlayMenuIntroMusic(bool useCrossfade = false)
+        {
+            if (menuIntroMusic == null || menuIntroMusic.Clips == null || menuIntroMusic.Clips.Length == 0)
+            {
+                Debug.LogWarning("MusicManager: No menu/intro music assigned");
+                return;
+            }
+            
+            AudioClip targetClip = menuIntroMusic.GetRandomClip();
+            
+            if (currentSource.clip == targetClip && currentSource.isPlaying)
+            {
+                return;
+            }
+            
+            isPlayingMenuMusic = true;
+            
+            if (useCrossfade)
+            {
+                CrossfadeToClip(targetClip, menuIntroMusic);
+            }
+            else
+            {
+                PlayClipImmediate(targetClip, menuIntroMusic);
+            }
+        }
+        
+        public void PlayTutorialMusic(bool useCrossfade = true)
+        {
+            if (tutorialMusic == null || tutorialMusic.Clips == null || tutorialMusic.Clips.Length == 0)
+            {
+                Debug.LogWarning("MusicManager: No tutorial music assigned");
+                return;
+            }
+            
+            AudioClip targetClip = tutorialMusic.GetRandomClip();
+            
+            if (currentSource.clip == targetClip && currentSource.isPlaying)
+            {
+                return;
+            }
+            
+            isPlayingMenuMusic = false;
+            
+            if (useCrossfade)
+            {
+                CrossfadeToClip(targetClip, tutorialMusic);
+            }
+            else
+            {
+                PlayClipImmediate(targetClip, tutorialMusic);
+            }
+        }
+        
+        public void StopMenuMusic()
+        {
+            isPlayingMenuMusic = false;
+        }
+        
+        public bool IsPlayingMusic()
+        {
+            return currentSource != null && currentSource.isPlaying;
         }
     }
 }

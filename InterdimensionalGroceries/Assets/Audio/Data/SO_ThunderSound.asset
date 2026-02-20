@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56e3820fec479f428e7ceccdbadf3e7, type: 3}
+  m_Name: SO_ThunderSound
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
+  clips:
+  - {fileID: 8300000, guid: 0da71952f6c0d9e40a0fb9b111c46351, type: 3}
+  - {fileID: 8300000, guid: 05834cdfefb2d3846b79a3cd518abc34, type: 3}
+  - {fileID: 8300000, guid: 8d22a71ca426f4444b3a0674611c61ae, type: 3}
+  - {fileID: 8300000, guid: bd89146c1b5e04b4987e8e15ca360623, type: 3}
+  minVolume: 0.6
+  maxVolume: 0.8
+  minPitch: 0.9
+  maxPitch: 1.1
+  spatialBlend: 0
+  maxDistance: 20
+  mixerGroup: {fileID: 0}

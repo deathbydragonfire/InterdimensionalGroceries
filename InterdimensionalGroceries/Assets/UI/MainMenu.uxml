@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=319938d95bfd6704ca72aded7670ad3d&amp;type=3#MainMenu"/>
+    <ui:VisualElement name="MainMenuContainer" class="main-menu-overlay">
+        <ui:VisualElement class="main-menu-container">
+            <ui:VisualElement class="main-menu-title-container">
+                <ui:Label text="Interdimensional Groceries" enabled="true" class="main-menu-title" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); font-size: 0;"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="main-menu-button-container">
+                <ui:Button name="NewGameButton" text="New Game" class="main-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); background-color: rgba(0, 0, 0, 0); border-left-color: rgba(50, 60, 70, 0); border-right-color: rgba(50, 60, 70, 0); border-top-color: rgba(50, 60, 70, 0); border-bottom-color: rgba(50, 60, 70, 0);"/>
+                <ui:Button name="ContinueButton" text="Continue" enabled="true" class="main-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); background-color: rgba(80, 100, 120, 0); border-left-color: rgba(50, 60, 70, 0); border-right-color: rgba(50, 60, 70, 0); border-top-color: rgba(50, 60, 70, 0); border-bottom-color: rgba(50, 60, 70, 0);"/>
+                <ui:Button name="SettingsButton" text="Settings" class="main-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); background-color: rgba(80, 100, 120, 0); border-left-color: rgba(50, 60, 70, 0); border-right-color: rgba(50, 60, 70, 0); border-top-color: rgba(50, 60, 70, 0); border-bottom-color: rgba(50, 60, 70, 0);"/>
+                <ui:Button name="QuitButton" text="Quit" class="main-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); border-left-color: rgba(50, 60, 70, 0); border-right-color: rgba(50, 60, 70, 0); border-top-color: rgba(50, 60, 70, 0); border-bottom-color: rgba(50, 60, 70, 0); background-color: rgba(80, 100, 120, 0);"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

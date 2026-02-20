@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using InterdimensionalGroceries.PhaseManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace InterdimensionalGroceries.UI
 {
@@ -26,6 +29,7 @@ namespace InterdimensionalGroceries.UI
         [Header("Eye Animation Settings")]
         [SerializeField] private float minAnimationInterval = 3f;
         [SerializeField] private float maxAnimationInterval = 5f;
+        [SerializeField] private Sprite[] eyeSprites;
 
         [Header("Customer System")]
         [SerializeField] private SpriteRenderer customerSpriteRenderer;
@@ -35,6 +39,24 @@ namespace InterdimensionalGroceries.UI
 
         private Coroutine eyeCoroutine;
         private CustomerSprites currentCustomer;
+
+#if UNITY_EDITOR
+        [ContextMenu("Auto-Load Eye Sprites")]
+        private void AutoLoadEyeSprites()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets/Art/Eyes/Eye Movement" });
+            eyeSprites = new Sprite[guids.Length];
+            
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                eyeSprites[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            }
+            
+            EditorUtility.SetDirty(this);
+            Debug.Log($"Loaded {eyeSprites.Length} eye sprites");
+        }
+#endif
 
         private void Start()
         {
@@ -124,11 +146,16 @@ namespace InterdimensionalGroceries.UI
             {
                 yield return new WaitForSeconds(Random.Range(minAnimationInterval, maxAnimationInterval));
 
-                if (eye1SpriteRenderer != null)
-                    eye1SpriteRenderer.flipX = !eye1SpriteRenderer.flipX;
+                if (eyeSprites != null && eyeSprites.Length > 0)
+                {
+                    Sprite randomSprite = eyeSprites[Random.Range(0, eyeSprites.Length)];
 
-                if (eye2SpriteRenderer != null)
-                    eye2SpriteRenderer.flipX = !eye2SpriteRenderer.flipX;
+                    if (eye1SpriteRenderer != null)
+                        eye1SpriteRenderer.sprite = randomSprite;
+
+                    if (eye2SpriteRenderer != null)
+                        eye2SpriteRenderer.sprite = randomSprite;
+                }
             }
         }
 

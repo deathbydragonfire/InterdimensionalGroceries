@@ -13,9 +13,12 @@ namespace TutorialSystem
         {
             if (firstPersonController != null)
             {
-                firstPersonController.enabled = false;
+                firstPersonController.SetControlsEnabled(false);
                 Debug.Log("[MovementEnabler] Player movement disabled");
             }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
 
             if (tutorialManager != null)
             {
@@ -41,8 +44,8 @@ namespace TutorialSystem
 
             if (currentEvent.showLocomotionUI && firstPersonController != null)
             {
-                firstPersonController.enabled = true;
-                Debug.Log("[MovementEnabler] Player movement enabled");
+                firstPersonController.SetControlsEnabled(true);
+                Debug.Log("[MovementEnabler] Player movement enabled via SetControlsEnabled");
             }
         }
     }

@@ -26,7 +26,7 @@ namespace InterdimensionalGroceries.PlayerController
         private bool isSprinting;
         private float verticalRotation = 0f;
         private float verticalVelocity = 0f;
-        private bool controlsEnabled = true;
+        private bool controlsEnabled = false;
 
         private float baseMoveSpeed;
         private float baseSprintSpeed;
@@ -53,6 +53,13 @@ namespace InterdimensionalGroceries.PlayerController
             if (AbilityUpgradeManager.Instance != null)
             {
                 AbilityUpgradeManager.Instance.OnUpgradePurchased += OnUpgradePurchased;
+            }
+
+            // Enable controls by default unless MovementEnabler will handle it
+            TutorialSystem.MovementEnabler movementEnabler = GetComponent<TutorialSystem.MovementEnabler>();
+            if (movementEnabler == null)
+            {
+                SetControlsEnabled(true);
             }
         }
 
@@ -94,8 +101,11 @@ namespace InterdimensionalGroceries.PlayerController
             inputActions.Player.Sprint.canceled += OnSprint;
             inputActions.Player.Jump.performed += OnJump;
             
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (controlsEnabled)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
 
         private void OnDisable()
@@ -154,10 +164,14 @@ namespace InterdimensionalGroceries.PlayerController
             if (!enabled)
             {
                 inputActions.Player.Disable();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
             else
             {
                 inputActions.Player.Enable();
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
 

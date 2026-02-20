@@ -341,7 +341,17 @@ namespace InterdimensionalGroceries.ScannerSystem
         {
             yield return new WaitForSeconds(1.5f);
 
-            scannerUI.ShowRequest(requestedItem.ToString());
+            string displayText;
+            if (CustomerCommentManager.Instance != null)
+            {
+                displayText = CustomerCommentManager.Instance.GetRandomComment(requestedItem);
+            }
+            else
+            {
+                displayText = requestedItem.ToString();
+            }
+
+            scannerUI.ShowRequest(displayText);
 
             isBusy = false;
         }

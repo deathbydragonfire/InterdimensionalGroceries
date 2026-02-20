@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f2e05f9176c194697065398d62bcd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialUIController
-  tutorialManager: {fileID: 557663808}
+  tutorialManager: {fileID: 874674581}
   locomotionTracker: {fileID: 598950619}
   panelCanvasGroup: {fileID: 9221875}
   instructionText: {fileID: 1091683353}
@@ -586,6 +586,7 @@ MonoBehaviour:
   orderDisplay3D: {fileID: 0}
   skipButton: {fileID: 0}
   scannerContainer: {fileID: 0}
+  customerAnimator: {fileID: 0}
 --- !u!1 &87243388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.FadeController
   fadeImage: {fileID: 477061711}
+  startWithBlackScreen: 0
+  startWithWhiteScreen: 1
 --- !u!1 &352967186
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,7 +1557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialScannerController
   scannerUI: {fileID: 64867819}
-  tutorialManager: {fileID: 557663808}
+  tutorialManager: {fileID: 874674581}
   tutorialItemName: Package
 --- !u!1 &477061709
 GameObject:
@@ -1773,7 +1776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialStoreMenuController
   storeMenuController: {fileID: 539592120}
   mainMenuDocument: {fileID: 1882521109}
-  tutorialManager: {fileID: 557663808}
+  tutorialManager: {fileID: 874674581}
   placeShelvesTriggerEventName: Event_PlaceShelves
   pleaseWaitFont: {fileID: 12800000, guid: 848bc0fe5eec3d4428cb3fc4eaf8c41a, type: 3}
 --- !u!1 &557663803
@@ -1787,10 +1790,6 @@ GameObject:
   - component: {fileID: 557663805}
   - component: {fileID: 557663804}
   - component: {fileID: 557663806}
-  - component: {fileID: 557663808}
-  - component: {fileID: 557663807}
-  - component: {fileID: 557663809}
-  - component: {fileID: 557663810}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -1829,6 +1828,7 @@ MonoBehaviour:
   inventoryPhaseStartSound: {fileID: 0}
   itemSpawnSound: {fileID: 0}
   countdownTickSound: {fileID: 0}
+  thunderSound: {fileID: 0}
   surfaceAudioData: {fileID: 11400000, guid: affacb37a04079f4cab1bf1962c0584b, type: 2}
   sfxMixerGroup: {fileID: 0}
   uiMixerGroup: {fileID: 0}
@@ -1867,72 +1867,6 @@ MonoBehaviour:
   showAudioSourceGizmos: 0
   activeSourceColor: {r: 0, g: 1, b: 1, a: 1}
   gizmoSphereSize: 0.3
---- !u!114 &557663807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557663803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 913ad407bbe87f449b1f70b5b8e88a8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialProgress
---- !u!114 &557663808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557663803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96344b047b86e924f9d161c6418949e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialManager
-  playlist: {fileID: 11400000, guid: 5f896a948beb5da45b9973c25b4ecc20, type: 2}
-  locomotionTracker: {fileID: 598950619}
-  itemInteractionTracker: {fileID: 598950618}
-  interactionTracker: {fileID: 598950621}
-  fadeController: {fileID: 247777239}
-  fadeFromBlackDuration: 2
---- !u!114 &557663809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557663803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e085ee9604c5614d8f4f00dc1fc936b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialObjectManager
-  objectsToDeactivate:
-  - {fileID: 1478103483}
-  - {fileID: 1579691492}
-  - {fileID: 1315205802}
-  - {fileID: 1524418726}
-  - {fileID: 64867815}
-  - {fileID: 568292775}
---- !u!114 &557663810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557663803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9066bc3af8a64d4d9650346a942b05f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialSceneTransition
-  fadeController: {fileID: 247777239}
-  playerController: {fileID: 598950611}
-  proceedButtonCanvas: {fileID: 2064630803}
-  targetSceneName: Actual Delivery Scene
-  fadeToBlackDuration: 2
 --- !u!1 &568292775
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,7 +2444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da566ded579f873479cb45889256595b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.MovementEnabler
-  tutorialManager: {fileID: 557663808}
+  tutorialManager: {fileID: 874674581}
   firstPersonController: {fileID: 598950611}
 --- !u!114 &598950621
 MonoBehaviour:
@@ -2967,7 +2901,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 557663810}
+      - m_Target: {fileID: 874674578}
         m_TargetAssemblyTypeName: 
         m_MethodName: OnProceedButtonClicked
         m_Mode: 1
@@ -4027,6 +3961,121 @@ MonoBehaviour:
   minImpactForce: 1
   maxImpactForce: 20
   enableDebugLogging: 0
+--- !u!1 &874674575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 874674576}
+  - component: {fileID: 874674581}
+  - component: {fileID: 874674580}
+  - component: {fileID: 874674579}
+  - component: {fileID: 874674578}
+  - component: {fileID: 874674577}
+  m_Layer: 0
+  m_Name: TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &874674576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &874674577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd6409e5682e314ebf1e384349e357c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialSceneInitializer
+--- !u!114 &874674578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9066bc3af8a64d4d9650346a942b05f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialSceneTransition
+  fadeController: {fileID: 247777239}
+  playerController: {fileID: 598950611}
+  proceedButtonCanvas: {fileID: 2064630803}
+  targetSceneName: Actual Delivery Scene
+  fadeToBlackDuration: 2
+  proceedButtonFadeDuration: 0.5
+--- !u!114 &874674579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e085ee9604c5614d8f4f00dc1fc936b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialObjectManager
+  objectsToDeactivate:
+  - {fileID: 1478103483}
+  - {fileID: 1579691492}
+  - {fileID: 1315205802}
+  - {fileID: 1524418726}
+  - {fileID: 64867815}
+  - {fileID: 568292775}
+--- !u!114 &874674580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913ad407bbe87f449b1f70b5b8e88a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialProgress
+--- !u!114 &874674581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874674575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96344b047b86e924f9d161c6418949e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialManager
+  playlist: {fileID: 11400000, guid: 5f896a948beb5da45b9973c25b4ecc20, type: 2}
+  locomotionTracker: {fileID: 598950619}
+  itemInteractionTracker: {fileID: 598950618}
+  interactionTracker: {fileID: 598950621}
+  fadeController: {fileID: 247777239}
+  fadeFromWhiteDuration: 2
 --- !u!1 &902945686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4677,7 +4726,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 61a247bc704e9d6478aab75dade95efe, type: 2}
   m_sharedMaterial: {fileID: -4961333228699259207, guid: 61a247bc704e9d6478aab75dade95efe, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -4961333228699259207, guid: 61a247bc704e9d6478aab75dade95efe, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -7932,3 +7982,4 @@ SceneRoots:
   - {fileID: 2064630806}
   - {fileID: 247777238}
   - {fileID: 902945688}
+  - {fileID: 874674576}

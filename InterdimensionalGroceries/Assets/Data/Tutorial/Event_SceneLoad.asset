@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Event_SceneLoad
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.TutorialEvent
   audioClip: {fileID: 8300000, guid: bb36070181073cb488ad5d47036c41ec, type: 3}
+  timedAudioClips:
+  - clip: {fileID: 8300000, guid: 36d3094930dfdb8409eec70b0f16003e, type: 3}
+    playAtTime: 6
   triggerType: 0
   delayBeforeTrigger: 0.25
   showLocomotionUI: 0

@@ -39,6 +39,9 @@ namespace InterdimensionalGroceries.AudioSystem
         
         [Header("Countdown Sounds")]
         [SerializeField] private AudioClipData countdownTickSound;
+        
+        [Header("Weather Sounds")]
+        [SerializeField] private AudioClipData thunderSound;
 
         [Header("Surface Sounds")]
         [SerializeField] private SurfaceAudioData surfaceAudioData;
