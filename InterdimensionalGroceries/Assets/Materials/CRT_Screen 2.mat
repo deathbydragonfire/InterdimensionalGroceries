@@ -37,15 +37,7 @@ Material:
     - _PixelSize: 1.5
     - _ScanlineCount: 150
     - _ScanlineIntensity: 0.943
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    - _TimeSync: 276.9241
-=======
-    - _TimeSync: 198.6756
->>>>>>> Stashed changes
-=======
-    - _TimeSync: 198.6756
->>>>>>> Stashed changes
+    - _TimeSync: 681.53503
     m_Colors:
     - _Color: {r: 0.19999996, g: 0.24999997, b: 0.19999996, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
