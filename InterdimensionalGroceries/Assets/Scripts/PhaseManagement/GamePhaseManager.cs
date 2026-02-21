@@ -26,14 +26,17 @@ namespace InterdimensionalGroceries.PhaseManagement
         {
             if (Instance != null && Instance != this)
             {
+                Debug.Log($"[GamePhaseManager] Destroying duplicate in scene {gameObject.scene.name}");
                 Destroy(gameObject);
                 return;
             }
             Instance = this;
+            Debug.Log($"[GamePhaseManager] Initialized in scene: {gameObject.scene.name}");
         }
 
         private void Start()
         {
+            Debug.Log("[GamePhaseManager] Start - Invoking OnInventoryPhaseStarted");
             OnInventoryPhaseStarted?.Invoke();
         }
 

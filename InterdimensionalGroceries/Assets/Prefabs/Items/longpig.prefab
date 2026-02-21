@@ -159,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: LongPig
-    tagline: 3 little piggies were harmed in the making of this
+    itemName: Long Pig
+    tagline: It's Pig...The Long way
     price: 12
     itemType: 10
     itemAudioData: {fileID: 0}

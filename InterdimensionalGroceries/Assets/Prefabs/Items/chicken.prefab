@@ -160,9 +160,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
     itemName: Chicken
-    tagline: I dont even know what bird is this duck, chicken, Rooster Who knows??
+    tagline: Bawk Bawk
     price: 10
-    itemType: 3
+    itemType: 5
     itemAudioData: {fileID: 0}
 --- !u!96 &8688219422519853802
 TrailRenderer:

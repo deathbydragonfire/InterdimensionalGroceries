@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56e3820fec479f428e7ceccdbadf3e7, type: 3}
+  m_Name: SO_LargeGlitchSound
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
+  clips:
+  - {fileID: 8300000, guid: e42509a3c4cc6d644a633b03ecd042a4, type: 3}
+  minVolume: 0.8
+  maxVolume: 0.9
+  minPitch: 0.9
+  maxPitch: 1.1
+  spatialBlend: 0
+  maxDistance: 20
+  mixerGroup: {fileID: 0}

@@ -159,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Can of grub
-    tagline: the wiggly feeling in your mouth is amazing
+    itemName: Can of Grub
+    tagline: The wiggly feeling in your mouth is amazing
     price: 5
     itemType: 3
     itemAudioData: {fileID: 0}

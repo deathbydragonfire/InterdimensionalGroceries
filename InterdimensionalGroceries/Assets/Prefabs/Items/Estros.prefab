@@ -159,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Estros
-    tagline: that squid flavouring always hit the spot
+    itemName: Squid Cereal
+    tagline: That squid flavouring always hit the spot
     price: 9
     itemType: 8
     itemAudioData: {fileID: 0}

@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: 'Scarab on a stick '
+    itemName: 'Scarab on a Stick '
     tagline: Anything on a stick is amazing
     price: 20
     itemType: 9

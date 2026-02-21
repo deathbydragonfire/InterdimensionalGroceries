@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using InterdimensionalGroceries.PlayerController;
 using InterdimensionalGroceries.BuildSystem;
+using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace TutorialSystem
 {
@@ -144,6 +146,26 @@ namespace TutorialSystem
                     yield return null;
                 }
                 proceedButtonCanvasGroup.alpha = 0f;
+            }
+
+            // Explicitly destroy the Intro scene's AudioManager and MusicManager
+            // so the Actual Delivery Scene can use its own configured managers
+            if (AudioManager.Instance != null)
+            {
+                Debug.Log("[TutorialSceneTransition] Destroying AudioManager from Intro/Tutorial before loading Actual Delivery Scene");
+                Destroy(AudioManager.Instance.gameObject);
+            }
+            
+            if (MusicManager.Instance != null)
+            {
+                Debug.Log("[TutorialSceneTransition] Destroying MusicManager from Intro/Tutorial before loading Actual Delivery Scene");
+                Destroy(MusicManager.Instance.gameObject);
+            }
+            
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                Debug.Log("[TutorialSceneTransition] Destroying AbilityUpgradeManager from Intro/Tutorial before loading Actual Delivery Scene");
+                Destroy(AbilityUpgradeManager.Instance.gameObject);
             }
 
             Debug.Log($"[TutorialSceneTransition] Loading scene: {targetSceneName}");

@@ -13,15 +13,20 @@ namespace InterdimensionalGroceries.BuildSystem
         [SerializeField] private float collisionCheckPadding = 0.1f;
         
         private Renderer[] renderers;
-        private Bounds combinedBounds;
+        private BoxCollider referenceCollider;
         private bool isValid = true;
         private Quaternion fixedRotation;
         
         private void Awake()
         {
             renderers = GetComponentsInChildren<Renderer>();
+            referenceCollider = GetComponentInChildren<BoxCollider>();
             fixedRotation = transform.rotation;
-            CalculateCombinedBounds();
+            
+            if (referenceCollider != null)
+            {
+                referenceCollider.enabled = false;
+            }
         }
         
         private void LateUpdate()
@@ -38,15 +43,23 @@ namespace InterdimensionalGroceries.BuildSystem
         {
             fixedRotation *= Quaternion.Euler(0f, 90f, 0f);
             transform.rotation = fixedRotation;
-            CalculateCombinedBounds();
         }
         
         public bool CheckValidPlacement()
         {
-            Vector3 worldCenter = transform.TransformPoint(combinedBounds.center);
-            Vector3 halfExtents = combinedBounds.extents + Vector3.one * collisionCheckPadding;
+            if (referenceCollider == null)
+            {
+                isValid = false;
+                UpdateVisualState();
+                return false;
+            }
             
-            Collider[] overlaps = Physics.OverlapBox(worldCenter, halfExtents, transform.rotation, collisionCheckMask);
+            Vector3 worldCenter = referenceCollider.transform.TransformPoint(referenceCollider.center);
+            Vector3 worldSize = Vector3.Scale(referenceCollider.size, referenceCollider.transform.lossyScale);
+            Vector3 halfExtents = worldSize * 0.5f + Vector3.one * collisionCheckPadding;
+            Quaternion worldRotation = referenceCollider.transform.rotation;
+            
+            Collider[] overlaps = Physics.OverlapBox(worldCenter, halfExtents, worldRotation, collisionCheckMask);
             
             isValid = overlaps.Length == 0;
             UpdateVisualState();
@@ -74,50 +87,17 @@ namespace InterdimensionalGroceries.BuildSystem
             UpdateVisualState();
         }
         
-        private void CalculateCombinedBounds()
-        {
-            if (renderers.Length == 0)
-            {
-                combinedBounds = new Bounds(Vector3.zero, Vector3.one);
-                return;
-            }
-            
-            Vector3 min = Vector3.positiveInfinity;
-            Vector3 max = Vector3.negativeInfinity;
-            
-            foreach (Renderer rend in renderers)
-            {
-                MeshFilter meshFilter = rend.GetComponent<MeshFilter>();
-                if (meshFilter != null && meshFilter.sharedMesh != null)
-                {
-                    Mesh mesh = meshFilter.sharedMesh;
-                    Vector3[] vertices = mesh.vertices;
-                    
-                    foreach (Vector3 vertex in vertices)
-                    {
-                        Vector3 worldVertex = rend.transform.TransformPoint(vertex);
-                        Vector3 localVertex = transform.InverseTransformPoint(worldVertex);
-                        
-                        min = Vector3.Min(min, localVertex);
-                        max = Vector3.Max(max, localVertex);
-                    }
-                }
-            }
-            
-            combinedBounds = new Bounds();
-            combinedBounds.SetMinMax(min, max);
-        }
-        
         private void OnDrawGizmos()
         {
-            if (Application.isPlaying && renderers != null && renderers.Length > 0)
+            if (Application.isPlaying && referenceCollider != null)
             {
                 Gizmos.color = isValid ? Color.green : Color.red;
                 
-                Vector3 worldCenter = transform.TransformPoint(combinedBounds.center);
-                Vector3 paddedSize = combinedBounds.size + Vector3.one * (collisionCheckPadding * 2f);
+                Vector3 worldCenter = referenceCollider.transform.TransformPoint(referenceCollider.center);
+                Vector3 worldSize = Vector3.Scale(referenceCollider.size, referenceCollider.transform.lossyScale);
+                Vector3 paddedSize = worldSize + Vector3.one * (collisionCheckPadding * 2f);
                 
-                Gizmos.matrix = Matrix4x4.TRS(worldCenter, transform.rotation, Vector3.one);
+                Gizmos.matrix = Matrix4x4.TRS(worldCenter, referenceCollider.transform.rotation, Vector3.one);
                 Gizmos.DrawWireCube(Vector3.zero, paddedSize);
                 Gizmos.matrix = Matrix4x4.identity;
             }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using InterdimensionalGroceries.UI;
 
 namespace InterdimensionalGroceries.Scenes
 {
@@ -8,6 +9,9 @@ namespace InterdimensionalGroceries.Scenes
     {
         [Header("Voice Lines")]
         [SerializeField] private AudioClip[] voiceLines;
+        
+        [Header("Subtitles")]
+        [SerializeField] private SubtitleData[] subtitles;
         
         [Header("Timing Settings")]
         [SerializeField] private float firstLineDelay = 0f;
@@ -114,6 +118,11 @@ namespace InterdimensionalGroceries.Scenes
                 audioSource.Stop();
             }
 
+            if (SubtitleController.Instance != null)
+            {
+                SubtitleController.Instance.HideSubtitle();
+            }
+
             isPlaying = false;
             Debug.Log("[VoiceActingSequencer] Voice sequence stopped");
         }
@@ -137,7 +146,17 @@ namespace InterdimensionalGroceries.Scenes
                 audioSource.clip = voiceLines[i];
                 audioSource.Play();
 
+                if (subtitles != null && i < subtitles.Length && subtitles[i] != null && SubtitleController.Instance != null)
+                {
+                    SubtitleController.Instance.ShowSubtitle(subtitles[i], voiceLines[i].length);
+                }
+
                 yield return new WaitForSeconds(voiceLines[i].length);
+
+                if (SubtitleController.Instance != null)
+                {
+                    SubtitleController.Instance.HideSubtitle();
+                }
 
                 if (i < voiceLines.Length - 1)
                 {

@@ -20,6 +20,13 @@ namespace InterdimensionalGroceries.Scenes
         [SerializeField] private MenuCameraRotation menuCameraRotation;
         [SerializeField] private VoiceActingSequencer voiceActingSequencer;
         [SerializeField] private IntroPanicSoundManager panicSoundManager;
+        [SerializeField] private ScreenGlitchController screenGlitchController;
+        
+        [Header("Glitch Audio")]
+        [SerializeField] private AudioClipData preGlitchWarningSound;
+        [SerializeField] private AudioClipData smallGlitchSound;
+        [SerializeField] private AudioClipData betweenGlitchesSound;
+        [SerializeField] private AudioClipData largeGlitchSound;
 
         [Header("Phase Timings")]
         [SerializeField] private float uiFadeDuration = 1f;
@@ -31,6 +38,13 @@ namespace InterdimensionalGroceries.Scenes
         [SerializeField] private float waitBeforeFall = 2f;
         [SerializeField] private float fallDuration = 1f;
         [SerializeField] private float fadeToWhiteDuration = 2f;
+        
+        [Header("Glitch Timings")]
+        [SerializeField] private float preGlitchWarningDelay = 1.0f;
+        [SerializeField] private float timeBeforeFirstGlitch = 2.0f;
+        [SerializeField] private float smallGlitchDuration = 0.2f;
+        [SerializeField] private float timeBetweenGlitches = 1.0f;
+        [SerializeField] private float largeGlitchDuration = 0.4f;
 
         [Header("Scene Settings")]
         [SerializeField] private string tutorialSceneName = "Tutorial";
@@ -129,7 +143,57 @@ namespace InterdimensionalGroceries.Scenes
                 organicCameraLook.StopOrganicLooking();
             }
 
-            yield return new WaitForSeconds(waitBeforePanic);
+            float glitchSequenceTime = preGlitchWarningDelay + timeBeforeFirstGlitch + smallGlitchDuration + timeBetweenGlitches + largeGlitchDuration;
+            yield return new WaitForSeconds(waitBeforePanic - glitchSequenceTime);
+            
+            if (preGlitchWarningSound != null && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(preGlitchWarningSound, Camera.main.transform.position);
+            }
+            
+            yield return new WaitForSeconds(preGlitchWarningDelay);
+            
+            if (screenGlitchController != null)
+            {
+                screenGlitchController.PlaySmallGlitch(smallGlitchDuration);
+                
+                if (smallGlitchSound != null && AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(smallGlitchSound, Camera.main.transform.position);
+                }
+            }
+            
+            yield return new WaitForSeconds(smallGlitchDuration);
+            
+            if (betweenGlitchesSound != null && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(betweenGlitchesSound, Camera.main.transform.position);
+                
+                if (SubtitleController.Instance != null && betweenGlitchesSound.Subtitles != null && betweenGlitchesSound.Subtitles.Length > 0)
+                {
+                    SubtitleData subtitle = betweenGlitchesSound.GetRandomSubtitle();
+                    if (subtitle != null)
+                    {
+                        AudioClip clip = betweenGlitchesSound.GetRandomClip();
+                        float duration = clip != null ? clip.length : 2f;
+                        SubtitleController.Instance.ShowSubtitle(subtitle, duration);
+                    }
+                }
+            }
+            
+            yield return new WaitForSeconds(timeBetweenGlitches);
+            
+            if (screenGlitchController != null)
+            {
+                screenGlitchController.PlayLargeGlitch(largeGlitchDuration);
+                
+                if (largeGlitchSound != null && AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySound(largeGlitchSound, Camera.main.transform.position);
+                }
+            }
+            
+            yield return new WaitForSeconds(largeGlitchDuration);
 
             if (voiceActingSequencer != null)
             {
@@ -231,6 +295,11 @@ namespace InterdimensionalGroceries.Scenes
             {
                 MusicManager.Instance.FadeOutMusic(fallDuration);
                 Debug.Log("[IntroSequenceController] Fading out music as player falls into portal");
+            }
+
+            if (cameraLookSequence != null)
+            {
+                StartCoroutine(cameraLookSequence.LookUpWhileFalling());
             }
 
             Vector3 startPosition = playerGameObject.transform.position;

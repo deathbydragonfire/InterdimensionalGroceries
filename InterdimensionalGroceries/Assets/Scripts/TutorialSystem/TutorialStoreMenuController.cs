@@ -21,6 +21,7 @@ namespace TutorialSystem
         private Button abilitiesButton;
         private Button roomsButton;
         private Button furnitureButton;
+        private Button toolsButton;
         private Button closeButton;
         private VisualElement menuGrid;
         private Label pleaseWaitLabel;
@@ -62,6 +63,7 @@ namespace TutorialSystem
             abilitiesButton = mainRoot.Q<Button>("AbilitiesButton");
             roomsButton = mainRoot.Q<Button>("RoomsButton");
             furnitureButton = mainRoot.Q<Button>("FurnitureButton");
+            toolsButton = mainRoot.Q<Button>("ToolsButton");
             closeButton = mainRoot.Q<Button>("CloseButton");
 
             HideAllButtons();
@@ -116,6 +118,11 @@ namespace TutorialSystem
             if (furnitureButton != null)
             {
                 furnitureButton.style.display = DisplayStyle.None;
+            }
+
+            if (toolsButton != null)
+            {
+                toolsButton.style.display = DisplayStyle.None;
             }
         }
 

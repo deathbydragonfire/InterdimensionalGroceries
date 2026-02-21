@@ -15,85 +15,86 @@ MonoBehaviour:
   commentEntries:
   - itemType: 0
     comments:
-    - I need something fragile and oval
-    - Bring me the breakfast essential
-    - I want something that cracks under pressure
-    - The shell game requires these
-    - Scramble me up some of those ovoids
+    - I like something a little more...scrambled
+    - I'm looking for whatever came before the chicken
+    - I want something that breaks if I drop it
+    - Give me an item that is mostly blue with redd-ish purple bumps
+    - I want a shell, but not from the sea
+    - I want something you need to handle with care
+    - The purple spores are the best part
+    - The purple spores are the best part
   - itemType: 1
     comments:
-    - I want something that is sweet to the core
-    - Bring me the doctor's enemy
-    - Something that falls far from the tree
-    - The forbidden fruit, but make it legal
-    - One a day keeps... well, you know
-  - itemType: 2
-    comments:
-    - I need something with protein
-    - Bring me flesh
-    - I want the hunter's prize
-    - The carnivore's delight
-    - Something that once had a heartbeat
+    - Not a pair but a ____
+    - I think it might be a fruit
+    - It looks like a pear but its got way more bumps
+    - I want something yellow with bumps all over
+    - I want something with a stem
+    - Yellow Green on the outside, soft on the inside
   - itemType: 3
     comments:
-    - I need the musical fruit
-    - Bring me legumes
-    - Something that makes me toot
-    - The more you eat, the more you... you know
-    - Magic beans, but less magical
-  - itemType: 4
-    comments:
-    - I need small stones
-    - Bring me tiny rocks
-    - Something to skip across water
-    - Little geological specimens
-    - Earth's confetti
+    - Hubba Bubba Grubba
+    - Pop the lid, Something wriggles inside
+    - Something that might squirm...or make you squirm
+    - I need something to fish with
+    - A can of a fisherman's favorite bait
   - itemType: 5
     comments:
-    - I need an Estos
-    - Bring me the mysterious item
-    - Something from another dimension
-    - The thing we don't talk about
-    - You know... THOSE things
-  - itemType: 6
-    comments:
-    - I need the sacred beetle
-    - Bring me the ancient bug
-    - Something Egyptian
-    - The pharaoh's favorite insect
-    - Cleopatra's little friend
-  - itemType: 7
-    comments:
-    - I need the forbidden meat
-    - Bring me what we don't talk about
-    - The other white meat
-    - Something... unmentionable
-    - You know exactly what I mean
+    - Bawk Bawk
+    - Now did it become before the egg?
+    - Running around with its head cut off
+    - Some people use this word as cowardly
+    - A farms morning alarm sound
   - itemType: 8
     comments:
-    - I need something fizzy
-    - Bring me the bubbles
-    - Something that goes pop
-    - Carbonated satisfaction
-    - The fizzy lifting drink
-  - itemType: 9
+    - Its like a squid cereal. Oh it is
+    - My flavor flavor. Ink Flavor
+    - Dont bite into a tentacle
+    - Do I pour in Water or Milk?
+  - itemType: 6
     comments:
-    - I need to see
-    - Bring me the window to the soul
-    - Something that stares back
-    - The orb of vision
-    - I see what you did there... literally
+    - Baked, Kidney, Green, Black, Lima
+    - Some people like them "Refried"
+    - It's 100% not jeans
+    - I think they have a kidney version of this
+    - Mean green ____ Machine
   - itemType: 10
     comments:
-    - I need a wriggly snack
-    - Bring me larvae
-    - Something that squirms
-    - The early bird's breakfast
-    - Protein that moves
+    - It's Pig...The Long Way
+    - Well it ain't a short pig
+    - Extendo Pork
+    - Did anyone actually measure that pig?
+    - Soon to be digested long pig
   - itemType: 11
     comments:
-    - I need the sewer dweller
-    - Bring me the plague carrier
-    - Something with a tail
-    - The urban explorer
-    - New York's unofficial mascot
+    - Carbonated Rodent
+    - Isn't this one of the Jokers Origin Stories?
+    - Fizzy Lifting Rat
+    - Not a Cat in a Vat
+    - Not a Rat in a Hat
+  - itemType: 12
+    comments:
+    - I always feel like somebody is watching
+    - Kind of a detective. A Private ____
+    - Most people have 2 of these. Unless youre a pirate. Or a cyclops
+    - I need glasses for mine
+    - What color are your ocular organs?
+  - itemType: 13
+    comments:
+    - The start of the plague
+    - It's the vatless version of Rat in a Vat
+    - Big Mouse
+    - I want something with only 1 stated ingredient
+    - 100% rodent guaranteed
+  - itemType: 9
+    comments:
+    - a pharoah's best friend
+    - Desert Delecacy. Now Portable!
+    - Cleopatra probably saw these all the time
+    - Big ole Beetle
+  - itemType: 7
+    comments:
+    - A fish has to eat too
+    - Wait these aren't fruity pebbles?
+    - What are these fish pebbles made out of again?
+    - People like to skip the nature version of these on water

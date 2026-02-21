@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.EconomySystem.StoreInventory
   availableItems:
   - {fileID: 11400000, guid: 2e79197be1f2f3f4cbadb1c56bc6dab4, type: 2}
-  - {fileID: 11400000, guid: 081efb3d597be8c4ea431ca6a56ffb7b, type: 2}
+  - {fileID: 11400000, guid: 175cebac285155640a5389082268e97d, type: 2}
+  - {fileID: 11400000, guid: 7b1cd15d78e14dc4991b393e1997fa23, type: 2}
   - {fileID: 11400000, guid: 7986e5f27eaf87a4c93f69d03c88bbf2, type: 2}
   - {fileID: 11400000, guid: 6440d79b3bea2ae419d4d8c3e69cd69b, type: 2}
   - {fileID: 11400000, guid: 28a66f762dfbb1141a2fe6ac1548d0cd, type: 2}
-  - {fileID: 11400000, guid: 5e9838e8d3fde8947bfbee61503fba4a, type: 2}
+  - {fileID: 11400000, guid: 6395129af1da6d74ca00e93971f9b06d, type: 2}
   - {fileID: 11400000, guid: 5bef6bba9c3427c4b82d64e6f3c160b2, type: 2}
-  - {fileID: 11400000, guid: 7b1cd15d78e14dc4991b393e1997fa23, type: 2}
+  - {fileID: 11400000, guid: ebb1fbbd7fe72f443b1bd9bb89a287db, type: 2}
+  - {fileID: 11400000, guid: 55d7c1b8d65df2244a0abe70ce2f9dd5, type: 2}
+  - {fileID: 11400000, guid: 5e9838e8d3fde8947bfbee61503fba4a, type: 2}
+  - {fileID: 11400000, guid: 081efb3d597be8c4ea431ca6a56ffb7b, type: 2}

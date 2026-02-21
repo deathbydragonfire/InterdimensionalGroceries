@@ -8,7 +8,7 @@ namespace InterdimensionalGroceries.ItemSystem
         Eggs,
         Apples,
         Meat,
-        grub,
+        Grub,
         Pear,
         Chicken,
         Beans,
@@ -18,7 +18,6 @@ namespace InterdimensionalGroceries.ItemSystem
         LongPig,
         Soda,
         Eye,
-        Grub,
         Rat,
         Unknown
     }

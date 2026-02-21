@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b56e3820fec479f428e7ceccdbadf3e7, type: 3}
   m_Name: SO_TutorialMusic
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 54d1f8a4c6a3f5b42be58c6d24f9b6e8, type: 3}
   minVolume: 0.4
   maxVolume: 0.6
   minPitch: 1

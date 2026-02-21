@@ -17,13 +17,32 @@ namespace InterdimensionalGroceries.EconomySystem
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            // Check if there's already an instance
+            if (Instance != null)
             {
-                Destroy(gameObject);
-                return;
+                // If the existing instance is this object, we're good
+                if (Instance == this)
+                {
+                    // Already set, do nothing
+                }
+                // If the existing instance is a different valid object, destroy this new one
+                else if (Instance != null) // Unity's null check - false if destroyed
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                // If the existing instance was destroyed, replace it
+                else
+                {
+                    Instance = this;
+                }
+            }
+            else
+            {
+                // No existing instance, set this as the instance
+                Instance = this;
             }
 
-            Instance = this;
             DontDestroyOnLoad(gameObject);
 
             LoadUpgradeLevels();

@@ -159,9 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Rat in a vat of acid
-    tagline: Its almost as toxic as my ex girlfriend
-    price: 15
+    itemName: Rat in a Vat
+    tagline: Better than a Vat in a Rat I guess
+    price: 2
     itemType: 11
     itemAudioData: {fileID: 0}
 --- !u!96 &3287884471185024176

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.EconomySystem;
 
@@ -22,8 +23,11 @@ namespace InterdimensionalGroceries.UI
         private VisualElement suppliesContainer;
         private VisualElement abilitiesContainer;
         private VisualElement furnitureContainer;
+        private VisualElement comingSoonContainer;
+        private Label comingSoonText;
         private Label mainMenuMoneyLabel;
         private System.Action onCloseCallback;
+        private Coroutine comingSoonCoroutine;
 
         private enum MenuState
         {
@@ -53,14 +57,17 @@ namespace InterdimensionalGroceries.UI
                 var mainRoot = mainMenuDocument.rootVisualElement;
                 mainMenuContainer = mainRoot.Q<VisualElement>("StoreContainer");
                 mainMenuMoneyLabel = mainRoot.Q<Label>("CurrentMoney");
+                comingSoonContainer = mainRoot.Q<VisualElement>("ComingSoonContainer");
+                comingSoonText = mainRoot.Q<Label>("ComingSoonText");
 
                 var suppliesButton = mainRoot.Q<Button>("SuppliesButton");
                 var abilitiesButton = mainRoot.Q<Button>("AbilitiesButton");
+                var toolsButton = mainRoot.Q<Button>("ToolsButton");
                 var roomsButton = mainRoot.Q<Button>("RoomsButton");
                 var furnitureButton = mainRoot.Q<Button>("FurnitureButton");
                 var closeButton = mainRoot.Q<Button>("CloseButton");
 
-                Debug.Log($"StoreMenuController: Buttons found - Supplies:{suppliesButton != null}, Abilities:{abilitiesButton != null}, Close:{closeButton != null}");
+                Debug.Log($"StoreMenuController: Buttons found - Supplies:{suppliesButton != null}, Abilities:{abilitiesButton != null}, Tools:{toolsButton != null}, Rooms:{roomsButton != null}, Close:{closeButton != null}");
 
                 if (suppliesButton != null)
                 {
@@ -70,6 +77,11 @@ namespace InterdimensionalGroceries.UI
                 if (abilitiesButton != null)
                 {
                     abilitiesButton.clicked += () => { Debug.Log("Abilities button clicked!"); PlayButtonClickSound(); NavigateToAbilities(); };
+                }
+
+                if (toolsButton != null)
+                {
+                    toolsButton.clicked += () => { Debug.Log("Tools button clicked!"); PlayButtonClickSound(); ShowComingSoon("Tools"); };
                 }
 
                 if (roomsButton != null)
@@ -90,6 +102,11 @@ namespace InterdimensionalGroceries.UI
                 if (mainMenuContainer != null)
                 {
                     mainMenuContainer.style.display = DisplayStyle.None;
+                }
+
+                if (comingSoonContainer != null)
+                {
+                    comingSoonContainer.style.display = DisplayStyle.None;
                 }
                 
                 Debug.Log("StoreMenuController: MainMenu initialized, container hidden");
@@ -286,6 +303,71 @@ namespace InterdimensionalGroceries.UI
         private void ShowComingSoon(string featureName)
         {
             Debug.Log($"{featureName} feature coming soon!");
+            
+            if (comingSoonCoroutine != null)
+            {
+                StopCoroutine(comingSoonCoroutine);
+            }
+            
+            comingSoonCoroutine = StartCoroutine(ComingSoonAnimation());
+        }
+
+        private IEnumerator ComingSoonAnimation()
+        {
+            if (comingSoonContainer == null || comingSoonText == null)
+            {
+                yield break;
+            }
+
+            comingSoonContainer.style.display = DisplayStyle.Flex;
+            comingSoonText.style.translate = new Translate(new Length(-100, LengthUnit.Percent), 0);
+
+            float duration = 0.5f;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / duration;
+                float easedT = EaseOutCubic(t);
+                
+                float xPosition = Mathf.Lerp(-100f, 0f, easedT);
+                comingSoonText.style.translate = new Translate(new Length(xPosition, LengthUnit.Percent), 0);
+                
+                yield return null;
+            }
+
+            comingSoonText.style.translate = new Translate(0, 0);
+
+            yield return new WaitForSeconds(1.5f);
+
+            elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / duration;
+                float easedT = EaseInCubic(t);
+                
+                float xPosition = Mathf.Lerp(0f, 100f, easedT);
+                comingSoonText.style.translate = new Translate(new Length(xPosition, LengthUnit.Percent), 0);
+                
+                yield return null;
+            }
+
+            comingSoonContainer.style.display = DisplayStyle.None;
+            comingSoonText.style.translate = new Translate(new Length(-100, LengthUnit.Percent), 0);
+            
+            comingSoonCoroutine = null;
+        }
+
+        private float EaseOutCubic(float t)
+        {
+            return 1f - Mathf.Pow(1f - t, 3f);
+        }
+
+        private float EaseInCubic(float t)
+        {
+            return t * t * t;
         }
 
         private void HideAllSubmenus()

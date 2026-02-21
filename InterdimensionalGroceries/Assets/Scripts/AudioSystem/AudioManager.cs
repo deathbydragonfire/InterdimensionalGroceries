@@ -60,13 +60,17 @@ namespace InterdimensionalGroceries.AudioSystem
 
         private void Awake()
         {
+            // Traditional singleton - keep the FIRST instance, destroy duplicates
             if (Instance != null && Instance != this)
             {
+                Debug.Log($"[AudioManager] Duplicate found in {gameObject.scene.name}. Destroying NEW duplicate and keeping existing instance.");
                 Destroy(gameObject);
                 return;
             }
+            
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log($"[AudioManager] Initialized as singleton in scene: {gameObject.scene.name}");
 
             if (prewarmPool)
             {

@@ -51,6 +51,11 @@ namespace InterdimensionalGroceries.PhaseManagement
                 {
                     Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
                     AudioManager.Instance.PlaySound(AudioEventType.CountdownTick, soundPosition);
+                    Debug.Log($"[DeliveryPhaseCountdown] Playing tick sound {i}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[DeliveryPhaseCountdown] AudioManager.Instance is NULL on tick {i}!");
                 }
 
                 yield return new WaitForSeconds(countdownInterval);

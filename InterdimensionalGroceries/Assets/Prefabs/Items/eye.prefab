@@ -159,9 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
-    itemName: Eyefruit
-    tagline: Im glad you SAW this one
-    price: 10
+    itemName: Eye Froot
+    tagline: Well that's...unsettling
+    price: 8
     itemType: 12
     itemAudioData: {fileID: 0}
 --- !u!96 &2402403985560013105

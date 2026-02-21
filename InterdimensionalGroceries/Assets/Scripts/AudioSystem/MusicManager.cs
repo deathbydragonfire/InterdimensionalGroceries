@@ -29,13 +29,17 @@ namespace InterdimensionalGroceries.AudioSystem
         
         private void Awake()
         {
+            // Traditional singleton - keep the FIRST instance, destroy duplicates
             if (Instance != null && Instance != this)
             {
+                Debug.Log($"[MusicManager] Duplicate found in {gameObject.scene.name}. Destroying NEW duplicate and keeping existing instance.");
                 Destroy(gameObject);
                 return;
             }
+            
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log($"[MusicManager] Initialized as singleton in scene: {gameObject.scene.name}");
             
             SetupAudioSources();
         }
@@ -65,15 +69,22 @@ namespace InterdimensionalGroceries.AudioSystem
         
         private void Start()
         {
+            Debug.Log("[MusicManager] Start called");
             if (GamePhaseManager.Instance != null)
             {
+                Debug.Log($"[MusicManager] Subscribing to GamePhaseManager events. Current phase: {GamePhaseManager.Instance.CurrentPhase}");
                 GamePhaseManager.Instance.OnDeliveryPhaseStarted += OnDeliveryPhaseStarted;
                 GamePhaseManager.Instance.OnInventoryPhaseStarted += OnInventoryPhaseStarted;
                 
                 if (!isPlayingMenuMusic)
                 {
+                    Debug.Log($"[MusicManager] Playing music for current phase: {GamePhaseManager.Instance.CurrentPhase}");
                     PlayMusicForPhase(GamePhaseManager.Instance.CurrentPhase, false);
                 }
+            }
+            else
+            {
+                Debug.LogWarning("[MusicManager] GamePhaseManager.Instance is NULL in Start!");
             }
         }
         

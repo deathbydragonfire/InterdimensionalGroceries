@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee6469ba61183a4385669a51b04607e, type: 3}
+  m_Name: SO_Subtitle_Line3
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.UI.SubtitleData
+  subtitleText: Yeah, something isn't right. I might just go back home.
+  displayMode: 0
+  displayDuration: 0
+  characterDelay: 0.05
+  glitchIntensity: 0.7

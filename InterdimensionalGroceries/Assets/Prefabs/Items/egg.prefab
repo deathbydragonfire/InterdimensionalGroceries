@@ -160,8 +160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.ItemSystem.PickableItem
   itemData:
     itemName: Egg
-    tagline: 'They say its a dinosaur egg '
-    price: 20
+    tagline: Scrambled, Fried, Sunny-Side Up, Over Easy
+    price: 12
     itemType: 0
     itemAudioData: {fileID: 0}
 --- !u!96 &6986154268973784490

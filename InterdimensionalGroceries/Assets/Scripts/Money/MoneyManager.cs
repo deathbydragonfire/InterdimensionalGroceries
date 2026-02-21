@@ -12,7 +12,7 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private Color positiveMoneyColor = Color.white;
     [SerializeField] private Color negativeMoneyColor = Color.red;
 
-    private float currentMoney = 20f;
+    private float currentMoney = 100f;
 
     private void Awake()
     {

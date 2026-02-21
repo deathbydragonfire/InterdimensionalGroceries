@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using System.Collections;
 
 namespace InterdimensionalGroceries.PlayerController
@@ -11,6 +13,7 @@ namespace InterdimensionalGroceries.PlayerController
         [SerializeField] private float lookRightAngleMin = 50f;
         [SerializeField] private float lookRightAngleMax = 70f;
         [SerializeField] private float lookDownAngle = 80f;
+        [SerializeField] private float lookForwardPitch = 0f;
         [SerializeField] private float lookUpAngleMin = -75f;
         [SerializeField] private float lookUpAngleMax = -60f;
 
@@ -19,7 +22,8 @@ namespace InterdimensionalGroceries.PlayerController
         [SerializeField] private float lookDurationMax = 0.7f;
         [SerializeField] private float pauseBetweenLooksMin = 0.15f;
         [SerializeField] private float pauseBetweenLooksMax = 0.35f;
-        [SerializeField] private float lookDownDuration = 2.5f;
+        [SerializeField] private float lookForwardDuration = 1.5f;
+        [SerializeField] private float lookUpDuration = 1.0f;
 
         [Header("Turn Around Settings")]
         [SerializeField] private Transform turnAroundTarget;
@@ -29,11 +33,24 @@ namespace InterdimensionalGroceries.PlayerController
         [Header("Camera Shake")]
         [SerializeField] private float shakeIntensity = 0.15f;
         [SerializeField] private float shakeFrequency = 25f;
+        [SerializeField] private float forwardShakeStartIntensity = 0.05f;
+        [SerializeField] private float forwardShakeEndIntensity = 0.3f;
+        [SerializeField] private float upShakeIntensity = 0.4f;
+
+        [Header("Bloom Effects")]
+        [SerializeField] private Volume postProcessVolume;
+        [SerializeField] private float initialBloomIntensity = 2.76f;
+        [SerializeField] private float forwardBloomStartIntensity = 0.5f;
+        [SerializeField] private float forwardBloomEndIntensity = 2.0f;
+        [SerializeField] private float upBloomStartIntensity = 2.0f;
+        [SerializeField] private float upBloomEndIntensity = 4.0f;
 
         private Transform cameraTransform;
         private Transform playerTransform;
         private Coroutine sequenceCoroutine;
         private Vector3 originalLocalPosition;
+        private Bloom bloom;
+        private float originalBloomIntensity;
 
         private void Awake()
         {
@@ -42,6 +59,16 @@ namespace InterdimensionalGroceries.PlayerController
             {
                 originalLocalPosition = cameraTransform.localPosition;
                 playerTransform = cameraTransform.parent;
+            }
+
+            if (postProcessVolume != null && postProcessVolume.sharedProfile != null)
+            {
+                if (postProcessVolume.sharedProfile.TryGet(out bloom))
+                {
+                    originalBloomIntensity = bloom.intensity.value;
+                    bloom.intensity.overrideState = true;
+                    bloom.intensity.value = initialBloomIntensity;
+                }
             }
         }
 
@@ -66,15 +93,15 @@ namespace InterdimensionalGroceries.PlayerController
 
             float leftAngle = Random.Range(lookLeftAngleMin, lookLeftAngleMax);
             float leftDuration = Random.Range(lookDurationMin, lookDurationMax);
-            yield return LookAtAngleWithShake(leftAngle, 0f, leftDuration);
+            yield return LookAtAngleWithShake(leftAngle, 0f, leftDuration, shakeIntensity);
             yield return new WaitForSeconds(Random.Range(pauseBetweenLooksMin, pauseBetweenLooksMax));
 
             float rightAngle = Random.Range(lookRightAngleMin, lookRightAngleMax);
             float rightDuration = Random.Range(lookDurationMin, lookDurationMax);
-            yield return LookAtAngleWithShake(rightAngle, 0f, rightDuration);
+            yield return LookAtAngleWithShake(rightAngle, 0f, rightDuration, shakeIntensity);
             yield return new WaitForSeconds(Random.Range(pauseBetweenLooksMin, pauseBetweenLooksMax));
 
-            yield return LookAtAngleWithShake(0f, lookDownAngle, 0.6f);
+            yield return LookAtAngleWithShake(0f, lookDownAngle, 0.6f, shakeIntensity);
             
             yield return new WaitForSeconds(0.5f);
             
@@ -82,10 +109,26 @@ namespace InterdimensionalGroceries.PlayerController
             
             yield return new WaitForSeconds(1.4f);
 
-            float upAngle = Random.Range(lookUpAngleMin, lookUpAngleMax);
-            yield return LookAtAngleWithShake(0f, upAngle, 0.5f);
+            yield return LookForwardWithIncreasingEffects();
 
             onComplete?.Invoke();
+        }
+
+        public IEnumerator LookUpWhileFalling()
+        {
+            float upAngle = Random.Range(lookUpAngleMin, lookUpAngleMax);
+            yield return LookAtAngleWithShakeAndBloom(0f, upAngle, lookUpDuration, 
+                upShakeIntensity, upShakeIntensity, 
+                upBloomStartIntensity, upBloomEndIntensity, 
+                false);
+        }
+
+        private IEnumerator LookForwardWithIncreasingEffects()
+        {
+            yield return LookAtAngleWithShakeAndBloom(0f, lookForwardPitch, lookForwardDuration, 
+                forwardShakeStartIntensity, forwardShakeEndIntensity, 
+                forwardBloomStartIntensity, forwardBloomEndIntensity, 
+                true);
         }
 
         private IEnumerator TurnAroundToTarget()
@@ -122,7 +165,7 @@ namespace InterdimensionalGroceries.PlayerController
             cameraTransform.localRotation = Quaternion.identity;
         }
 
-        private IEnumerator LookAtAngleWithShake(float yaw, float pitch, float duration)
+        private IEnumerator LookAtAngleWithShake(float yaw, float pitch, float duration, float intensity)
         {
             Quaternion startRotation = cameraTransform.localRotation;
             Quaternion targetRotation = Quaternion.Euler(pitch, yaw, 0f);
@@ -136,10 +179,51 @@ namespace InterdimensionalGroceries.PlayerController
                 
                 cameraTransform.localRotation = Quaternion.Slerp(startRotation, targetRotation, smoothT);
                 
-                float shakeX = (Mathf.PerlinNoise(Time.time * shakeFrequency, 0f) - 0.5f) * shakeIntensity;
-                float shakeY = (Mathf.PerlinNoise(0f, Time.time * shakeFrequency) - 0.5f) * shakeIntensity;
+                float shakeX = (Mathf.PerlinNoise(Time.time * shakeFrequency, 0f) - 0.5f) * intensity;
+                float shakeY = (Mathf.PerlinNoise(0f, Time.time * shakeFrequency) - 0.5f) * intensity;
                 
                 cameraTransform.localPosition = originalLocalPosition + new Vector3(shakeX, shakeY, 0f);
+                
+                yield return null;
+            }
+
+            cameraTransform.localRotation = targetRotation;
+        }
+
+        private IEnumerator LookAtAngleWithShakeAndBloom(float yaw, float pitch, float duration, 
+            float shakeStartIntensity, float shakeEndIntensity, 
+            float bloomStartIntensity, float bloomEndIntensity, 
+            bool gradualShake = true)
+        {
+            Quaternion startRotation = cameraTransform.localRotation;
+            Quaternion targetRotation = Quaternion.Euler(pitch, yaw, 0f);
+
+            if (bloom != null)
+            {
+                bloom.intensity.overrideState = true;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                float smoothT = Mathf.SmoothStep(0f, 1f, t);
+                
+                cameraTransform.localRotation = Quaternion.Slerp(startRotation, targetRotation, smoothT);
+                
+                float currentShakeIntensity = gradualShake ? 
+                    Mathf.Lerp(shakeStartIntensity, shakeEndIntensity, t) : shakeEndIntensity;
+                
+                float shakeX = (Mathf.PerlinNoise(Time.time * shakeFrequency, 0f) - 0.5f) * currentShakeIntensity;
+                float shakeY = (Mathf.PerlinNoise(0f, Time.time * shakeFrequency) - 0.5f) * currentShakeIntensity;
+                
+                cameraTransform.localPosition = originalLocalPosition + new Vector3(shakeX, shakeY, 0f);
+                
+                if (bloom != null)
+                {
+                    bloom.intensity.value = Mathf.Lerp(bloomStartIntensity, bloomEndIntensity, t);
+                }
                 
                 yield return null;
             }
@@ -158,6 +242,11 @@ namespace InterdimensionalGroceries.PlayerController
             if (cameraTransform != null)
             {
                 cameraTransform.localPosition = originalLocalPosition;
+            }
+
+            if (bloom != null)
+            {
+                bloom.intensity.value = originalBloomIntensity;
             }
         }
     }

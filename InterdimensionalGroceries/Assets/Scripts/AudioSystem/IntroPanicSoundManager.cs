@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using InterdimensionalGroceries.UI;
 
 namespace InterdimensionalGroceries.AudioSystem
 {
@@ -10,6 +11,17 @@ namespace InterdimensionalGroceries.AudioSystem
         [SerializeField] private AudioClipData tensionSound;
         [SerializeField] private AudioClipData risingStingSound;
         [SerializeField] private AudioClipData portalOpeningSound;
+
+        [Header("Panic Subtitles")]
+        [SerializeField] private SubtitleData panicSubtitle1;
+        [SerializeField] private SubtitleData panicSubtitle2;
+        [SerializeField] private SubtitleData panicSubtitle3;
+        
+        [Header("Panic Subtitle Timing")]
+        [SerializeField] private float panicSubtitle1Duration = 5f;
+        [SerializeField] private float panicSubtitle2Duration = 4f;
+        [Tooltip("Panic 3 subtitle will display until manually hidden")]
+        [SerializeField] private bool autostartPanicSubtitles = true;
 
         [Header("Timing Delays (seconds)")]
         [Tooltip("Delay before voice acting starts. Negative values start before panic sequence, positive values delay after sequence starts.")]
@@ -43,6 +55,7 @@ namespace InterdimensionalGroceries.AudioSystem
         private AudioSource portalSource;
 
         private Coroutine panicSequenceCoroutine;
+        private Coroutine panicSubtitleCoroutine;
 
         private void Awake()
         {
@@ -145,7 +158,74 @@ namespace InterdimensionalGroceries.AudioSystem
 
         public void PlayVoiceActing()
         {
-            PlaySound(voiceActingSource, voiceActing, voiceActingVolume, "Voice Acting");
+            if (voiceActingSource == null || voiceActing == null || voiceActing.Clips == null || voiceActing.Clips.Length == 0)
+            {
+                if (enableDebugLogging)
+                {
+                    Debug.LogWarning("[IntroPanicSoundManager] Cannot play voice acting - source or clips missing");
+                }
+                return;
+            }
+
+            int clipIndex = Random.Range(0, voiceActing.Clips.Length);
+            AudioClip clip = voiceActing.Clips[clipIndex];
+            
+            voiceActingSource.clip = clip;
+            voiceActingSource.volume = voiceActing.GetRandomVolume() * voiceActingVolume;
+            voiceActingSource.pitch = voiceActing.GetRandomPitch();
+            voiceActingSource.outputAudioMixerGroup = voiceActing.MixerGroup;
+            voiceActingSource.Play();
+
+            if (autostartPanicSubtitles && SubtitleController.Instance != null)
+            {
+                if (panicSubtitleCoroutine != null)
+                {
+                    StopCoroutine(panicSubtitleCoroutine);
+                }
+                panicSubtitleCoroutine = StartCoroutine(PanicSubtitleSequence());
+            }
+
+            if (enableDebugLogging)
+            {
+                Debug.Log($"[IntroPanicSoundManager] Playing Voice Acting: {clip.name} | Volume: {voiceActingSource.volume:F2} | Pitch: {voiceActingSource.pitch:F2}");
+            }
+        }
+
+        private IEnumerator PanicSubtitleSequence()
+        {
+            if (SubtitleController.Instance == null)
+            {
+                yield break;
+            }
+
+            if (panicSubtitle1 != null)
+            {
+                if (enableDebugLogging)
+                {
+                    Debug.Log($"[IntroPanicSoundManager] Showing Panic Subtitle 1 for {panicSubtitle1Duration}s");
+                }
+                SubtitleController.Instance.ShowSubtitle(panicSubtitle1, panicSubtitle1Duration);
+                yield return new WaitForSeconds(panicSubtitle1Duration);
+            }
+
+            if (panicSubtitle2 != null)
+            {
+                if (enableDebugLogging)
+                {
+                    Debug.Log($"[IntroPanicSoundManager] Showing Panic Subtitle 2 for {panicSubtitle2Duration}s");
+                }
+                SubtitleController.Instance.ShowSubtitle(panicSubtitle2, panicSubtitle2Duration);
+                yield return new WaitForSeconds(panicSubtitle2Duration);
+            }
+
+            if (panicSubtitle3 != null)
+            {
+                if (enableDebugLogging)
+                {
+                    Debug.Log("[IntroPanicSoundManager] Showing Panic Subtitle 3 (will remain until hidden)");
+                }
+                SubtitleController.Instance.ShowSubtitle(panicSubtitle3, 999f);
+            }
         }
 
         public void PlayTension()
@@ -219,6 +299,17 @@ namespace InterdimensionalGroceries.AudioSystem
             if (risingStingSource != null) risingStingSource.Stop();
             if (portalSource != null) portalSource.Stop();
 
+            if (panicSubtitleCoroutine != null)
+            {
+                StopCoroutine(panicSubtitleCoroutine);
+                panicSubtitleCoroutine = null;
+            }
+
+            if (SubtitleController.Instance != null)
+            {
+                SubtitleController.Instance.HideSubtitle();
+            }
+
             if (enableDebugLogging)
             {
                 Debug.Log("[IntroPanicSoundManager] Stopped all sounds");
@@ -230,6 +321,18 @@ namespace InterdimensionalGroceries.AudioSystem
             if (voiceActingSource != null)
             {
                 voiceActingSource.Stop();
+                
+                if (panicSubtitleCoroutine != null)
+                {
+                    StopCoroutine(panicSubtitleCoroutine);
+                    panicSubtitleCoroutine = null;
+                }
+                
+                if (SubtitleController.Instance != null)
+                {
+                    SubtitleController.Instance.HideSubtitle();
+                }
+                
                 if (enableDebugLogging)
                 {
                     Debug.Log("[IntroPanicSoundManager] Stopped voice acting");

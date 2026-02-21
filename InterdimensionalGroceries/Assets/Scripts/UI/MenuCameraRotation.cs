@@ -1,12 +1,29 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace InterdimensionalGroceries.UI
 {
     public class MenuCameraRotation : MonoBehaviour
     {
         [SerializeField] private float rotationSpeed = 10f;
+        [SerializeField] private Volume postProcessVolume;
+        [SerializeField] private float menuBloomIntensity = 2.76f;
         
         private bool isRotating = true;
+        private Bloom bloom;
+
+        private void Awake()
+        {
+            if (postProcessVolume != null && postProcessVolume.sharedProfile != null)
+            {
+                if (postProcessVolume.sharedProfile.TryGet(out bloom))
+                {
+                    bloom.intensity.overrideState = true;
+                    bloom.intensity.value = menuBloomIntensity;
+                }
+            }
+        }
 
         private void Update()
         {
