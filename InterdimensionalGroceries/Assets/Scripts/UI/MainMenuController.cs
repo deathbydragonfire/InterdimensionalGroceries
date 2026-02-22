@@ -4,6 +4,7 @@ using System.Collections;
 using TutorialSystem;
 using InterdimensionalGroceries.Core;
 using InterdimensionalGroceries.Scenes;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace InterdimensionalGroceries.UI
 {
@@ -118,6 +119,8 @@ namespace InterdimensionalGroceries.UI
 
         private System.Collections.IEnumerator StartNewGameSequence()
         {
+            ResetGameState();
+            
             float menuCameraRotation = 0f;
             MenuCameraRotation menuRotation = null;
             
@@ -140,6 +143,14 @@ namespace InterdimensionalGroceries.UI
             {
                 float rotationSpeed = menuRotation != null ? menuRotation.GetRotationSpeed() : 10f;
                 introSequenceController.StartIntroSequence(menuCameraRotation, rotationSpeed);
+            }
+        }
+
+        private void ResetGameState()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.ResetAllUpgrades();
             }
         }
 

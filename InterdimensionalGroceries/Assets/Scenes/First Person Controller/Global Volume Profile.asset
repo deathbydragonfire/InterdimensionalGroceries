@@ -51,13 +51,13 @@ MonoBehaviour:
     m_Value: 0
   downsampling:
     m_OverrideState: 1
-    m_Value: 0
-  downsamplingMode:
-    m_OverrideState: 0
-    m_Value: 0
-  downsamplingMultiplier:
-    m_OverrideState: 0
     m_Value: 1
+  downsamplingMode:
+    m_OverrideState: 1
+    m_Value: 10
+  downsamplingMultiplier:
+    m_OverrideState: 1
+    m_Value: 3
   downsamplingBilinear:
     m_OverrideState: 0
     m_Value: 0
@@ -1049,19 +1049,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DepthOfField
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 20.3
+    m_Value: 14.08
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 56.75
+    m_Value: 68.3
   gaussianMaxRadius:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 1.5
   highQualitySampling:
     m_OverrideState: 1
     m_Value: 1

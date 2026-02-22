@@ -44,7 +44,9 @@ namespace InterdimensionalGroceries.UI
             if (styleSheet == null)
             {
                 // Try loading from Assets path
+                #if UNITY_EDITOR
                 styleSheet = UnityEditor.AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/UI/StoreUI.uss");
+                #endif
             }
             
             if (styleSheet != null && !root.styleSheets.Contains(styleSheet))

@@ -824,8 +824,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   frameBandVerticalSize:
-    m_OverrideState: 0
-    m_Value: 0.1
+    m_OverrideState: 1
+    m_Value: 0.019
   frameBandVerticalSmoothness:
     m_OverrideState: 0
     m_Value: 0

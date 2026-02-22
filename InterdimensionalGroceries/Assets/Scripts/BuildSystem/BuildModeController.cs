@@ -449,6 +449,14 @@ namespace InterdimensionalGroceries.BuildSystem
                 {
                     furniturePlacementUI.RefreshCounts();
                 }
+                
+                // Check if we just placed the last item
+                if (furnitureInventory.GetFurnitureCount(selectedObject) <= 0)
+                {
+                    Debug.Log($"No more {selectedObject.ObjectName} left. Clearing selection.");
+                    ClearGhostAndSelection();
+                    return;
+                }
             }
             
             // In furniture placement mode, always continue placement (don't exit)
@@ -510,6 +518,19 @@ namespace InterdimensionalGroceries.BuildSystem
             {
                 buildModeUI.Hide();
             }
+        }
+        
+        private void ClearGhostAndSelection()
+        {
+            if (currentGhost != null)
+            {
+                Destroy(currentGhost);
+                currentGhost = null;
+                ghostController = null;
+            }
+            
+            selectedObject = null;
+            hasValidPosition = false;
         }
         
         private void OnDrawGizmos()

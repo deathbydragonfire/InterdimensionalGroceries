@@ -179,5 +179,27 @@ namespace InterdimensionalGroceries.EconomySystem
                     return 1f;
             }
         }
+
+        public void ResetAllUpgrades()
+        {
+            foreach (var upgrade in availableUpgrades)
+            {
+                if (upgrade == null)
+                    continue;
+
+                upgradeLevels[upgrade] = 0;
+                SaveUpgradeLevel(upgrade, 0);
+            }
+
+            Debug.Log("All ability upgrades have been reset to base level");
+
+            foreach (var upgrade in availableUpgrades)
+            {
+                if (upgrade != null)
+                {
+                    OnUpgradePurchased?.Invoke(upgrade, 0);
+                }
+            }
+        }
     }
 }

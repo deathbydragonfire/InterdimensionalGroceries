@@ -96,14 +96,18 @@ namespace InterdimensionalGroceries.BuildSystem
                 container.Add(icon);
             }
             
+            var textContainer = new VisualElement();
+            textContainer.AddToClassList("furniture-text-container");
+            
             var nameLabel = new Label(entry.furniture.ObjectName);
             nameLabel.AddToClassList("furniture-name");
-            container.Add(nameLabel);
+            textContainer.Add(nameLabel);
             
-            var countLabel = new Label($"x{entry.quantity}");
+            var countLabel = new Label($"Owned: {entry.quantity}");
             countLabel.AddToClassList("furniture-count");
-            container.Add(countLabel);
+            textContainer.Add(countLabel);
             
+            container.Add(textContainer);
             button.Add(container);
             
             return button;

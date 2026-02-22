@@ -27,6 +27,9 @@ namespace InterdimensionalGroceries.ScannerSystem
         
         [Header("Visual Feedback Settings")]
         [SerializeField] private float acceptedDestroyDelay = 0.5f;
+        
+        [Header("Request Filtering")]
+        [SerializeField] private ItemType[] excludedItemTypes;
 
         private ItemType requestedItem;
         private bool isBusy;
@@ -369,17 +372,26 @@ namespace InterdimensionalGroceries.ScannerSystem
                 return;
             }
 
-            ItemType[] values =
-                (ItemType[])System.Enum.GetValues(typeof(ItemType));
+            ItemType[] allItems = (ItemType[])System.Enum.GetValues(typeof(ItemType));
+            System.Collections.Generic.List<ItemType> availableItems = new System.Collections.Generic.List<ItemType>();
 
-            requestedItem =
-                values[UnityEngine.Random.Range(0, values.Length)];
-
-            if (requestedItem == ItemType.Unknown)
+            foreach (ItemType itemType in allItems)
             {
-                GenerateNewRequest();
+                if (IsItemTypeAllowed(itemType))
+                {
+                    availableItems.Add(itemType);
+                }
+            }
+
+            if (availableItems.Count == 0)
+            {
+                Debug.LogWarning("ScannerZone: No available item types to request! Check excluded items configuration.");
+                requestedItem = ItemType.Unknown;
+                scannerUI.ShowRequest("No Items Available");
                 return;
             }
+
+            requestedItem = availableItems[UnityEngine.Random.Range(0, availableItems.Count)];
 
             string displayText;
             if (CustomerCommentManager.Instance != null)
@@ -392,6 +404,22 @@ namespace InterdimensionalGroceries.ScannerSystem
             }
 
             scannerUI.ShowRequest(displayText);
+        }
+
+        private bool IsItemTypeAllowed(ItemType itemType)
+        {
+            if (excludedItemTypes != null)
+            {
+                foreach (ItemType excluded in excludedItemTypes)
+                {
+                    if (itemType == excluded)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
