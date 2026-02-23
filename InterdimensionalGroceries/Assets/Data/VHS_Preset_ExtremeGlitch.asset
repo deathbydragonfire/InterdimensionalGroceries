@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873fe6c0494d6614584fc98e12e8b209, type: 3}
+  m_Name: VHS_Preset_ExtremeGlitch
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.SO_VHSPreset
+  presetName: Extreme Glitch
+  description: Maximum VHS distortion for dramatic glitch-out moments
+  warpIntensity: 0.1
+  warpSpeed: 2.5
+  trackingBarIntensity: 1
+  trackingBarSpeed: 1.5
+  trackingBarThickness: 0.15
+  colorBleed: 0.04
+  noiseIntensity: 0.6
+  noiseSpeed: 4
+  scanlineIntensity: 0.8
+  scanlineCount: 800
+  scanlineFlicker: 0.4
+  vignetteStrength: 0.6
+  colorShift: 0.6
+  desaturation: 0.4

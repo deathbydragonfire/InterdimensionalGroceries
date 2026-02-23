@@ -144,6 +144,18 @@ namespace InterdimensionalGroceries.PlayerController
         {
             if (buttonHintLabel != null)
             {
+                buttonHintLabel.text = "[LMB to Click]";
+                buttonHintLabel.style.color = Color.white;
+                buttonHintLabel.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        public void ShowButtonHint(string text, Color color)
+        {
+            if (buttonHintLabel != null)
+            {
+                buttonHintLabel.text = text;
+                buttonHintLabel.style.color = color;
                 buttonHintLabel.style.display = DisplayStyle.Flex;
             }
         }

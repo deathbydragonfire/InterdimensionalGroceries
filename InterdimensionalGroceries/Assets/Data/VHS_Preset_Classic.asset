@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873fe6c0494d6614584fc98e12e8b209, type: 3}
+  m_Name: VHS_Preset_Classic
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.SO_VHSPreset
+  presetName: Classic VHS
+  description: Medium VHS effect mimicking a well-used tape from the 80s/90s
+  warpIntensity: 0.02
+  warpSpeed: 1
+  trackingBarIntensity: 0.3
+  trackingBarSpeed: 0.5
+  trackingBarThickness: 0.05
+  colorBleed: 0.015
+  noiseIntensity: 0.2
+  noiseSpeed: 2
+  scanlineIntensity: 0.3
+  scanlineCount: 500
+  scanlineFlicker: 0.1
+  vignetteStrength: 0.3
+  colorShift: 0.2
+  desaturation: 0.3

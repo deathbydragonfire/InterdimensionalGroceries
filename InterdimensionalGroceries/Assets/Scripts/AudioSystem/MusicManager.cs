@@ -332,5 +332,37 @@ namespace InterdimensionalGroceries.AudioSystem
         {
             return currentSource != null && currentSource.isPlaying;
         }
+        
+        public void ResetMusicManager()
+        {
+            Debug.Log("[MusicManager] Resetting music manager");
+            
+            if (crossfadeCoroutine != null)
+            {
+                StopCoroutine(crossfadeCoroutine);
+                crossfadeCoroutine = null;
+            }
+            
+            StopAllCoroutines();
+            
+            musicSourceA.Stop();
+            musicSourceB.Stop();
+            musicSourceA.volume = 0f;
+            musicSourceB.volume = 0f;
+            musicSourceA.clip = null;
+            musicSourceB.clip = null;
+            
+            currentSource = musicSourceA;
+            fadeOutSource = null;
+            isPlayingMenuMusic = false;
+            
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnDeliveryPhaseStarted -= OnDeliveryPhaseStarted;
+                GamePhaseManager.Instance.OnInventoryPhaseStarted -= OnInventoryPhaseStarted;
+            }
+            
+            Debug.Log("[MusicManager] Reset complete - all music stopped, sources cleared");
+        }
     }
 }

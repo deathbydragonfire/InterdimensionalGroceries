@@ -33,7 +33,7 @@ Material:
     - _ScanlineCount: 150
     - _ScanlineDarkness: 0.3
     - _ScanlineSpeed: 2
-    - _TimeSync: 43.44293
+    - _TimeSync: 759.7383
     - _VignetteIntensity: 0.619
     m_Colors: []
   m_BuildTextureStacks: []

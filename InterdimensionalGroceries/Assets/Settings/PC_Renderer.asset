@@ -80,7 +80,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: 1237227809483545860}
   - {fileID: -4707235428552522457}
-  m_RendererFeatureMap: ad6b866f10d7b46c045d803a23842b112745fe56518aacbe
+  - {fileID: 5353664952114187468}
+  m_RendererFeatureMap: ad6b866f10d7b46c045d803a23842b112745fe56518aacbecc8c39b5e8094c4a
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -123,6 +124,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.GlitchRendererFeature
   m_Active: 0
   glitchMaterial: {fileID: 2100000, guid: d350a3d2dd6c9264eac8946fd0ad4902, type: 2}
+--- !u!114 &5353664952114187468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9570d2acb6383ce41b73efe63c6e06d1, type: 3}
+  m_Name: VHSRenderFeature
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.VHSRenderFeature
+  m_Active: 0
+  settings:
+    renderPassEvent: 550
+    vhsMaterial: {fileID: 2100000, guid: 7de070703092387479e0e9799ebc1926, type: 2}
 --- !u!114 &7833122117494664109
 MonoBehaviour:
   m_ObjectHideFlags: 0

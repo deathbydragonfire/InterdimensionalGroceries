@@ -362,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.UI.FurnitureStoreUIController
   furnitureStoreInventory: {fileID: 11400000, guid: 3b4778b19c46a1f498856cdac94a0067, type: 2}
   furnitureInventory: {fileID: 11400000, guid: bed1995826113fa46a4c42d92c04df6d, type: 2}
+  notificationPrefab: {fileID: 0}
 --- !u!114 &33779657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +588,9 @@ MonoBehaviour:
   skipButton: {fileID: 0}
   scannerContainer: {fileID: 0}
   customerAnimator: {fileID: 0}
+  typewriterSpeed: 0.05
+  typewriterSound: {fileID: 0}
+  typewriterVolume: 0.3
 --- !u!1 &87243388
 GameObject:
   m_ObjectHideFlags: 0
@@ -4334,6 +4338,7 @@ GameObject:
   - component: {fileID: 970924073}
   - component: {fileID: 970924072}
   - component: {fileID: 970924074}
+  - component: {fileID: 970924075}
   m_Layer: 3
   m_Name: Camera
   m_TagString: MainCamera
@@ -4459,6 +4464,35 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970924070}
   m_Enabled: 1
+--- !u!114 &970924075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970924070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05225722b88a8349a16906435e68020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.VHSEffectController
+  vhsMaterial: {fileID: 2100000, guid: 7de070703092387479e0e9799ebc1926, type: 2}
+  chromaticAberration: 0.01
+  warpIntensity: 0.02
+  warpSpeed: 1
+  trackingBarIntensity: 0.3
+  trackingBarSpeed: 0.5
+  trackingBarThickness: 0.05
+  colorBleed: 0.015
+  noiseIntensity: 0.2
+  noiseSpeed: 2
+  scanlineIntensity: 0.3
+  scanlineCount: 500
+  scanlineFlicker: 0.1
+  vignetteStrength: 0.3
+  colorShift: 0.2
+  desaturation: 0.3
+  globalIntensity: 1
 --- !u!1 &986941066
 GameObject:
   m_ObjectHideFlags: 0
@@ -4666,6 +4700,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029992930}
   m_CullTransparentMesh: 1
+--- !u!1 &1059168564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1059168566}
+  - component: {fileID: 1059168565}
+  m_Layer: 0
+  m_Name: VHSEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1059168565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059168564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f131916798b4e442af42881f1aa41af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.VHSEffectManager
+  mainCameraVHS: {fileID: 970924075}
+  customerRejectionGlitchDuration: 0.5
+  phaseTransitionGlitchDuration: 0.75
+  genericEventGlitchDuration: 0.3
+--- !u!4 &1059168566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059168564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1091683351
 GameObject:
   m_ObjectHideFlags: 0
@@ -5312,6 +5394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.UI.StoreUIController
   storeInventory: {fileID: 11400000, guid: 714c2260a7c749648bc5deac64d71f20, type: 2}
+  notificationPrefab: {fileID: 0}
 --- !u!1 &1162115723
 GameObject:
   m_ObjectHideFlags: 0
@@ -6652,6 +6735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8335ccccdaad142bf58aa28b7d238d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.UI.AbilitiesMenuController
+  notificationPrefab: {fileID: 0}
 --- !u!1 &1684174216
 GameObject:
   m_ObjectHideFlags: 0
@@ -7985,3 +8069,4 @@ SceneRoots:
   - {fileID: 247777238}
   - {fileID: 902945688}
   - {fileID: 874674576}
+  - {fileID: 1059168566}

@@ -34,14 +34,14 @@ namespace InterdimensionalGroceries.CustomerSystem
         {
             if (commentData == null)
             {
-                return $"Bring: {itemType}";
+                return itemType.ToString();
             }
 
             List<string> comments = commentData.GetCommentsForItem(itemType);
 
             if (comments == null || comments.Count == 0)
             {
-                return $"Bring: {itemType}";
+                return itemType.ToString();
             }
 
             int randomIndex = Random.Range(0, comments.Count);

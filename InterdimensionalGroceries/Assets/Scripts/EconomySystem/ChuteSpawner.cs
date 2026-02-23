@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.Core;
 
 namespace InterdimensionalGroceries.EconomySystem
 {
@@ -118,6 +119,30 @@ namespace InterdimensionalGroceries.EconomySystem
         private void SpawnItemAtChute(SupplyItemData itemData, ChuteSpawnPoint spawnPoint)
         {
             GameObject itemInstance = Instantiate(itemData.ItemPrefab, spawnPoint.SpawnPosition, Quaternion.identity);
+            
+            SaveableObject saveableComponent = itemInstance.GetComponent<SaveableObject>();
+            if (saveableComponent == null)
+            {
+                saveableComponent = itemInstance.AddComponent<SaveableObject>();
+                Debug.Log($"[ChuteSpawner] Added SaveableObject to {itemData.ItemName}");
+            }
+            else
+            {
+                if (WorldObjectManager.Instance != null)
+                {
+                    WorldObjectManager.Instance.UnregisterObject(saveableComponent);
+                }
+            }
+            
+            saveableComponent.PrefabIdentifier = itemData.ItemName;
+            saveableComponent.ObjectType = SaveableObjectType.SpawnedItem;
+            
+            if (WorldObjectManager.Instance != null)
+            {
+                WorldObjectManager.Instance.RegisterObject(saveableComponent);
+            }
+            
+            Debug.Log($"[ChuteSpawner] Configured and registered: {itemData.ItemName}");
             
             Rigidbody rb = itemInstance.GetComponentInChildren<Rigidbody>();
             if (rb != null)

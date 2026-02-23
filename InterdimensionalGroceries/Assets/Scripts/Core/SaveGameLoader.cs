@@ -37,7 +37,9 @@ namespace InterdimensionalGroceries.Core
             {
                 if (MoneyManager.Instance != null && 
                     AbilityUpgradeManager.Instance != null && 
-                    GamePhaseManager.Instance != null)
+                    GamePhaseManager.Instance != null &&
+                    WorldObjectManager.Instance != null &&
+                    WorldObjectRestorer.Instance != null)
                 {
                     SaveDataManager.ApplySaveData();
                     Debug.Log("[SaveGameLoader] Save data restored successfully");

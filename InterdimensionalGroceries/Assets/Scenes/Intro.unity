@@ -14269,7 +14269,6 @@ MonoBehaviour:
   flashDuration: 0.1
   flashCount: 2
   timeBetweenFlashes: 0.05
-  logoAlpha: 0.8
 --- !u!225 &641347543
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -17498,6 +17497,7 @@ GameObject:
   - component: {fileID: 1028324573}
   - component: {fileID: 1028324572}
   - component: {fileID: 1028324575}
+  - component: {fileID: 1028324576}
   m_Layer: 0
   m_Name: MainMenuCamera
   m_TagString: MainCamera
@@ -17638,6 +17638,43 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1028324576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028324570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05225722b88a8349a16906435e68020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.VHSEffectController
+  vhsMaterial: {fileID: 2100000, guid: 7de070703092387479e0e9799ebc1926, type: 2}
+  effectEnabled: 1
+  enableWarp: 1
+  enableTrackingBars: 1
+  enableColorBleed: 1
+  enableNoise: 1
+  enableScanlines: 1
+  enableVignette: 1
+  enableColorShift: 1
+  enableDesaturation: 1
+  warpIntensity: 0.02
+  warpSpeed: 1
+  trackingBarIntensity: 0.3
+  trackingBarSpeed: 0.5
+  trackingBarThickness: 0.05
+  colorBleed: 0.015
+  noiseIntensity: 0.2
+  noiseSpeed: 2
+  scanlineIntensity: 0.3
+  scanlineCount: 500
+  scanlineFlicker: 0.1
+  vignetteStrength: 0.3
+  colorShift: 0.2
+  desaturation: 0.3
+  globalIntensity: 1
 --- !u!1 &1030397596
 GameObject:
   m_ObjectHideFlags: 0
@@ -23957,6 +23994,7 @@ GameObject:
   - component: {fileID: 1945694793}
   - component: {fileID: 1945694792}
   - component: {fileID: 1945694791}
+  - component: {fileID: 1945694794}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -24082,6 +24120,43 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1945694794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945694789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05225722b88a8349a16906435e68020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.VHSEffectController
+  vhsMaterial: {fileID: 2100000, guid: 7de070703092387479e0e9799ebc1926, type: 2}
+  effectEnabled: 1
+  enableWarp: 1
+  enableTrackingBars: 1
+  enableColorBleed: 1
+  enableNoise: 0
+  enableScanlines: 0
+  enableVignette: 0
+  enableColorShift: 0
+  enableDesaturation: 0
+  warpIntensity: 0.0054
+  warpSpeed: 2.75
+  trackingBarIntensity: 0.531
+  trackingBarSpeed: 0.5
+  trackingBarThickness: 0.05
+  colorBleed: 0.017
+  noiseIntensity: 0.2
+  noiseSpeed: 2
+  scanlineIntensity: 0.3
+  scanlineCount: 500
+  scanlineFlicker: 0.1
+  vignetteStrength: 0.3
+  colorShift: 0.2
+  desaturation: 0.3
+  globalIntensity: 1
 --- !u!1 &1958901390
 GameObject:
   m_ObjectHideFlags: 0
@@ -24211,27 +24286,6 @@ MonoBehaviour:
   glitchMaterial: {fileID: 2100000, guid: d350a3d2dd6c9264eac8946fd0ad4902, type: 2}
   rendererData: {fileID: 11400000, guid: f288ae1f4751b564a96ac7587541f7a2, type: 2}
   logoFlasher: {fileID: 641347542}
-  enableChromaticAberration: 1
-  enableDisplacement: 1
-  enableScanLines: 1
-  enableWaveDistortion: 1
-  enableSlices: 1
-  enableInterference: 1
-  enableNoise: 1
-  chromaticAberrationIntensity: 0.05
-  displacementIntensity: 0.12
-  scanLineJitter: 0.3
-  scanLineIntensity: 0.6
-  scanLineCount: 150
-  waveIntensity: 0.08
-  waveFrequency: 8
-  waveSpeed: 3
-  sliceIntensity: 0.6
-  sliceCount: 12
-  sliceOffset: 0.25
-  interferenceIntensity: 0.5
-  interferenceFrequency: 80
-  noiseIntensity: 0.15
 --- !u!4 &2009542346
 Transform:
   m_ObjectHideFlags: 0

@@ -183,14 +183,12 @@ namespace InterdimensionalGroceries.UI
 
         private void OnQuitClicked(ClickEvent evt)
         {
-            Time.timeScale = 1f;
-            
             if (playerController != null)
             {
                 playerController.SetControlsEnabled(true);
             }
             
-            SceneManager.LoadScene("Intro");
+            GameStateManager.LoadMainMenu();
         }
 
         private void OnButtonHover(MouseEnterEvent evt)

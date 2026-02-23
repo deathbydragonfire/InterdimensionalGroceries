@@ -299,7 +299,7 @@ namespace InterdimensionalGroceries.PlayerController
                 {
                     if (pickupUIController != null)
                     {
-                        pickupUIController.ShowButtonHint();
+                        pickupUIController.ShowButtonHint(clickable.GetTooltipText(), clickable.GetTooltipColor());
                         pickupUIController.HidePickupHint();
                     }
                     return;

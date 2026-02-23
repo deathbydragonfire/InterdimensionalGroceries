@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873fe6c0494d6614584fc98e12e8b209, type: 3}
+  m_Name: VHS_Preset_Subtle
+  m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.Rendering.SO_VHSPreset
+  presetName: Subtle Vintage
+  description: Light VHS effect with minimal distortion - perfect for a clean retro
+    look
+  warpIntensity: 0.01
+  warpSpeed: 0.8
+  trackingBarIntensity: 0.1
+  trackingBarSpeed: 0.3
+  trackingBarThickness: 0.03
+  colorBleed: 0.008
+  noiseIntensity: 0.1
+  noiseSpeed: 1.5
+  scanlineIntensity: 0.15
+  scanlineCount: 500
+  scanlineFlicker: 0.05
+  vignetteStrength: 0.2
+  colorShift: 0.1
+  desaturation: 0.2

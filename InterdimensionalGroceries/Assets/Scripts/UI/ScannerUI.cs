@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using InterdimensionalGroceries.PhaseManagement;
 using InterdimensionalGroceries.UI;
+using System.Collections;
 
 namespace InterdimensionalGroceries.ScannerSystem
 {
@@ -16,12 +17,24 @@ namespace InterdimensionalGroceries.ScannerSystem
         [Header("Customer Integration")]
         [SerializeField] private CustomerScreenEyeAnimator customerAnimator;
 
+        [Header("Typewriter Effect")]
+        [SerializeField] private float typewriterSpeed = 0.05f;
+        [SerializeField] private AudioClip typewriterSound;
+        [SerializeField][Range(0f, 1f)] private float typewriterVolume = 0.3f;
+
+        private AudioSource audioSource;
+        private Coroutine typewriterCoroutine;
+
         private void Awake()
         {
             if (skipButton != null)
             {
                 skipButton.gameObject.SetActive(false);
             }
+
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.loop = true;
         }
 
         private void Start()
@@ -85,7 +98,12 @@ namespace InterdimensionalGroceries.ScannerSystem
 
         public void ShowRequest(string itemName)
         {
-            SetText($"Bring: {itemName}", Color.white);
+            if (typewriterCoroutine != null)
+            {
+                StopCoroutine(typewriterCoroutine);
+            }
+
+            typewriterCoroutine = StartCoroutine(TypewriterEffect(itemName, Color.white));
             ShowSkipButton(true);
         }
 
@@ -142,6 +160,48 @@ namespace InterdimensionalGroceries.ScannerSystem
             {
                 scannerText.text = text;
                 scannerText.color = color;
+            }
+        }
+
+        private IEnumerator TypewriterEffect(string fullText, Color color)
+        {
+            if (typewriterSound != null && audioSource != null)
+            {
+                audioSource.clip = typewriterSound;
+                audioSource.volume = typewriterVolume;
+                audioSource.Play();
+            }
+
+            if (orderDisplay3D != null)
+            {
+                orderDisplay3D.text = "";
+                orderDisplay3D.color = color;
+            }
+            else if (scannerText != null)
+            {
+                scannerText.text = "";
+                scannerText.color = color;
+            }
+
+            for (int i = 0; i <= fullText.Length; i++)
+            {
+                string currentText = fullText.Substring(0, i);
+
+                if (orderDisplay3D != null)
+                {
+                    orderDisplay3D.text = currentText;
+                }
+                else if (scannerText != null)
+                {
+                    scannerText.text = currentText;
+                }
+
+                yield return new WaitForSeconds(typewriterSpeed);
+            }
+
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
             }
         }
     }

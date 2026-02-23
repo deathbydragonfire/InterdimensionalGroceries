@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Collections.Generic;
 using InterdimensionalGroceries.PhaseManagement;
 using InterdimensionalGroceries.EconomySystem;
 
@@ -47,6 +48,34 @@ namespace InterdimensionalGroceries.Core
                     {
                         saveData.upgradeLevels.Add(new UpgradeLevel(kvp.Key, kvp.Value));
                     }
+                }
+                
+                if (WorldObjectManager.Instance != null)
+                {
+                    List<SaveableObject> saveableObjects = WorldObjectManager.Instance.GetAllSaveableObjects();
+                    Debug.Log($"[SaveDataManager] Found {saveableObjects.Count} saveable objects to serialize");
+                    
+                    foreach (SaveableObject obj in saveableObjects)
+                    {
+                        if (obj != null && obj.gameObject != null)
+                        {
+                            Transform t = obj.transform;
+                            WorldObjectData worldObject = new WorldObjectData(
+                                obj.PrefabIdentifier,
+                                t.position,
+                                t.rotation,
+                                t.localScale,
+                                obj.ObjectType
+                            );
+                            saveData.worldObjects.Add(worldObject);
+                            Debug.Log($"[SaveDataManager] Saving object: {obj.PrefabIdentifier} at {t.position}");
+                        }
+                    }
+                    Debug.Log($"[SaveDataManager] Saved {saveData.worldObjects.Count} world objects");
+                }
+                else
+                {
+                    Debug.LogWarning("[SaveDataManager] WorldObjectManager.Instance is null during save!");
                 }
                 
                 string json = JsonUtility.ToJson(saveData, true);
@@ -123,6 +152,32 @@ namespace InterdimensionalGroceries.Core
                     }
                 }
                 
+                if (WorldObjectManager.Instance != null)
+                {
+                    WorldObjectManager.Instance.ClearAllTrackedObjects();
+                }
+                else
+                {
+                    Debug.LogWarning("[SaveDataManager] WorldObjectManager.Instance is null during restore!");
+                }
+                
+                if (WorldObjectRestorer.Instance != null && cachedSaveData.worldObjects != null)
+                {
+                    Debug.Log($"[SaveDataManager] Restoring {cachedSaveData.worldObjects.Count} world objects from cached save data");
+                    WorldObjectRestorer.Instance.RestoreWorldObjects(cachedSaveData.worldObjects);
+                }
+                else
+                {
+                    if (WorldObjectRestorer.Instance == null)
+                    {
+                        Debug.LogWarning("[SaveDataManager] WorldObjectRestorer.Instance is null during restore!");
+                    }
+                    if (cachedSaveData.worldObjects == null)
+                    {
+                        Debug.LogWarning("[SaveDataManager] cachedSaveData.worldObjects is null!");
+                    }
+                }
+                
                 cachedSaveData = null;
             }
             catch (System.Exception e)
@@ -139,6 +194,11 @@ namespace InterdimensionalGroceries.Core
                 {
                     File.Delete(SaveFilePath);
                     Debug.Log("[SaveDataManager] Save data cleared");
+                }
+                
+                if (WorldObjectManager.Instance != null)
+                {
+                    WorldObjectManager.Instance.ClearAllTrackedObjects();
                 }
                 
                 cachedSaveData = null;

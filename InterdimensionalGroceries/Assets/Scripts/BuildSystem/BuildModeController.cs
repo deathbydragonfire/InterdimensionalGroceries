@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using InterdimensionalGroceries.AudioSystem;
 using InterdimensionalGroceries.EconomySystem;
+using InterdimensionalGroceries.Core;
 
 namespace InterdimensionalGroceries.BuildSystem
 {
@@ -434,6 +435,27 @@ namespace InterdimensionalGroceries.BuildSystem
             
             Vector3 placementPosition = currentGhost.transform.position;
             GameObject placedObject = Instantiate(selectedObject.Prefab, placementPosition, currentGhost.transform.rotation);
+            
+            SaveableObject saveableComponent = placedObject.GetComponent<SaveableObject>();
+            if (saveableComponent == null)
+            {
+                saveableComponent = placedObject.AddComponent<SaveableObject>();
+            }
+            else
+            {
+                if (WorldObjectManager.Instance != null)
+                {
+                    WorldObjectManager.Instance.UnregisterObject(saveableComponent);
+                }
+            }
+            
+            saveableComponent.PrefabIdentifier = selectedObject.ObjectName;
+            saveableComponent.ObjectType = SaveableObjectType.Furniture;
+            
+            if (WorldObjectManager.Instance != null)
+            {
+                WorldObjectManager.Instance.RegisterObject(saveableComponent);
+            }
             
             if (AudioManager.Instance != null)
             {

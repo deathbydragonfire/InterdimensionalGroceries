@@ -31,13 +31,13 @@ Material:
     m_Floats:
     - _DistortionAmount: 0.08
     - _DistortionSpeed: 1.5
-    - _EmissionIntensity: 3.18
+    - _EmissionIntensity: 2.51
     - _GlitchIntensity: 0
     - _GlitchSpeed: 2
     - _PixelSize: 1.5
     - _ScanlineCount: 150
     - _ScanlineIntensity: 0.943
-    - _TimeSync: 360.93494
+    - _TimeSync: 452.6538
     m_Colors:
     - _Color: {r: 0.2, g: 0.25, b: 0.2, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
