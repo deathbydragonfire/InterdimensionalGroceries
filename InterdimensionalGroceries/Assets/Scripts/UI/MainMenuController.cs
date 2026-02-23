@@ -19,10 +19,16 @@ namespace InterdimensionalGroceries.UI
 
         private UIDocument uiDocument;
         private Button newGameButton;
-        private Button continueButton;
+        private Button savedGameButton;
         private Button settingsButton;
         private Button quitButton;
         private VisualElement mainMenuContainer;
+        private VisualElement mainMenuContent;
+        
+        private VisualElement saveDataSubmenu;
+        private Button continueSaveButton;
+        private Button deleteSaveButton;
+        private Button backButton;
 
         private void Awake()
         {
@@ -66,12 +72,20 @@ namespace InterdimensionalGroceries.UI
             mainMenuContainer = root.Q<VisualElement>("MainMenuContainer");
             Debug.Log($"[MainMenuController] MainMenuContainer found: {mainMenuContainer != null}");
             
+            mainMenuContent = root.Q<VisualElement>(className: "main-menu-container");
+            Debug.Log($"[MainMenuController] mainMenuContent found: {mainMenuContent != null}");
+            
             newGameButton = root.Q<Button>("NewGameButton");
-            continueButton = root.Q<Button>("ContinueButton");
+            savedGameButton = root.Q<Button>("SavedGameButton");
             settingsButton = root.Q<Button>("SettingsButton");
             quitButton = root.Q<Button>("QuitButton");
+            
+            saveDataSubmenu = root.Q<VisualElement>("SaveDataSubmenu");
+            continueSaveButton = root.Q<Button>("ContinueSaveButton");
+            deleteSaveButton = root.Q<Button>("DeleteSaveButton");
+            backButton = root.Q<Button>("BackButton");
 
-            Debug.Log($"[MainMenuController] Buttons found - New:{newGameButton != null}, Continue:{continueButton != null}, Settings:{settingsButton != null}, Quit:{quitButton != null}");
+            Debug.Log($"[MainMenuController] Buttons found - New:{newGameButton != null}, SavedGame:{savedGameButton != null}, Settings:{settingsButton != null}, Quit:{quitButton != null}");
 
             if (newGameButton != null)
             {
@@ -79,9 +93,9 @@ namespace InterdimensionalGroceries.UI
                 Debug.Log("[MainMenuController] NewGameButton click registered");
             }
             
-            if (continueButton != null)
+            if (savedGameButton != null)
             {
-                continueButton.RegisterCallback<ClickEvent>(OnContinueClicked);
+                savedGameButton.RegisterCallback<ClickEvent>(OnSavedGameClicked);
             }
             
             if (settingsButton != null)
@@ -93,22 +107,64 @@ namespace InterdimensionalGroceries.UI
             {
                 quitButton.RegisterCallback<ClickEvent>(OnQuitClicked);
             }
+            
+            if (continueSaveButton != null)
+            {
+                continueSaveButton.RegisterCallback<ClickEvent>(OnContinueSaveClicked);
+                continueSaveButton.RegisterCallback<MouseEnterEvent>(OnButtonHover);
+                continueSaveButton.RegisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
+            
+            if (deleteSaveButton != null)
+            {
+                deleteSaveButton.RegisterCallback<ClickEvent>(OnDeleteSaveClicked);
+                deleteSaveButton.RegisterCallback<MouseEnterEvent>(OnButtonHover);
+                deleteSaveButton.RegisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
+            
+            if (backButton != null)
+            {
+                backButton.RegisterCallback<ClickEvent>(OnBackClicked);
+                backButton.RegisterCallback<MouseEnterEvent>(OnButtonHover);
+                backButton.RegisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
 
-            UpdateContinueButton();
+            UpdateSavedGameButton();
         }
 
         private void OnDisable()
         {
             newGameButton?.UnregisterCallback<ClickEvent>(OnNewGameClicked);
-            continueButton?.UnregisterCallback<ClickEvent>(OnContinueClicked);
+            savedGameButton?.UnregisterCallback<ClickEvent>(OnSavedGameClicked);
             settingsButton?.UnregisterCallback<ClickEvent>(OnSettingsClicked);
             quitButton?.UnregisterCallback<ClickEvent>(OnQuitClicked);
+            
+            if (continueSaveButton != null)
+            {
+                continueSaveButton.UnregisterCallback<ClickEvent>(OnContinueSaveClicked);
+                continueSaveButton.UnregisterCallback<MouseEnterEvent>(OnButtonHover);
+                continueSaveButton.UnregisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
+            
+            if (deleteSaveButton != null)
+            {
+                deleteSaveButton.UnregisterCallback<ClickEvent>(OnDeleteSaveClicked);
+                deleteSaveButton.UnregisterCallback<MouseEnterEvent>(OnButtonHover);
+                deleteSaveButton.UnregisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
+            
+            if (backButton != null)
+            {
+                backButton.UnregisterCallback<ClickEvent>(OnBackClicked);
+                backButton.UnregisterCallback<MouseEnterEvent>(OnButtonHover);
+                backButton.UnregisterCallback<MouseLeaveEvent>(OnButtonUnhover);
+            }
         }
 
-        private void UpdateContinueButton()
+        private void UpdateSavedGameButton()
         {
             bool hasSaveData = SaveDataManager.HasSaveData();
-            continueButton?.SetEnabled(hasSaveData);
+            savedGameButton?.SetEnabled(hasSaveData);
         }
 
         private void OnNewGameClicked(ClickEvent evt)
@@ -148,10 +204,34 @@ namespace InterdimensionalGroceries.UI
 
         private void ResetGameState()
         {
+            SaveDataManager.ClearSaveData();
+            
             if (AbilityUpgradeManager.Instance != null)
             {
                 AbilityUpgradeManager.Instance.ResetAllUpgrades();
             }
+            else
+            {
+                ResetAbilityUpgrades();
+            }
+        }
+
+        private void ResetAbilityUpgrades()
+        {
+            string[] upgradeKeys = new string[]
+            {
+                "Upgrade_ThrowingStrength_Throwing Strength",
+                "Upgrade_MovementSpeed_Movement Speed",
+                "Upgrade_DeliveryTime_Delivery Time"
+            };
+
+            foreach (string key in upgradeKeys)
+            {
+                PlayerPrefs.SetInt(key, 0);
+            }
+            
+            PlayerPrefs.Save();
+            Debug.Log("[MainMenuController] Reset ability upgrades via PlayerPrefs (manager not yet initialized)");
         }
 
         private System.Collections.IEnumerator FadeOutUI()
@@ -178,6 +258,96 @@ namespace InterdimensionalGroceries.UI
         {
             Debug.Log("[MainMenuController] Continue button clicked!");
             SaveDataManager.LoadGame();
+        }
+
+        private void OnSavedGameClicked(ClickEvent evt)
+        {
+            Debug.Log("[MainMenuController] Saved Game button clicked!");
+            ShowSubmenu();
+        }
+
+        private void OnContinueSaveClicked(ClickEvent evt)
+        {
+            Debug.Log("[MainMenuController] Continue Save button clicked!");
+            SaveDataManager.LoadGame();
+        }
+
+        private void OnDeleteSaveClicked(ClickEvent evt)
+        {
+            Debug.Log("[MainMenuController] Delete Save button clicked!");
+            
+            SaveDataManager.ClearSaveData();
+            
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.ResetAllUpgrades();
+            }
+            
+            UpdateSavedGameButton();
+            HideSubmenu();
+        }
+
+        private void OnBackClicked(ClickEvent evt)
+        {
+            Debug.Log("[MainMenuController] Back button clicked!");
+            HideSubmenu();
+        }
+
+        private void ShowSubmenu()
+        {
+            if (saveDataSubmenu != null)
+            {
+                saveDataSubmenu.style.display = DisplayStyle.Flex;
+            }
+            
+            HideMainMenu();
+        }
+
+        private void HideSubmenu()
+        {
+            if (saveDataSubmenu != null)
+            {
+                saveDataSubmenu.style.display = DisplayStyle.None;
+            }
+            
+            ShowMainMenu();
+        }
+
+        private void HideMainMenu()
+        {
+            if (mainMenuContent != null)
+            {
+                mainMenuContent.style.display = DisplayStyle.None;
+            }
+        }
+
+        private void ShowMainMenu()
+        {
+            if (mainMenuContent != null)
+            {
+                mainMenuContent.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        private void OnButtonHover(MouseEnterEvent evt)
+        {
+            if (evt.target is Button button)
+            {
+                button.style.textShadow = new TextShadow
+                {
+                    offset = Vector2.zero,
+                    blurRadius = 30f,
+                    color = new Color(1f, 1f, 1f, 1f)
+                };
+            }
+        }
+
+        private void OnButtonUnhover(MouseLeaveEvent evt)
+        {
+            if (evt.target is Button button)
+            {
+                button.style.textShadow = StyleKeyword.Null;
+            }
         }
 
         private void OnSettingsClicked(ClickEvent evt)

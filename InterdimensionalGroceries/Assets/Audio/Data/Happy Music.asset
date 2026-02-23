@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
   clips:
   - {fileID: 8300000, guid: 3cec4ac2c0713ee499423f57d2fa0ce2, type: 3}
+  subtitles: []
   minVolume: 0.5
   maxVolume: 0.5
   minPitch: 1

@@ -5,7 +5,8 @@ namespace InterdimensionalGroceries.EconomySystem
     public enum UpgradeType
     {
         ThrowingStrength,
-        MovementSpeed
+        MovementSpeed,
+        DeliveryTime
     }
 
     [CreateAssetMenu(fileName = "SO_AbilityUpgrade", menuName = "Interdimensional Groceries/Ability Upgrade Data")]

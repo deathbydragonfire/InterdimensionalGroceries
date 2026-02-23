@@ -70,5 +70,13 @@ namespace InterdimensionalGroceries.PhaseManagement
             
             OnInventoryPhaseStarted?.Invoke();
         }
+
+        public void SetPhase(GamePhase phase)
+        {
+            if (currentPhase == phase) return;
+            
+            currentPhase = phase;
+            Debug.Log($"[GamePhaseManager] Phase set to: {phase} (silent mode)");
+        }
     }
 }

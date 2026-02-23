@@ -1544,6 +1544,7 @@ MonoBehaviour:
   scanProgressBarPrefab: {fileID: 2214639756500523256, guid: ababcc69929c8db4ba9c56e5cab9ffa2, type: 3}
   moneyNotificationPool: {fileID: 986941068}
   acceptedDestroyDelay: 0.5
+  excludedItemTypes: 
 --- !u!114 &401294935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6683,6 +6684,7 @@ MonoBehaviour:
   availableUpgrades:
   - {fileID: 11400000, guid: 0e01f09d346fc694bbf66261977b2017, type: 2}
   - {fileID: 11400000, guid: 8d8b99b02446c82489ee79633240268a, type: 2}
+  - {fileID: 11400000, guid: a9bee6e4ac34ac34da8683574e0adbd9, type: 2}
 --- !u!4 &1684174218
 Transform:
   m_ObjectHideFlags: 0

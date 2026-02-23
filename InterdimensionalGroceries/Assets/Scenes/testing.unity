@@ -2509,6 +2509,7 @@ MonoBehaviour:
   inventoryPhaseStartSound: {fileID: 0}
   itemSpawnSound: {fileID: 11400000, guid: 2f75c10c397ab8e41af6880883467d49, type: 2}
   countdownTickSound: {fileID: 11400000, guid: a651d15850b495f4289c1d37b71d1dec, type: 2}
+  thunderSound: {fileID: 0}
   surfaceAudioData: {fileID: 11400000, guid: affacb37a04079f4cab1bf1962c0584b, type: 2}
   sfxMixerGroup: {fileID: 0}
   uiMixerGroup: {fileID: 0}
@@ -30429,6 +30430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSystem.FadeController
   fadeImage: {fileID: 942295890}
+  startWithBlackScreen: 1
+  startWithWhiteScreen: 0
 --- !u!223 &737833856
 Canvas:
   m_ObjectHideFlags: 0
@@ -46885,6 +46888,7 @@ MonoBehaviour:
   eye2GameObject: {fileID: 817999976}
   minAnimationInterval: 3
   maxAnimationInterval: 5
+  eyeSprites: []
   customerSpriteRenderer: {fileID: 792214010}
   customerGameObject: {fileID: 792214008}
   customers:
@@ -47414,6 +47418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76d6e27b34aaec4cb9d93f7ccb751ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.MusicManager
+  menuIntroMusic: {fileID: 0}
+  tutorialMusic: {fileID: 0}
   deliveryPhaseMusic: {fileID: 11400000, guid: 02e14d08518df95449906a9ae221565a, type: 2}
   inventoryPhaseMusic: {fileID: 11400000, guid: eecb144d7ece286418c0682bc377269d, type: 2}
   crossfadeDuration: 2
@@ -63510,6 +63516,7 @@ MonoBehaviour:
   scanProgressBarPrefab: {fileID: 2214639756500523256, guid: ababcc69929c8db4ba9c56e5cab9ffa2, type: 3}
   moneyNotificationPool: {fileID: 1090423368}
   acceptedDestroyDelay: 0.5
+  excludedItemTypes: 
 --- !u!65 &1717090666
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70154,6 +70161,7 @@ MonoBehaviour:
   availableUpgrades:
   - {fileID: 11400000, guid: 0e01f09d346fc694bbf66261977b2017, type: 2}
   - {fileID: 11400000, guid: 8d8b99b02446c82489ee79633240268a, type: 2}
+  - {fileID: 11400000, guid: a9bee6e4ac34ac34da8683574e0adbd9, type: 2}
 --- !u!4 &1890924944
 Transform:
   m_ObjectHideFlags: 0

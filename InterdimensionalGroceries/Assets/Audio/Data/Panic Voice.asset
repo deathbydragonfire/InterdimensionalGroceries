@@ -16,8 +16,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 950960cd8290f7942974136e3ec31977, type: 3}
   subtitles:
   - {fileID: 11400000, guid: c4153d8880ef1e94f8d847bfc9978a82, type: 2}
-  minVolume: 0.6
-  maxVolume: 0.6
+  minVolume: 0.3
+  maxVolume: 0.3
   minPitch: 1
   maxPitch: 1
   spatialBlend: 1

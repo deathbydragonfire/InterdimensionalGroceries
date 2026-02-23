@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
+using InterdimensionalGroceries.UI;
 
 namespace InterdimensionalGroceries.Scenes
 {
@@ -8,6 +9,7 @@ namespace InterdimensionalGroceries.Scenes
     {
         [SerializeField] private Material glitchMaterial;
         [SerializeField] private UniversalRendererData rendererData;
+        [SerializeField] private GlitchLogoFlasher logoFlasher;
         
         private Rendering.GlitchRendererFeature glitchFeature;
         private static readonly int GlitchIntensityProperty = Shader.PropertyToID("_GlitchIntensity");
@@ -34,15 +36,15 @@ namespace InterdimensionalGroceries.Scenes
         
         public void PlaySmallGlitch(float duration)
         {
-            StartCoroutine(PlayGlitchCoroutine(0.3f, duration));
+            StartCoroutine(PlayGlitchCoroutine(0.3f, duration, true));
         }
         
         public void PlayLargeGlitch(float duration)
         {
-            StartCoroutine(PlayGlitchCoroutine(1.0f, duration));
+            StartCoroutine(PlayGlitchCoroutine(1.0f, duration, true));
         }
         
-        private IEnumerator PlayGlitchCoroutine(float targetIntensity, float duration)
+        private IEnumerator PlayGlitchCoroutine(float targetIntensity, float duration, bool shouldFlashLogo = true)
         {
             if (glitchFeature == null)
             {
@@ -52,6 +54,11 @@ namespace InterdimensionalGroceries.Scenes
             if (glitchFeature != null)
             {
                 glitchFeature.SetActive(true);
+            }
+            
+            if (shouldFlashLogo && logoFlasher != null)
+            {
+                logoFlasher.TriggerLogoFlash(duration);
             }
             
             float halfDuration = duration * 0.5f;

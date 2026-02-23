@@ -10,6 +10,9 @@ namespace InterdimensionalGroceries.UI
     [RequireComponent(typeof(UIDocument))]
     public class AbilitiesMenuController : MonoBehaviour
     {
+        [Header("References")]
+        [SerializeField] private MoneyNotification notificationPrefab;
+        
         private UIDocument uiDocument;
         private VisualElement storeContainer;
         private Label currentMoneyLabel;
@@ -19,6 +22,7 @@ namespace InterdimensionalGroceries.UI
         private Action onBackCallback;
         private bool isOpen;
         private bool isAnimating;
+        private MoneyNotification notificationInstance;
 
         private void Awake()
         {
@@ -42,6 +46,68 @@ namespace InterdimensionalGroceries.UI
             if (storeContainer != null)
             {
                 storeContainer.style.display = DisplayStyle.None;
+            }
+
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased += OnUpgradeLevelChanged;
+            }
+            
+            if (notificationPrefab != null)
+            {
+                Canvas rootCanvas = FindRootCanvas();
+                if (rootCanvas != null)
+                {
+                    notificationInstance = Instantiate(notificationPrefab, rootCanvas.transform);
+                }
+                else
+                {
+                    notificationInstance = Instantiate(notificationPrefab);
+                }
+                
+                Canvas notificationCanvas = notificationInstance.GetComponent<Canvas>();
+                if (notificationCanvas == null)
+                {
+                    notificationCanvas = notificationInstance.gameObject.AddComponent<Canvas>();
+                    notificationCanvas.overrideSorting = true;
+                }
+                notificationCanvas.sortingOrder = 1000;
+                
+                if (notificationInstance.GetComponent<UnityEngine.UI.GraphicRaycaster>() == null)
+                {
+                    notificationInstance.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+                }
+                
+                notificationInstance.gameObject.SetActive(false);
+            }
+        }
+        
+        private Canvas FindRootCanvas()
+        {
+            Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.isRootCanvas)
+                {
+                    return canvas;
+                }
+            }
+            return null;
+        }
+
+        private void OnDestroy()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased -= OnUpgradeLevelChanged;
+            }
+        }
+
+        private void OnUpgradeLevelChanged(AbilityUpgradeData upgrade, int newLevel)
+        {
+            if (isOpen)
+            {
+                PopulateAbilities();
             }
         }
 
@@ -186,6 +252,19 @@ namespace InterdimensionalGroceries.UI
                     Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
                     AudioManager.Instance.PlaySound(AudioEventType.Rejection, soundPosition);
                 }
+                
+                float cost = AbilityUpgradeManager.Instance.GetNextLevelCost(upgrade);
+                ShowInsufficientFundsNotification(cost);
+            }
+        }
+        
+        private void ShowInsufficientFundsNotification(float requiredAmount)
+        {
+            if (notificationInstance != null)
+            {
+                float currentMoney = MoneyManager.Instance != null ? MoneyManager.Instance.GetCurrentMoney() : 0f;
+                float shortfall = requiredAmount - currentMoney;
+                notificationInstance.ShowCustomMessage($"Insufficient Funds! Need ${shortfall:F2} more");
             }
         }
 

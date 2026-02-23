@@ -18,6 +18,7 @@ namespace InterdimensionalGroceries.UI
         [Header("References")]
         [SerializeField] private FurnitureStoreInventory furnitureStoreInventory;
         [SerializeField] private FurnitureInventory furnitureInventory;
+        [SerializeField] private MoneyNotification notificationPrefab;
         
         private UIDocument uiDocument;
         private VisualElement storeContainer;
@@ -32,6 +33,7 @@ namespace InterdimensionalGroceries.UI
         private Action onBackCallback;
         private bool isOpen;
         private bool isAnimating;
+        private MoneyNotification notificationInstance;
         
         private void Awake()
         {
@@ -63,7 +65,6 @@ namespace InterdimensionalGroceries.UI
             placeFurnitureButton = root.Q<Button>("PlaceFurnitureButton");
             itemGrid = root.Q<VisualElement>("ItemGrid");
             
-            // Hide purchase button and total cost since we're doing auto-purchase
             if (purchaseButton != null)
             {
                 purchaseButton.style.display = DisplayStyle.None;
@@ -88,6 +89,47 @@ namespace InterdimensionalGroceries.UI
             {
                 storeContainer.style.display = DisplayStyle.None;
             }
+            
+            if (notificationPrefab != null)
+            {
+                Canvas rootCanvas = FindRootCanvas();
+                if (rootCanvas != null)
+                {
+                    notificationInstance = Instantiate(notificationPrefab, rootCanvas.transform);
+                }
+                else
+                {
+                    notificationInstance = Instantiate(notificationPrefab);
+                }
+                
+                Canvas notificationCanvas = notificationInstance.GetComponent<Canvas>();
+                if (notificationCanvas == null)
+                {
+                    notificationCanvas = notificationInstance.gameObject.AddComponent<Canvas>();
+                    notificationCanvas.overrideSorting = true;
+                }
+                notificationCanvas.sortingOrder = 1000;
+                
+                if (notificationInstance.GetComponent<UnityEngine.UI.GraphicRaycaster>() == null)
+                {
+                    notificationInstance.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+                }
+                
+                notificationInstance.gameObject.SetActive(false);
+            }
+        }
+        
+        private Canvas FindRootCanvas()
+        {
+            Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.isRootCanvas)
+                {
+                    return canvas;
+                }
+            }
+            return null;
         }
         
         public void OpenFurnitureMenu(Action onBack)
@@ -185,50 +227,49 @@ namespace InterdimensionalGroceries.UI
         {
             if (furniture == null) return;
             
-            // Handle purchase (+1) or sell back (-1)
             if (delta > 0)
             {
-                // Try to purchase
                 float cost = furniture.PlacementCost;
                 
-                if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(cost))
+                if (MoneyManager.Instance != null)
                 {
-                    // Purchase successful
-                    if (furnitureInventory != null)
+                    if (MoneyManager.Instance.SpendMoney(cost))
                     {
-                        furnitureInventory.AddFurniture(furniture, 1);
+                        if (furnitureInventory != null)
+                        {
+                            furnitureInventory.AddFurniture(furniture, 1);
+                        }
+                        
+                        if (AudioManager.Instance != null)
+                        {
+                            Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+                            AudioManager.Instance.PlaySound(AudioEventType.UIPurchase, soundPosition);
+                        }
+                        
+                        Debug.Log($"Purchased {furniture.ObjectName} for ${cost:F2}");
                     }
-                    
-                    if (AudioManager.Instance != null)
+                    else
                     {
-                        Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                        AudioManager.Instance.PlaySound(AudioEventType.UIPurchase, soundPosition);
-                    }
-                    
-                    Debug.Log($"Purchased {furniture.ObjectName} for ${cost:F2}");
-                }
-                else
-                {
-                    // Insufficient funds
-                    Debug.Log("Insufficient funds for purchase.");
-                    
-                    if (AudioManager.Instance != null)
-                    {
-                        Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                        AudioManager.Instance.PlaySound(AudioEventType.Rejection, soundPosition);
+                        Debug.Log("Insufficient funds for purchase.");
+                        
+                        if (AudioManager.Instance != null)
+                        {
+                            Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+                            AudioManager.Instance.PlaySound(AudioEventType.Rejection, soundPosition);
+                        }
+                        
+                        ShowInsufficientFundsNotification(cost);
                     }
                 }
             }
             else if (delta < 0)
             {
-                // Try to sell back
                 if (furnitureInventory != null && furnitureInventory.GetFurnitureCount(furniture) > 0)
                 {
                     float refund = furniture.PlacementCost;
                     
                     if (furnitureInventory.RemoveFurniture(furniture, 1))
                     {
-                        // Sell successful
                         if (MoneyManager.Instance != null)
                         {
                             MoneyManager.Instance.AddMoney(refund);
@@ -245,7 +286,6 @@ namespace InterdimensionalGroceries.UI
                 }
                 else
                 {
-                    // Nothing to sell
                     if (AudioManager.Instance != null)
                     {
                         Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
@@ -255,6 +295,16 @@ namespace InterdimensionalGroceries.UI
             }
             
             UpdateMoneyDisplay();
+        }
+        
+        private void ShowInsufficientFundsNotification(float requiredAmount)
+        {
+            if (notificationInstance != null)
+            {
+                float currentMoney = MoneyManager.Instance != null ? MoneyManager.Instance.GetCurrentMoney() : 0f;
+                float shortfall = requiredAmount - currentMoney;
+                notificationInstance.ShowCustomMessage($"Insufficient Funds! Need ${shortfall:F2} more");
+            }
         }
         
         private void PlayButtonClickSound()

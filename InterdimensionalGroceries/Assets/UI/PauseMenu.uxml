@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="PauseMenuContainer" style="display: none; position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); align-items: center; justify-content: center;">
+        <ui:VisualElement style="width: 600px; height: 500px; flex-direction: column; align-items: center; justify-content: center; padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 40px;">
+            <ui:VisualElement style="flex-grow: 0; margin-bottom: 60px;">
+                <ui:Label text="PAUSED" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); font-size: 72px; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-align: middle-center; text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 4px 4px 8px rgba(0, 0, 0, 0.8);"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: column; align-items: center; justify-content: center; flex-grow: 1;">
+                <ui:Button name="ResumeButton" text="Resume" class="pause-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); width: 350px; height: 70px; font-size: 28px; -unity-font-style: bold; background-color: rgba(0, 0, 0, 0); border-width: 0; color: rgb(255, 255, 255); margin-top: 15px; margin-bottom: 15px;"/>
+                <ui:Button name="SaveButton" text="Save Game" class="pause-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); width: 350px; height: 70px; font-size: 28px; -unity-font-style: bold; background-color: rgba(0, 0, 0, 0); border-width: 0; color: rgb(255, 255, 255); margin-top: 15px; margin-bottom: 15px;"/>
+                <ui:Button name="QuitButton" text="Quit to Main Menu" class="pause-menu-button" style="-unity-font-definition: url(&quot;project://database/Assets/Art/UI/Fonts/minecraft/Minecraft.ttf?fileID=12800000&amp;guid=848bc0fe5eec3d4428cb3fc4eaf8c41a&amp;type=3#Minecraft&quot;); width: 350px; height: 70px; font-size: 28px; -unity-font-style: bold; background-color: rgba(0, 0, 0, 0); border-width: 0; color: rgb(255, 255, 255); margin-top: 15px; margin-bottom: 15px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

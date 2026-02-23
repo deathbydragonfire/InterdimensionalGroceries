@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using InterdimensionalGroceries.AudioSystem;
+using InterdimensionalGroceries.EconomySystem;
 
 namespace InterdimensionalGroceries.PhaseManagement
 {
@@ -12,17 +13,26 @@ namespace InterdimensionalGroceries.PhaseManagement
         [SerializeField] private float deliveryDuration = 60f;
         [SerializeField] private float lowTimeThreshold = 10f;
 
+        private float baseDeliveryDuration;
         private float remainingTime;
         private bool isRunning;
         private int lastSecondPlayed = -1;
 
         private void Awake()
         {
+            baseDeliveryDuration = deliveryDuration;
             OnTimerExpired += HandleTimerExpired;
         }
 
         private void Start()
         {
+            ApplyDeliveryTimeUpgrade();
+
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased += OnUpgradePurchased;
+            }
+
             if (GamePhaseManager.Instance != null)
             {
                 GamePhaseManager.Instance.OnDeliveryPhaseStarted += StartTimer;
@@ -32,6 +42,24 @@ namespace InterdimensionalGroceries.PhaseManagement
                 {
                     StartTimer();
                 }
+            }
+        }
+
+        private void OnUpgradePurchased(AbilityUpgradeData upgrade, int newLevel)
+        {
+            if (upgrade.UpgradeType == UpgradeType.DeliveryTime)
+            {
+                ApplyDeliveryTimeUpgrade();
+            }
+        }
+
+        private void ApplyDeliveryTimeUpgrade()
+        {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                float bonusTime = AbilityUpgradeManager.Instance.GetDeliveryTimeBonus();
+                deliveryDuration = baseDeliveryDuration + bonusTime;
+                Debug.Log($"Delivery time updated: {deliveryDuration:F0}s (base: {baseDeliveryDuration:F0}s + bonus: {bonusTime:F0}s)");
             }
         }
 
@@ -45,6 +73,11 @@ namespace InterdimensionalGroceries.PhaseManagement
 
         private void OnDestroy()
         {
+            if (AbilityUpgradeManager.Instance != null)
+            {
+                AbilityUpgradeManager.Instance.OnUpgradePurchased -= OnUpgradePurchased;
+            }
+
             if (GamePhaseManager.Instance != null)
             {
                 GamePhaseManager.Instance.OnDeliveryPhaseStarted -= StartTimer;

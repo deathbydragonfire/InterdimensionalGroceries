@@ -16,6 +16,7 @@ namespace InterdimensionalGroceries.UI
     {
         [Header("References")]
         [SerializeField] private StoreInventory storeInventory;
+        [SerializeField] private MoneyNotification notificationPrefab;
         
         private UIDocument uiDocument;
         private VisualElement storeContainer;
@@ -29,6 +30,7 @@ namespace InterdimensionalGroceries.UI
         private Action onBackCallback;
         private bool isOpen;
         private bool isAnimating;
+        private MoneyNotification notificationInstance;
         
         private void Awake()
         {
@@ -81,7 +83,48 @@ namespace InterdimensionalGroceries.UI
                 storeContainer.style.display = DisplayStyle.None;
             }
             
+            if (notificationPrefab != null)
+            {
+                Canvas rootCanvas = FindRootCanvas();
+                if (rootCanvas != null)
+                {
+                    notificationInstance = Instantiate(notificationPrefab, rootCanvas.transform);
+                }
+                else
+                {
+                    notificationInstance = Instantiate(notificationPrefab);
+                }
+                
+                Canvas notificationCanvas = notificationInstance.GetComponent<Canvas>();
+                if (notificationCanvas == null)
+                {
+                    notificationCanvas = notificationInstance.gameObject.AddComponent<Canvas>();
+                    notificationCanvas.overrideSorting = true;
+                }
+                notificationCanvas.sortingOrder = 1000;
+                
+                if (notificationInstance.GetComponent<UnityEngine.UI.GraphicRaycaster>() == null)
+                {
+                    notificationInstance.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+                }
+                
+                notificationInstance.gameObject.SetActive(false);
+            }
+            
             Debug.Log($"StoreUIController initialized. isOpen: {isOpen}, storeContainer exists: {storeContainer != null}");
+        }
+        
+        private Canvas FindRootCanvas()
+        {
+            Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.isRootCanvas)
+                {
+                    return canvas;
+                }
+            }
+            return null;
         }
         
         public void OpenSuppliesMenu(Action onBack)
@@ -246,33 +289,47 @@ namespace InterdimensionalGroceries.UI
                 return;
             }
             
-            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(totalCost))
+            if (MoneyManager.Instance != null)
             {
-                Debug.Log($"Purchase successful! Spent ${totalCost:F2} on {itemsToPurchase.Count} items.");
-                
-                // Play purchase success sound
-                if (AudioManager.Instance != null)
+                if (MoneyManager.Instance.SpendMoney(totalCost))
                 {
-                    Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                    AudioManager.Instance.PlaySound(AudioEventType.UIPurchase, soundPosition);
+                    Debug.Log($"Purchase successful! Spent ${totalCost:F2} on {itemsToPurchase.Count} items.");
+                    
+                    if (AudioManager.Instance != null)
+                    {
+                        Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+                        AudioManager.Instance.PlaySound(AudioEventType.UIPurchase, soundPosition);
+                    }
+                    
+                    if (ChuteSpawner.Instance != null)
+                    {
+                        ChuteSpawner.Instance.SpawnItemsFromChutes(itemsToPurchase);
+                    }
+                    
+                    GoBack();
                 }
-                
-                if (ChuteSpawner.Instance != null)
+                else
                 {
-                    ChuteSpawner.Instance.SpawnItemsFromChutes(itemsToPurchase);
+                    Debug.Log("Insufficient funds for purchase.");
+                    
+                    if (AudioManager.Instance != null)
+                    {
+                        Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+                        AudioManager.Instance.PlaySound(AudioEventType.Rejection, soundPosition);
+                    }
+                    
+                    ShowInsufficientFundsNotification(totalCost);
                 }
-                
-                GoBack();
             }
-            else
+        }
+        
+        private void ShowInsufficientFundsNotification(float requiredAmount)
+        {
+            if (notificationInstance != null)
             {
-                Debug.Log("Insufficient funds for purchase.");
-                // Play rejection sound
-                if (AudioManager.Instance != null)
-                {
-                    Vector3 soundPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-                    AudioManager.Instance.PlaySound(AudioEventType.Rejection, soundPosition);
-                }
+                float currentMoney = MoneyManager.Instance != null ? MoneyManager.Instance.GetCurrentMoney() : 0f;
+                float shortfall = requiredAmount - currentMoney;
+                notificationInstance.ShowCustomMessage($"Insufficient Funds! Need ${shortfall:F2} more");
             }
         }
         

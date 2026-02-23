@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: SO_MenuIntroMusic
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
   clips:
-  - {fileID: 8300000, guid: 48dd20e072f5dd34cbc87b6c82de92fa, type: 3}
-  minVolume: 2
-  maxVolume: 2
+  - {fileID: 8300000, guid: 3984c88f351e208419560be65e5d31c0, type: 3}
+  subtitles: []
+  minVolume: 0.5
+  maxVolume: 0.5
   minPitch: 1
   maxPitch: 1
   spatialBlend: 0

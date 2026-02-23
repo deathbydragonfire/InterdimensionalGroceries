@@ -50,6 +50,12 @@ public class MoneyManager : MonoBehaviour
             return false;
         }
         
+        if (currentMoney < amount)
+        {
+            Debug.Log($"Insufficient funds. Need ${amount:F2}, have ${currentMoney:F2}");
+            return false;
+        }
+        
         currentMoney -= amount;
         UpdateUI();
         return true;
@@ -81,5 +87,11 @@ public class MoneyManager : MonoBehaviour
     public float GetCurrentMoney()
     {
         return currentMoney;
+    }
+
+    public void SetMoney(float amount)
+    {
+        currentMoney = amount;
+        UpdateUI();
     }
 }

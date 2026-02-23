@@ -12,7 +12,14 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLECHROMATIC_ON
+  - _ENABLEDISPLACEMENT_ON
+  - _ENABLEINTERFERENCE_ON
+  - _ENABLENOISE_ON
+  - _ENABLESCANLINES_ON
+  - _ENABLESLICES_ON
+  - _ENABLEWAVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -29,10 +36,28 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ChromaticAberration: 0.01
-    - _Displacement: 0.05
+    - _ChromaticAberration: 0.05
+    - _Displacement: 0.12
+    - _EnableChromatic: 1
+    - _EnableDisplacement: 1
+    - _EnableInterference: 1
+    - _EnableNoise: 1
+    - _EnableScanLines: 1
+    - _EnableSlices: 1
+    - _EnableWave: 1
     - _GlitchIntensity: 0
-    - _ScanLineJitter: 0.1
+    - _InterferenceFrequency: 80
+    - _InterferenceIntensity: 0.5
+    - _NoiseIntensity: 0.15
+    - _ScanLineCount: 150
+    - _ScanLineIntensity: 0.6
+    - _ScanLineJitter: 0.3
+    - _SliceCount: 12
+    - _SliceIntensity: 0.6
+    - _SliceOffset: 0.25
+    - _WaveFrequency: 8
+    - _WaveIntensity: 0.08
+    - _WaveSpeed: 3
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

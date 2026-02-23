@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Inventory Music
   m_EditorClassIdentifier: Assembly-CSharp::InterdimensionalGroceries.AudioSystem.AudioClipData
   clips:
-  - {fileID: 8300000, guid: 602954febd535004cabaa899e8a9f21d, type: 3}
+  - {fileID: 8300000, guid: 4986ff61f6f27f74692c01edf18f9ed8, type: 3}
+  subtitles: []
   minVolume: 0.5
   maxVolume: 0.5
   minPitch: 1

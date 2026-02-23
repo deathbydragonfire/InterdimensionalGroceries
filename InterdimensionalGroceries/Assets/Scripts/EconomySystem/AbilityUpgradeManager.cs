@@ -167,6 +167,20 @@ namespace InterdimensionalGroceries.EconomySystem
             return 1f;
         }
 
+        public float GetDeliveryTimeBonus()
+        {
+            foreach (var upgrade in availableUpgrades)
+            {
+                if (upgrade != null && upgrade.UpgradeType == UpgradeType.DeliveryTime)
+                {
+                    int level = GetUpgradeLevel(upgrade);
+                    return level * 15f;
+                }
+            }
+
+            return 0f;
+        }
+
         private float GetMultiplierForUpgradeType(UpgradeType upgradeType, int level)
         {
             switch (upgradeType)
@@ -175,6 +189,8 @@ namespace InterdimensionalGroceries.EconomySystem
                     return 1f + (level * 0.2f);
                 case UpgradeType.MovementSpeed:
                     return 1f + (level * 0.15f);
+                case UpgradeType.DeliveryTime:
+                    return level * 15f;
                 default:
                     return 1f;
             }
@@ -200,6 +216,50 @@ namespace InterdimensionalGroceries.EconomySystem
                     OnUpgradePurchased?.Invoke(upgrade, 0);
                 }
             }
+        }
+
+        public Dictionary<string, int> GetAllUpgradeLevels()
+        {
+            Dictionary<string, int> levels = new Dictionary<string, int>();
+            
+            foreach (var upgrade in availableUpgrades)
+            {
+                if (upgrade == null)
+                    continue;
+                
+                string key = GetPlayerPrefsKey(upgrade);
+                int level = GetUpgradeLevel(upgrade);
+                levels[key] = level;
+            }
+            
+            return levels;
+        }
+
+        public void SetUpgradeLevelByName(string upgradeName, int level)
+        {
+            foreach (var upgrade in availableUpgrades)
+            {
+                if (upgrade == null)
+                    continue;
+                
+                string key = GetPlayerPrefsKey(upgrade);
+                if (key == upgradeName)
+                {
+                    SetUpgradeLevel(upgrade, level);
+                    return;
+                }
+            }
+            
+            Debug.LogWarning($"[AbilityUpgradeManager] Could not find upgrade with name: {upgradeName}");
+        }
+
+        public void SetUpgradeLevel(AbilityUpgradeData upgrade, int level)
+        {
+            if (upgrade == null)
+                return;
+            
+            upgradeLevels[upgrade] = level;
+            SaveUpgradeLevel(upgrade, level);
         }
     }
 }

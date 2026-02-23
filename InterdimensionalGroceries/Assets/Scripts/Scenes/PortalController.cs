@@ -49,7 +49,7 @@ namespace InterdimensionalGroceries.Scenes
                 Debug.Log("[PortalController] Portal visual activated, starting scale animation");
             }
 
-            Vector3 targetScale = new Vector3(4f, 0.2f, 3f);
+            Vector3 targetScale = new Vector3(6f, 0.2f, 5f);
             Vector3 startScale = Vector3.zero;
             
             float elapsed = 0f;
